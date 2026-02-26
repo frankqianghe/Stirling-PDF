@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="INSTALLDIR">
+      <!--
+        Windows 10/11 default apps UI requires Capabilities + RegisteredApplications.
+        "Open with" menu benefits from Applications\<exe>\SupportedTypes and .ext\OpenWithProgids.
+      -->
+      <Component Id="FileAssociationsRegistryComponent" Guid="*">
+        <!-- 1) ProgID registration (non-advertised, explicit) -->
+        <RegistryKey Root="HKLM" Key="Software\Classes\PlexPDF.pdf">
+          <RegistryValue Type="string" Value="PDF Document" KeyPath="yes" />
+          <RegistryKey Key="DefaultIcon">
+            <RegistryValue Type="string" Value="&quot;[!Path]&quot;,0" />
+          </RegistryKey>
+          <RegistryKey Key="shell\open\command">
+            <RegistryValue Type="string" Value="&quot;[!Path]&quot; &quot;%1&quot;" />
+          </RegistryKey>
+        </RegistryKey>
+
+        <!-- 2) Make PlexPDF appear in "Open with" list for .pdf -->
+        <RegistryKey Root="HKLM" Key="Software\Classes\.pdf\OpenWithProgids">
+          <RegistryValue Name="PlexPDF.pdf" Type="string" Value="" />
+        </RegistryKey>
+
+        <RegistryKey Root="HKLM" Key="Software\Classes\Applications\plex-pdf.exe">
+          <RegistryKey Key="shell\open\command">
+            <RegistryValue Type="string" Value="&quot;[!Path]&quot; &quot;%1&quot;" />
+          </RegistryKey>
+          <RegistryKey Key="SupportedTypes">
+            <RegistryValue Name=".pdf" Type="string" Value="" />
+          </RegistryKey>
+        </RegistryKey>
+
+        <!-- 3) Default Apps (Settings UI) visibility via RegisteredApplications/Capabilities -->
+        <RegistryKey Root="HKLM" Key="Software\RegisteredApplications">
+          <RegistryValue Name="PlexPDF" Type="string" Value="Software\Clients\StartMenuInternet\PlexPDF\Capabilities" />
+        </RegistryKey>
+
+        <RegistryKey Root="HKLM" Key="Software\Clients\StartMenuInternet\PlexPDF\Capabilities">
+          <RegistryValue Name="ApplicationName" Type="string" Value="PlexPDF" />
+          <RegistryValue Name="ApplicationDescription" Type="string" Value="Open PDF files with PlexPDF" />
+          <RegistryValue Name="ApplicationIcon" Type="string" Value="&quot;[!Path]&quot;,0" />
+          <RegistryKey Key="FileAssociations">
+            <RegistryValue Name=".pdf" Type="string" Value="PlexPDF.pdf" />
+          </RegistryKey>
+        </RegistryKey>
+
+        <!-- Optional: provide a launch command for the StartMenuInternet client -->
+        <RegistryKey Root="HKLM" Key="Software\Clients\StartMenuInternet\PlexPDF\shell\open\command">
+          <RegistryValue Type="string" Value="&quot;[!Path]&quot;" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="FileAssociationsComponentGroup">
+      <ComponentRef Id="FileAssociationsRegistryComponent" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

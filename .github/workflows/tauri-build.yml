@@ -415,7 +415,7 @@ jobs:
           $filesToSign = @()
 
           # Main application executable
-          $mainExe = Get-ChildItem -Path "./frontend/src-tauri/target/x86_64-pc-windows-msvc/release" -Filter "stirling-pdf.exe" -File -ErrorAction SilentlyContinue
+          $mainExe = Get-ChildItem -Path "./frontend/src-tauri/target/x86_64-pc-windows-msvc/release" -Filter "plex-pdf.exe" -File -ErrorAction SilentlyContinue
           if ($mainExe) { $filesToSign += $mainExe }
 
           # MSI installer

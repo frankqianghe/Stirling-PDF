@@ -1,8 +1,9 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "PlexPDF",
+    "mainBinaryName": "plex-pdf",
     "version": "2.5.3",
-    "identifier": "stirling.pdf.dev",
+    "identifier": "plex.pdf.dev",
     "build": {
         "frontendDist": "../dist",
         "devUrl": "http://localhost:5173",
@@ -59,7 +60,7 @@
         ],
         "linux": {
             "deb": {
-                "desktopTemplate": "stirling-pdf.desktop"
+                "desktopTemplate": "plex-pdf.desktop"
             }
         },
         "windows": {
@@ -68,10 +69,12 @@
             "timestampUrl": "http://timestamp.digicert.com",
             "wix": {
                 "fragmentPaths": [
-                    "windows/wix/provisioning.wxs"
+                    "windows/wix/provisioning.wxs",
+                    "windows/wix/file-associations.wxs"
                 ],
                 "componentGroupRefs": [
-                    "ProvisioningComponentGroup"
+                    "ProvisioningComponentGroup",
+                    "FileAssociationsComponentGroup"
                 ]
             }
         },
@@ -93,7 +96,7 @@
         "deep-link": {
             "desktop": {
                 "schemes": [
-                    "stirlingpdf"
+                    "plexpdf"
                 ]
             }
         }

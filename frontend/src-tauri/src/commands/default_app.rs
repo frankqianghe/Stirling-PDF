@@ -89,9 +89,9 @@ fn check_default_windows() -> Result<bool, String> {
 
             add_log(format!("Windows PDF handler ProgID: {}", default_str));
 
-            // Check if it contains "Stirling" (case-insensitive)
-            // Note: This checks the ProgID registered by the installer
-            let is_default = default_str.to_lowercase().contains("stirling");
+            // Check if it's our app: ProgID is "PlexPDF.pdf" (or legacy "stirling")
+            let lower = default_str.to_lowercase();
+            let is_default = lower.contains("plexpdf");
             Ok(is_default)
         })();
 

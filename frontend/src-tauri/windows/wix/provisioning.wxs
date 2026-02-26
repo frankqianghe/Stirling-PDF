@@ -11,7 +11,7 @@
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="ProvisionerBinaryComponent" Guid="*">
-        <File Id="ProvisionerExe" Source="$(sys.SOURCEFILEDIR)stirling-provision.exe" KeyPath="yes" />
+        <File Id="ProvisionerExe" Source="$(sys.SOURCEFILEDIR)plexpdf-provision.exe" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -40,13 +40,13 @@
     <CustomAction
       Id="SetWriteProvisioningFilePerUser"
       Property="WriteProvisioningFilePerUser"
-      Value="--output &quot;[AppDataFolder]Stirling-PDF\stirling-provisioning.json&quot; --url &quot;[STIRLING_SERVER_URL]&quot; --lock &quot;[STIRLING_LOCK_CONNECTION]&quot;"
+      Value="--output &quot;[AppDataFolder]PlexPDF\stirling-provisioning.json&quot; --url &quot;[STIRLING_SERVER_URL]&quot; --lock &quot;[STIRLING_LOCK_CONNECTION]&quot;"
     />
 
     <CustomAction
       Id="SetWriteProvisioningFileAllUsers"
       Property="WriteProvisioningFileAllUsers"
-      Value="--output &quot;[CommonAppDataFolder]Stirling-PDF\stirling-provisioning.json&quot; --url &quot;[STIRLING_SERVER_URL]&quot; --lock &quot;[STIRLING_LOCK_CONNECTION]&quot;"
+      Value="--output &quot;[CommonAppDataFolder]PlexPDF\stirling-provisioning.json&quot; --url &quot;[STIRLING_SERVER_URL]&quot; --lock &quot;[STIRLING_LOCK_CONNECTION]&quot;"
     />
 
     <InstallExecuteSequence>

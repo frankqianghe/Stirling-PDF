@@ -16,7 +16,7 @@ execFileSync(
   { stdio: 'inherit' }
 );
 
-const provisionerExe = join(tauriDir, 'provisioner', 'target', 'release', 'stirling-provisioner.exe');
+const provisionerExe = join(tauriDir, 'provisioner', 'target', 'release', 'plexpdf-provisioner.exe');
 if (!existsSync(provisionerExe)) {
   throw new Error(`Provisioner binary not found at ${provisionerExe}`);
 }
@@ -24,5 +24,5 @@ if (!existsSync(provisionerExe)) {
 const wixDir = join(tauriDir, 'windows', 'wix');
 mkdirSync(wixDir, { recursive: true });
 
-const destExe = join(wixDir, 'stirling-provision.exe');
+const destExe = join(wixDir, 'plexpdf-provision.exe');
 copyFileSync(provisionerExe, destExe);
