@@ -14,7 +14,7 @@ export const pendingFilePathMappings = new Map<string, string>();
 // Type for the context value - now contains everything directly
 interface FileManagerContextValue {
   // State
-  activeSource: 'recent' | 'local' | 'drive';
+  activeSource: 'recent' | 'local';
   selectedFileIds: FileId[];
   searchTerm: string;
   selectedFiles: StirlingFileStub[];
@@ -28,7 +28,7 @@ interface FileManagerContextValue {
   activeFileIds: FileId[];
 
   // Handlers
-  onSourceChange: (source: 'recent' | 'local' | 'drive') => void;
+  onSourceChange: (source: 'recent' | 'local') => void;
   onLocalFileClick: () => void;
   onFileSelect: (file: StirlingFileStub, index: number, shiftKey?: boolean) => void;
   onFileRemove: (index: number) => void;
@@ -45,7 +45,6 @@ interface FileManagerContextValue {
   onAddToRecents: (file: StirlingFileStub) => void;
   onUnzipFile: (file: StirlingFileStub) => Promise<void>;
   onNewFilesSelect: (files: File[]) => void;
-  onGoogleDriveSelect: (files: File[]) => void;
 
   // External props
   recentFiles: StirlingFileStub[];
@@ -86,7 +85,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   isLoading,
   activeFileIds,
 }) => {
-  const [activeSource, setActiveSource] = useState<'recent' | 'local' | 'drive'>('recent');
+  const [activeSource, setActiveSource] = useState<'recent' | 'local'>('recent');
   const [selectedFileIds, setSelectedFileIds] = useState<FileId[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [lastClickedIndex, setLastClickedIndex] = useState<number | null>(null);
@@ -132,7 +131,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
       file.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const handleSourceChange = useCallback((source: 'recent' | 'local' | 'drive') => {
+  const handleSourceChange = useCallback((source: 'recent' | 'local') => {
     setActiveSource(source);
     if (source !== 'recent') {
       setSelectedFileIds([]);
@@ -569,19 +568,6 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     }
   }, [refreshRecentFiles]);
 
-  const handleGoogleDriveSelect = useCallback(async (files: File[]) => {
-    if (files.length > 0) {
-      try {
-        // Process Google Drive files same as local files
-        onNewFilesSelect(files);
-        await refreshRecentFiles();
-        onClose();
-      } catch (error) {
-        console.error('Failed to process Google Drive files:', error);
-      }
-    }
-  }, [onNewFilesSelect, refreshRecentFiles, onClose]);
-
   const handleUnzipFile = useCallback(async (file: StirlingFileStub) => {
     try {
       // Load the full file from storage
@@ -660,7 +646,6 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     onAddToRecents: handleAddToRecents,
     onUnzipFile: handleUnzipFile,
     onNewFilesSelect,
-    onGoogleDriveSelect: handleGoogleDriveSelect,
 
     // External props
     recentFiles,
@@ -695,7 +680,6 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     handleAddToRecents,
     handleUnzipFile,
     onNewFilesSelect,
-    handleGoogleDriveSelect,
     recentFiles,
     isFileSupported,
     modalHeight,

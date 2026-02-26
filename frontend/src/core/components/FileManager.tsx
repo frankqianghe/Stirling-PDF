@@ -10,8 +10,6 @@ import DesktopLayout from '@app/components/fileManager/DesktopLayout';
 import DragOverlay from '@app/components/fileManager/DragOverlay';
 import { FileManagerProvider } from '@app/contexts/FileManagerContext';
 import { Z_INDEX_FILE_MANAGER_MODAL } from '@app/styles/zIndex';
-import { isGoogleDriveConfigured } from '@app/services/googleDrivePickerService';
-import { loadScript } from '@app/utils/scriptLoader';
 import { useAllFiles } from '@app/contexts/FileContext';
 
 interface FileManagerProps {
@@ -89,30 +87,6 @@ const FileManager: React.FC<FileManagerProps> = ({ selectedTool }) => {
       // Blob URLs are managed by FileContext and tool operations
       console.log('FileManager unmounting - FileContext handles blob URL cleanup');
     };
-  }, []);
-
-  // Preload Google Drive scripts if configured
-
-  useEffect(() => {
-    if (isGoogleDriveConfigured()) {
-      // Load scripts in parallel without blocking
-      Promise.all([
-        loadScript({
-          src: 'https://apis.google.com/js/api.js',
-          id: 'gapi-script',
-          async: true,
-          defer: true,
-        }),
-        loadScript({
-          src: 'https://accounts.google.com/gsi/client',
-          id: 'gis-script',
-          async: true,
-          defer: true,
-        }),
-      ]).catch((error) => {
-        console.warn('Failed to preload Google Drive scripts:', error);
-      });
-    }
   }, []);
 
   // Modal size constants for consistent scaling
