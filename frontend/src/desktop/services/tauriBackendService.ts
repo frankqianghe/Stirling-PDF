@@ -69,7 +69,7 @@ export class TauriBackendService {
     this.beginHealthMonitoring();
   }
 
-  async startBackend(backendUrl?: string): Promise<void> {
+  async startBackend(): Promise<void> {
     if (this.backendStarted) {
       return;
     }
@@ -80,7 +80,7 @@ export class TauriBackendService {
 
     this.setStatus('starting');
 
-    this.startPromise = invoke('start_backend', { backendUrl })
+    this.startPromise = invoke('start_backend')
       .then(async () => {
         this.backendStarted = true;
         this.setStatus('starting');
@@ -101,10 +101,19 @@ export class TauriBackendService {
     return this.startPromise;
   }
 
+  private async readBackendPortFromTauri(): Promise<number | null> {
+    try {
+      return await invoke<number | null>('get_backend_port');
+    } catch (error) {
+      console.debug('[TauriBackendService] Failed to read backend port from Tauri:', error);
+      return null;
+    }
+  }
+
   private async waitForPort(): Promise<void> {
     while (true) {
       try {
-        const port = await invoke<number | null>('get_backend_port');
+        const port = await this.readBackendPortFromTauri();
         if (port) {
           this.backendPort = port;
           return;
@@ -158,11 +167,26 @@ export class TauriBackendService {
       baseUrl = serverConfig.url.replace(/\/$/, '');
     } else {
       // SaaS mode - check bundled local backend
+      // In Tauri desktop builds, the backend can be started by Rust before the
+      // frontend calls startBackend(). We still want health checks and port discovery
+      // to work in that case.
+      if (!this.backendPort) {
+        const port = await this.readBackendPortFromTauri();
+        if (port) {
+          this.backendPort = port;
+          this.backendStarted = true;
+        }
+      }
+
       if (!this.backendStarted) {
-        this.setStatus('stopped');
+        this.setStatus('starting');
         return false;
       }
+
       if (!this.backendPort) {
+        // Backend may still be starting; avoid flipping UI to "offline" just because
+        // we haven't learned the dynamic port yet.
+        this.setStatus('starting');
         return false;
       }
       baseUrl = `http://localhost:${this.backendPort}`;

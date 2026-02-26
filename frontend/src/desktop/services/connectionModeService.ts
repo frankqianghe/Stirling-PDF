@@ -91,6 +91,31 @@ export class ConnectionModeService {
     }
   }
 
+  /**
+   * Mark initial setup as completed using safe defaults.
+   *
+   * This allows the desktop app to run in bundled-local mode without requiring
+   * SaaS/Supabase configuration or a login flow.
+   */
+  async completeDefaultSetup(): Promise<void> {
+    if (this.currentConfig?.lock_connection_mode) {
+      return;
+    }
+
+    await invoke('set_connection_mode', {
+      mode: 'saas',
+      serverConfig: null,
+    });
+
+    this.currentConfig = {
+      mode: 'saas',
+      server_config: null,
+      lock_connection_mode: this.currentConfig?.lock_connection_mode ?? false,
+    };
+    this.configLoadedOnce = true;
+    this.notifyListeners();
+  }
+
   async switchToSaaS(saasServerUrl: string): Promise<void> {
     if (this.currentConfig?.lock_connection_mode) {
       throw new Error('Connection mode is locked by provisioning');

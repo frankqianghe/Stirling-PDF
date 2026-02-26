@@ -23,6 +23,10 @@ export function useFirstLaunchCheck(): { isFirstLaunch: boolean; setupComplete: 
           // Not first launch - initialize auth state
           await authService.initializeAuthState();
           setSetupComplete(true);
+        } else {
+          // First launch - auto-complete setup for bundled-local usage (no login required)
+          await connectionModeService.completeDefaultSetup();
+          setSetupComplete(true);
         }
 
         setupCheckCompleteRef.current = true;

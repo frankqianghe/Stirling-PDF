@@ -84,7 +84,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
                     .allowedOriginPatterns(
                             "tauri://localhost",
                             "http://tauri.localhost",
-                            "https://tauri.localhost")
+                            "https://tauri.localhost",
+                            // Tauri dev server (see src-tauri/tauri.conf.json devUrl)
+                            "http://localhost:5173",
+                            "http://127.0.0.1:5173",
+                            // Common alternate Vite ports (in case 5173 is occupied)
+                            "http://localhost:5174",
+                            "http://127.0.0.1:5174",
+                            // Dev-mode webview origins (Tauri dev uses Vite on localhost)
+                            "http://localhost:*",
+                            "https://localhost:*",
+                            "http://127.0.0.1:*",
+                            "https://127.0.0.1:*",
+                            "http://[::1]:*",
+                            "https://[::1]:*")
                     .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                     .allowedHeaders(
                             "Authorization",

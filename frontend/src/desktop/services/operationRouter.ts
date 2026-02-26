@@ -1,5 +1,6 @@
 import { connectionModeService } from '@app/services/connectionModeService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
+import { createBackendNotReadyError } from '@app/constants/backendErrors';
 
 export type ExecutionTarget = 'local' | 'remote';
 
@@ -48,9 +49,14 @@ export class OperationRouter {
 
     if (target === 'local') {
       // Use dynamically assigned port from backend service
-      const backendUrl = tauriBackendService.getBackendUrl();
+      let backendUrl = tauriBackendService.getBackendUrl();
       if (!backendUrl) {
-        throw new Error('Backend URL not available - backend may still be starting');
+        // Try one health check cycle (also performs port discovery in Tauri mode)
+        await tauriBackendService.checkBackendHealth();
+        backendUrl = tauriBackendService.getBackendUrl();
+      }
+      if (!backendUrl) {
+        throw createBackendNotReadyError();
       }
       // Strip trailing slash to avoid double slashes in URLs
       return backendUrl.replace(/\/$/, '');

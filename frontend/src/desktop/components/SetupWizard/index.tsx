@@ -25,8 +25,12 @@ interface SetupWizardProps {
 
 export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
   const { t } = useTranslation();
-  const [activeStep, setActiveStep] = useState<SetupStep>(SetupStep.SaaSLogin);
-  const [serverConfig, setServerConfig] = useState<ServerConfig | null>({ url: STIRLING_SAAS_URL });
+  const [activeStep, setActiveStep] = useState<SetupStep>(
+    STIRLING_SAAS_URL ? SetupStep.SaaSLogin : SetupStep.ServerSelection
+  );
+  const [serverConfig, setServerConfig] = useState<ServerConfig | null>(
+    STIRLING_SAAS_URL ? { url: STIRLING_SAAS_URL } : null
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selfHostedMfaCode, setSelfHostedMfaCode] = useState('');
@@ -278,10 +282,14 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
       setSelfHostedMfaRequired(false);
       setActiveStep(SetupStep.ServerSelection);
     } else if (activeStep === SetupStep.ServerSelection) {
-      setActiveStep(SetupStep.SaaSLogin);
-      setServerConfig({ url: STIRLING_SAAS_URL });
+      if (STIRLING_SAAS_URL) {
+        setActiveStep(SetupStep.SaaSLogin);
+        setServerConfig({ url: STIRLING_SAAS_URL });
+      }
     } else if (activeStep === SetupStep.SaaSSignup) {
-      setActiveStep(SetupStep.SaaSLogin);
+      if (STIRLING_SAAS_URL) {
+        setActiveStep(SetupStep.SaaSLogin);
+      }
     }
   };
 
@@ -339,6 +347,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
     <DesktopAuthLayout>
       {/* Step Content */}
       {!lockConnectionMode && activeStep === SetupStep.SaaSLogin && (
+        STIRLING_SAAS_URL ? (
         <SaaSLoginScreen
           serverUrl={serverConfig?.url || STIRLING_SAAS_URL}
           onLogin={handleSaaSLogin}
@@ -348,15 +357,18 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete }) => {
           loading={loading}
           error={error}
         />
+        ) : null
       )}
 
       {!lockConnectionMode && activeStep === SetupStep.SaaSSignup && (
+        STIRLING_SAAS_URL ? (
         <SaaSSignupScreen
           loading={loading}
           error={error}
           onLogin={handleSaaSLogin}
           onSwitchToLogin={handleSwitchToLogin}
         />
+        ) : null
       )}
 
       {!lockConnectionMode && activeStep === SetupStep.ServerSelection && (

@@ -151,6 +151,10 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({
           {
             suppressErrorToast: true,
             skipAuthRedirect: true,
+            // Desktop builds gate API calls until backend is "healthy" (dependenciesReady).
+            // The app-config endpoint is the primary readiness probe, so it must be allowed
+            // during startup to avoid a deadlock.
+            skipBackendReadyCheck: true,
           } as any,
         );
         const data = response.data;

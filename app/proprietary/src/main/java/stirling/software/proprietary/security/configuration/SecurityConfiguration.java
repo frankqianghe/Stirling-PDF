@@ -141,17 +141,88 @@ public class SecurityConfiguration {
             configuredOrigins = applicationProperties.getSystem().getCorsAllowedOrigins();
         }
 
+        boolean isTauriMode =
+                Boolean.parseBoolean(System.getProperty("STIRLING_PDF_TAURI_MODE", "false"));
+
         CorsConfiguration cfg = new CorsConfiguration();
         if (configuredOrigins != null && !configuredOrigins.isEmpty()) {
-            cfg.setAllowedOriginPatterns(configuredOrigins);
+            // Keep user-configured origins, but always include Tauri + dev origins for desktop
+            // support.
+            java.util.List<String> allOrigins = new java.util.ArrayList<>(configuredOrigins);
+            // Tauri v1 uses tauri://localhost, v2 uses http(s)://tauri.localhost
+            if (!allOrigins.contains("tauri://localhost")) {
+                allOrigins.add("tauri://localhost");
+            }
+            if (!allOrigins.contains("http://tauri.localhost")) {
+                allOrigins.add("http://tauri.localhost");
+            }
+            if (!allOrigins.contains("https://tauri.localhost")) {
+                allOrigins.add("https://tauri.localhost");
+            }
+            // Tauri dev server (see src-tauri/tauri.conf.json devUrl)
+            if (!allOrigins.contains("http://localhost:5173")) {
+                allOrigins.add("http://localhost:5173");
+            }
+            if (!allOrigins.contains("http://127.0.0.1:5173")) {
+                allOrigins.add("http://127.0.0.1:5173");
+            }
+            // Common alternate Vite ports (in case 5173 is occupied)
+            if (!allOrigins.contains("http://localhost:5174")) {
+                allOrigins.add("http://localhost:5174");
+            }
+            if (!allOrigins.contains("http://127.0.0.1:5174")) {
+                allOrigins.add("http://127.0.0.1:5174");
+            }
+            // Dev-mode webview origins (Tauri dev uses Vite on localhost)
+            if (!allOrigins.contains("http://localhost:*")) {
+                allOrigins.add("http://localhost:*");
+            }
+            if (!allOrigins.contains("https://localhost:*")) {
+                allOrigins.add("https://localhost:*");
+            }
+            if (!allOrigins.contains("http://127.0.0.1:*")) {
+                allOrigins.add("http://127.0.0.1:*");
+            }
+            if (!allOrigins.contains("https://127.0.0.1:*")) {
+                allOrigins.add("https://127.0.0.1:*");
+            }
+            if (!allOrigins.contains("http://[::1]:*")) {
+                allOrigins.add("http://[::1]:*");
+            }
+            if (!allOrigins.contains("https://[::1]:*")) {
+                allOrigins.add("https://[::1]:*");
+            }
+
+            cfg.setAllowedOriginPatterns(allOrigins);
             log.debug(
                     "CORS configured with allowed origin patterns from settings.yml: {}",
-                    configuredOrigins);
+                    allOrigins);
         } else {
-            // Default to allowing all origins when nothing is configured
-            cfg.setAllowedOriginPatterns(List.of("*"));
-            log.info(
-                    "No CORS allowed origins configured in settings.yml (system.corsAllowedOrigins); allowing all origins.");
+            if (isTauriMode) {
+                cfg.setAllowedOriginPatterns(
+                        List.of(
+                                "tauri://localhost",
+                                "http://tauri.localhost",
+                                "https://tauri.localhost",
+                                // Tauri dev server (see src-tauri/tauri.conf.json devUrl)
+                                "http://localhost:5173",
+                                "http://127.0.0.1:5173",
+                                // Common alternate Vite ports (in case 5173 is occupied)
+                                "http://localhost:5174",
+                                "http://127.0.0.1:5174",
+                                "http://localhost:*",
+                                "https://localhost:*",
+                                "http://127.0.0.1:*",
+                                "https://127.0.0.1:*",
+                                "http://[::1]:*",
+                                "https://[::1]:*"));
+                log.info("Tauri mode detected - enabling CORS for Tauri + dev localhost origins");
+            } else {
+                // Default to allowing all origins when nothing is configured
+                cfg.setAllowedOriginPatterns(List.of("*"));
+                log.info(
+                        "No CORS allowed origins configured in settings.yml (system.corsAllowedOrigins); allowing all origins.");
+            }
         }
 
         // Explicitly configure supported HTTP methods (include OPTIONS for preflight)

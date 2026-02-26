@@ -197,7 +197,7 @@ export class AuthService {
       throw new Error('Invalid access token');
     }
     if (!SUPABASE_KEY) {
-      throw new Error('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY is not configured');
+      throw new Error('Supabase is not configured for this build.');
     }
 
     await this.saveTokenEverywhere(accessToken);
@@ -215,10 +215,10 @@ export class AuthService {
 
   async signUpSaas(email: string, password: string): Promise<void> {
     if (!STIRLING_SAAS_URL) {
-      throw new Error('VITE_SAAS_SERVER_URL is not configured');
+      throw new Error('SaaS authentication is not configured for this build.');
     }
     if (!SUPABASE_KEY) {
-      throw new Error('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY is not configured');
+      throw new Error('Supabase is not configured for this build.');
     }
 
     const redirectParam = encodeURIComponent(DESKTOP_DEEP_LINK_CALLBACK);
@@ -256,12 +256,10 @@ export class AuthService {
   async login(serverUrl: string, username: string, password: string, mfaCode?: string): Promise<UserInfo> {
     try {
       // Validate SaaS configuration if connecting to SaaS
-      if (serverUrl === STIRLING_SAAS_URL) {
-        if (!STIRLING_SAAS_URL) {
-          throw new Error('VITE_SAAS_SERVER_URL is not configured');
-        }
+      const isSaaSTarget = Boolean(STIRLING_SAAS_URL) && serverUrl === STIRLING_SAAS_URL;
+      if (isSaaSTarget) {
         if (!SUPABASE_KEY) {
-          throw new Error('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY is not configured');
+          throw new Error('Supabase is not configured for this build.');
         }
       }
 
@@ -721,7 +719,7 @@ export class AuthService {
 
       // Validate Supabase key is configured for OAuth
       if (!SUPABASE_KEY) {
-        throw new Error('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY is not configured');
+        throw new Error('Supabase is not configured for this build.');
       }
 
       // Call Rust command which:

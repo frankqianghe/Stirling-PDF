@@ -3,6 +3,7 @@ import { alert } from '@app/components/toast';
 import { setupApiInterceptors as coreSetup } from '@core/services/apiClientSetup';
 import { tauriBackendService } from '@app/services/tauriBackendService';
 import { createBackendNotReadyError } from '@app/constants/backendErrors';
+import { isBackendNotReadyError } from '@app/constants/backendErrors';
 import { operationRouter } from '@app/services/operationRouter';
 import { authService } from '@app/services/authService';
 import { connectionModeService } from '@app/services/connectionModeService';
@@ -70,7 +71,11 @@ export function setupApiInterceptors(client: AxiosInstance): void {
           extendedConfig.withCredentials = false;
         }
       } catch (error) {
-        console.error('[apiClientSetup] Error in request interceptor:', error);
+        if (isBackendNotReadyError(error)) {
+          console.debug('[apiClientSetup] Backend not ready yet (expected during startup).');
+        } else {
+          console.error('[apiClientSetup] Error in request interceptor:', error);
+        }
         // Continue with request even if routing/auth logic fails
         // This ensures requests aren't blocked by interceptor errors
       }
@@ -78,6 +83,12 @@ export function setupApiInterceptors(client: AxiosInstance): void {
       // Backend readiness check (for local backend)
       const skipCheck = extendedConfig.skipBackendReadyCheck === true;
       const isSaaS = await operationRouter.isSaaSMode();
+
+      if (isSaaS && !skipCheck && !tauriBackendService.isBackendHealthy()) {
+        // Proactively refresh health once to avoid startup races where the backend is already
+        // up but the cached health state hasn't been updated yet.
+        await tauriBackendService.checkBackendHealth().catch(() => {});
+      }
 
       if (isSaaS && !skipCheck && !tauriBackendService.isBackendHealthy()) {
         const method = (extendedConfig.method || 'get').toLowerCase();
@@ -139,7 +150,11 @@ export function setupApiInterceptors(client: AxiosInstance): void {
           }
         } else {
           // SaaS mode: use Supabase refresh endpoint
-          refreshed = await authService.refreshSupabaseToken(STIRLING_SAAS_URL);
+          if (STIRLING_SAAS_URL) {
+            refreshed = await authService.refreshSupabaseToken(STIRLING_SAAS_URL);
+          } else {
+            refreshed = false;
+          }
         }
 
         if (refreshed) {
