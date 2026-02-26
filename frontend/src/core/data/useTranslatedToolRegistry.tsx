@@ -957,7 +957,6 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
     };
 
     const hiddenToolIds = new Set<ToolId>([
-      'pdfTextEditor',
       'convert',
       'ocr',
       'scannerEffect',
