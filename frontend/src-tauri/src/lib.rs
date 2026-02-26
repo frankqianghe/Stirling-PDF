@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Emitter, Manager, RunEvent, WindowEvent};
+use tauri::{AppHandle, Emitter, LogicalSize, Manager, RunEvent, Size, WindowEvent};
 
 mod utils;
 mod commands;
@@ -86,6 +86,17 @@ pub fn run() {
     }))
     .setup(|app| {
       add_log("🚀 Tauri app setup started".to_string());
+
+      // Enforce a minimum window size to keep the UI usable.
+      // (Config sets minWidth/minHeight too, but we also set it at runtime as a safeguard.)
+      const MIN_WINDOW_WIDTH: f64 = 1030.0;
+      const MIN_WINDOW_HEIGHT: f64 = 700.0;
+      for (_label, window) in app.webview_windows() {
+        let _ = window.set_min_size(Some(Size::Logical(LogicalSize::new(
+          MIN_WINDOW_WIDTH,
+          MIN_WINDOW_HEIGHT,
+        ))));
+      }
 
       // Process command line arguments on first launch
       let args: Vec<String> = std::env::args().collect();
