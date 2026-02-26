@@ -1,16 +1,15 @@
 import React from 'react';
 import { Stack } from '@mantine/core';
 import { DefaultAppSettings } from '@app/components/shared/config/configSections/DefaultAppSettings';
-import SoftwareUpdatesSection from '@app/components/shared/config/configSections/SoftwareUpdatesSection';
 
 /**
- * Desktop extension of GeneralSection that adds default PDF editor settings
+ * Desktop GeneralSection: only Default PDF editor.
+ * Check-for-updates (Software Updates) is hidden in this build.
  */
 const GeneralSection: React.FC = () => {
   return (
     <Stack gap="lg">
       <DefaultAppSettings />
-      <SoftwareUpdatesSection />
     </Stack>
   );
 };
