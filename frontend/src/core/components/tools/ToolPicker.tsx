@@ -25,10 +25,17 @@ const ToolPicker = ({ selectedToolKey, onSelect, filteredTools, isSearching = fa
 
   const scrollableRef = useRef<HTMLDivElement>(null);
 
-  const { sections: visibleSections } = useToolSections(filteredTools);
+  const filteredToolsForPicker = useMemo(() => {
+    return filteredTools.filter(({ item: [id] }) => id !== 'automate');
+  }, [filteredTools]);
+
+  const { sections: visibleSections } = useToolSections(filteredToolsForPicker);
   const { favoriteTools, toolRegistry } = useToolWorkflow();
 
-  const favoriteToolItems = useFavoriteToolItems(favoriteTools, toolRegistry);
+  const favoriteToolItemsRaw = useFavoriteToolItems(favoriteTools, toolRegistry);
+  const favoriteToolItems = useMemo(() => {
+    return favoriteToolItemsRaw.filter(({ id }) => id !== 'automate');
+  }, [favoriteToolItemsRaw]);
 
   const quickSection = useMemo(
     () => visibleSections.find(s => s.key === 'quick'),
@@ -49,7 +56,7 @@ const ToolPicker = ({ selectedToolKey, onSelect, filteredTools, isSearching = fa
 
   // Build flat list by subcategory for search mode
   const emptyFilteredTools: ToolPickerProps['filteredTools'] = [];
-  const effectiveFilteredForSearch: ToolPickerProps['filteredTools'] = isSearching ? filteredTools : emptyFilteredTools;
+  const effectiveFilteredForSearch: ToolPickerProps['filteredTools'] = isSearching ? filteredToolsForPicker : emptyFilteredTools;
   const { searchGroups } = useToolSections(effectiveFilteredForSearch);
   const headerTextStyle: React.CSSProperties = {
     fontSize: "0.75rem",
