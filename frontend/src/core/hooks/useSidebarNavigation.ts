@@ -36,7 +36,6 @@ export function useSidebarNavigation(): {
   const getToolNavigation = useCallback((toolId: ToolId): SidebarNavigationProps | null => {
     // Handle special nav sections that aren't tools
     if (toolId === 'read') return { href: '/read', onClick: defaultNavClick };
-    if (toolId === 'automate') return { href: '/automate', onClick: defaultNavClick };
 
     const tool = getSelectedTool(toolId);
     if (!tool) return null;

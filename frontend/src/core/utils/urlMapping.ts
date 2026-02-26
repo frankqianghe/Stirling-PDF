@@ -99,7 +99,6 @@ export const URL_TO_TOOL_MAP: Record<string, ToolId> = {
 
   // Special/utility tools
   '/read': 'read',
-  '/automate': 'automate',
   '/sign': 'sign',
   '/add-text': 'addText',
   '/pdf-text-editor': 'pdfTextEditor',
@@ -125,7 +124,6 @@ export const URL_TO_TOOL_MAP: Record<string, ToolId> = {
   '/get-info-on-pdf': 'getPdfInfo',
   '/remove-image-pdf': 'removeImage',
   '/replace-and-invert-color-pdf': 'replaceColor',
-  '/pipeline': 'automate',
   '/extract-image-scans': 'scannerImageSplit',
   '/show-javascript': 'showJS',
   '/scanner-effect': 'scannerEffect',

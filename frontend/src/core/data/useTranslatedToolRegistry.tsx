@@ -956,11 +956,50 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
       },
     };
 
+    const hiddenToolIds = new Set<ToolId>([
+      'pdfTextEditor',
+      'convert',
+      'ocr',
+      'scannerEffect',
+      'sanitize',
+      'flatten',
+      'unlockPDFForms',
+      'changePermissions',
+      'validateSignature',
+      'getPdfInfo',
+      'read',
+      'changeMetadata',
+      'editTableOfContents',
+      'pageLayout',
+      'bookletImposition',
+      'pdfToSinglePage',
+      'addAttachments',
+      'removePassword',
+      'removeCertSign',
+      'automate',
+      'autoRename',
+      'formFill',
+      'adjustContrast',
+      'repair',
+      'scannerImageSplit',
+      'overlayPdfs',
+      'replaceColor',
+      'showJS',
+      'devApi',
+      'devFolderScanning',
+      'devSsoGuide',
+      'devAirgapped',
+    ]);
+
+    const visibleTools = Object.fromEntries(
+      Object.entries(allTools).filter(([key]) => !hiddenToolIds.has(key as ToolId))
+    ) as ToolRegistry;
+
     const regularTools = {} as RegularToolRegistry;
     const superTools = {} as SuperToolRegistry;
     const linkTools = {} as LinkToolRegistry;
 
-    Object.entries(allTools).forEach(([key, entry]) => {
+    Object.entries(visibleTools).forEach(([key, entry]) => {
       const toolId = key as ToolId;
       if (isSuperToolId(toolId)) {
         superTools[toolId] = entry;
@@ -972,7 +1011,7 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
     });
 
     return {
-      allTools,
+      allTools: visibleTools,
       regularTools,
       superTools,
       linkTools,
