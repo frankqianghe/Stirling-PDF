@@ -1,5 +1,5 @@
 * text=auto eol=lf
-*.bat text eol=crlf [1]
+*.bat text eol=crlf
 
 # Ignore all JavaScript files in a directory
 app/core/src/main/resources/static/pdfjs/* linguist-vendored
