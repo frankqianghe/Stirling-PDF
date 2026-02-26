@@ -1,63 +1,27 @@
-import { useTranslation } from 'react-i18next';
-import { useConfigNavSections as useProprietaryConfigNavSections, createConfigNavSections as createProprietaryConfigNavSections } from '@proprietary/components/shared/config/configNavSections';
-import { ConfigNavSection } from '@core/components/shared/config/configNavSections';
-import { ConnectionSettings } from '@app/components/ConnectionSettings';
+import { useConfigNavSections as useCoreConfigNavSections, createConfigNavSections as createCoreConfigNavSections, ConfigNavSection } from '@core/components/shared/config/configNavSections';
 
 /**
- * Hook version of desktop config nav sections with proper i18n support
+ * Desktop settings navigation.
+ *
+ * Customized build: only expose General + Keyboard Shortcuts.
+ * Other settings remain on defaults and are not user-accessible.
  */
 export const useConfigNavSections = (
   isAdmin: boolean = false,
   runningEE: boolean = false,
   loginEnabled: boolean = false
 ): ConfigNavSection[] => {
-  const { t } = useTranslation();
-
-  // Get the proprietary sections (includes core Preferences + admin sections)
-  const sections = useProprietaryConfigNavSections(isAdmin, runningEE, loginEnabled);
-
-  // Add Connection section at the beginning (after Preferences)
-  sections.splice(1, 0, {
-    title: t('settings.connection.title', 'Connection Mode'),
-    items: [
-      {
-        key: 'connectionMode',
-        label: t('settings.connection.title', 'Connection Mode'),
-        icon: 'desktop-cloud-rounded',
-        component: <ConnectionSettings />,
-      },
-    ],
-  });
-
-  return sections;
+  return useCoreConfigNavSections(isAdmin, runningEE, loginEnabled);
 };
 
 /**
  * Deprecated: Use useConfigNavSections hook instead
- * Desktop extension of createConfigNavSections that adds connection settings
  */
 export const createConfigNavSections = (
   isAdmin: boolean = false,
   runningEE: boolean = false,
   loginEnabled: boolean = false
 ): ConfigNavSection[] => {
-  console.warn('createConfigNavSections is deprecated. Use useConfigNavSections hook instead for proper i18n support.');
-
-  // Get the proprietary sections (includes core Preferences + admin sections)
-  const sections = createProprietaryConfigNavSections(isAdmin, runningEE, loginEnabled);
-
-  // Add Connection section at the beginning (after Preferences)
-  sections.splice(1, 0, {
-    title: 'Connection',
-    items: [
-      {
-        key: 'connectionMode',
-        label: 'Connection Mode',
-        icon: 'desktop-cloud-rounded',
-        component: <ConnectionSettings />,
-      },
-    ],
-  });
-
-  return sections;
+  return createCoreConfigNavSections(isAdmin, runningEE, loginEnabled);
 };
+

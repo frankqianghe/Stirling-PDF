@@ -30,7 +30,10 @@ const AppConfigModalInner: React.FC<AppConfigModalProps> = ({ opened, onClose })
     const match = pathname.match(/\/settings\/([^/]+)/);
     if (match && match[1]) {
       const section = match[1] as NavKey;
-      return VALID_NAV_KEYS.includes(section as NavKey) ? section : null;
+      if (!VALID_NAV_KEYS.includes(section as NavKey)) {
+        return null;
+      }
+      return availableNavKeys.has(section) ? section : null;
     }
     return null;
   };
@@ -79,6 +82,16 @@ const AppConfigModalInner: React.FC<AppConfigModalProps> = ({ opened, onClose })
     runningEE,
     loginEnabled
   );
+
+  const availableNavKeys = useMemo(() => {
+    const keys = new Set<NavKey>();
+    for (const section of configNavSections) {
+      for (const item of section.items) {
+        keys.add(item.key);
+      }
+    }
+    return keys;
+  }, [configNavSections]);
 
   const activeLabel = useMemo(() => {
     for (const section of configNavSections) {
