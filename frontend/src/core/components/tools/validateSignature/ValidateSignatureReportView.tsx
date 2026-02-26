@@ -129,7 +129,7 @@ const ValidateSignatureReportView: React.FC<ValidateSignatureReportViewProps> = 
 
             <Group justify="space-between" align="center" mt="auto" pt="md">
               <Text size="xs" c="dimmed">
-                {t('validateSignature.report.footer', 'Validated via Stirling PDF')}
+                {t('validateSignature.report.footer', 'Validated via PlexPDF')}
               </Text>
               <Text size="xs" c="dimmed">
                 {t('validateSignature.report.page', 'Page')} {index + 1} / {pages.length}

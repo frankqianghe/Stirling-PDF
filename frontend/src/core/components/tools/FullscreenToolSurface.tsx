@@ -52,7 +52,7 @@ const FullscreenToolSurface = ({
   // Enable focus trap when surface is active
   useFocusTrap(surfaceRef, !isExiting);
 
-  const brandAltText = t("home.mobile.brandAlt", "Stirling PDF logo");
+  const brandAltText = t("home.mobile.brandAlt", "PlexPDF logo");
   const brandIconSrc = useLogoPath();
   const { wordmark } = useLogoAssets();
   const brandTextSrc = colorScheme === "dark" ? wordmark.white : wordmark.black;

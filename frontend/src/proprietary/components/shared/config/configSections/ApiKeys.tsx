@@ -37,7 +37,7 @@ export default function ApiKeys() {
   return (
     <Stack gap={20} p={0}>
       <Text size="sm" c="dimmed">
-        {t('config.apiKeys.intro', 'Use your API key to programmatically access Stirling PDF\'s processing capabilities.')}
+        {t('config.apiKeys.intro', 'Use your API key to programmatically access PlexPDF\'s processing capabilities.')}
       </Text>
 
       <Paper
@@ -55,7 +55,7 @@ export default function ApiKeys() {
               {t('config.apiKeys.docsTitle', 'API Documentation')}
             </Text>
             <Text size="sm" c="dimmed">
-              {t('config.apiKeys.docsDescription', 'Learn more about integrating with Stirling PDF:')}
+              {t('config.apiKeys.docsDescription', 'Learn more about integrating with PlexPDF:')}
             </Text>
             <Stack gap={4}>
               <Text size="sm">

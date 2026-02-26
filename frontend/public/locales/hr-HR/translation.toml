@@ -587,7 +587,7 @@ description = "Konfigurirajte pohranu privremenih datoteka i ponašanje čišće
 label = "Upravljanje privremenim datotekama"
 
 [admin.settings.advanced.tempFileManagement.baseTmpDir]
-description = "Osnovni direktorij za privremene datoteke (ostavite prazno za zadano: java.io.tmpdir/stirling-pdf)"
+description = "Osnovni direktorij za privremene datoteke (ostavite prazno za zadano: java.io.tmpdir/PlexPDF)"
 label = "Osnovni direktorij za privremene datoteke"
 
 [admin.settings.advanced.tempFileManagement.cleanupIntervalMinutes]
@@ -866,11 +866,11 @@ description = "Konfigurirajte opcionalne značajke i funkcionalnosti."
 title = "Značajke"
 
 [admin.settings.features.serverCertificate]
-description = "Konfigurirajte generiranje certifikata na poslužitelju za funkcionalnost \"Sign with Stirling-PDF\""
+description = "Konfigurirajte generiranje certifikata na poslužitelju za funkcionalnost \"Sign with PlexPDF\""
 label = "Poslužiteljski certifikat"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Omogući poslužiteljski certifikat za opciju \"Sign with Stirling-PDF\""
+description = "Omogući poslužiteljski certifikat za opciju \"Sign with PlexPDF\""
 label = "Omogući poslužiteljski certifikat"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1006,7 +1006,7 @@ description = "URL ili naziv datoteke za pravila o kolačićima"
 label = "Pravila o kolačićima"
 
 [admin.settings.legal.disclaimer]
-message = "Prilagođavanjem ovih pravnih dokumenata preuzimate punu odgovornost za osiguranje usklađenosti sa svim primjenjivim zakonima i propisima, uključujući, ali ne ograničavajući se na GDPR i druge zahtjeve EU zaštite podataka. Mijenjajte ove postavke samo ako: (1) upravljate osobnom/privatnom instancom, (2) izvan ste nadležnosti EU-a i razumijete svoje lokalne pravne obveze, ili (3) ste pribavili odgovarajući pravni savjet i prihvaćate isključivu odgovornost za sve korisničke podatke i pravnu usklađenost. Stirling-PDF i njegovi razvojni programeri ne preuzimaju nikakvu odgovornost za vaše pravne obveze."
+message = "Prilagođavanjem ovih pravnih dokumenata preuzimate punu odgovornost za osiguranje usklađenosti sa svim primjenjivim zakonima i propisima, uključujući, ali ne ograničavajući se na GDPR i druge zahtjeve EU zaštite podataka. Mijenjajte ove postavke samo ako: (1) upravljate osobnom/privatnom instancom, (2) izvan ste nadležnosti EU-a i razumijete svoje lokalne pravne obveze, ili (3) ste pribavili odgovarajući pravni savjet i prihvaćate isključivu odgovornost za sve korisničke podatke i pravnu usklađenost. PlexPDF i njegovi razvojni programeri ne preuzimaju nikakvu odgovornost za vaše pravne obveze."
 title = "Upozorenje o pravnoj odgovornosti"
 
 [admin.settings.legal.impressum]
@@ -1326,7 +1326,7 @@ description = "Kad je omogućeno, samo navedeni korisnički ID-jevi mogu koristi
 label = "Dopusti određene korisničke ID-jeve"
 
 [admin.settings.telegram.enabled]
-description = "Dopustite korisnicima interakciju sa Stirling PDF-om putem konfiguriranog Telegram bota."
+description = "Dopustite korisnicima interakciju sa PlexPDF-om putem konfiguriranog Telegram bota."
 label = "Omogući Telegram bot"
 
 [admin.settings.telegram.feedback]
@@ -1403,7 +1403,7 @@ settingsOverview = "Ovo je <strong>Panel postavki</strong>. Administratorske pos
 systemCustomization = "Imamo opsežne načine za prilagodbu sučelja: <strong>Postavke sustava</strong> omogućuju promjenu naziva aplikacije i jezika, <strong>Značajke</strong> omogućuju upravljanje certifikatima poslužitelja, a <strong>Krajnje točke</strong> omogućuju uključivanje ili isključivanje pojedinih alata za vaše korisnike."
 teamsAndUsers = "Ovdje upravljajte <strong>timovima</strong> i pojedinačnim korisnicima. Možete pozvati nove korisnike putem e-pošte, dijeljivih poveznica ili im sami stvoriti prilagođene račune."
 welcome = "Dobrodošli u <strong>Administratorski obilazak</strong>! Istražimo moćne korporativne značajke i postavke dostupne administratorima sustava."
-wrapUp = "To je administratorski obilazak! Vidjeli ste korporativne značajke koje čine Stirling PDF moćnim, prilagodljivim rješenjem za organizacije. Ovom obilasku možete pristupiti u bilo kojem trenutku iz izbornika <strong>Pomoć</strong>."
+wrapUp = "To je administratorski obilazak! Vidjeli ste korporativne značajke koje čine PlexPDF moćnim, prilagodljivim rješenjem za organizacije. Ovom obilasku možete pristupiti u bilo kojem trenutku iz izbornika <strong>Pomoć</strong>."
 
 [adminUserSettings]
 actions = "Akcije"
@@ -1440,11 +1440,11 @@ webOnlyUser = "Web Korisnik"
 disable = "Onemogući analitike"
 enable = "Omogući analitike"
 learnMore = "Saznajte više"
-paragraph1 = "Stirling PDF ima uključene analitike koje nam pomažu da proizvod poboljšamo. Niste pratili nikakva osobna informacija ni sadržaj datoteka."
-paragraph2 = "Razmotrite omogućivanje analitičkih podataka kako biste stvorili Stirling-PDF veće i da bismo bolje razumeli naših korisnika."
+paragraph1 = "PlexPDF ima uključene analitike koje nam pomažu da proizvod poboljšamo. Niste pratili nikakva osobna informacija ni sadržaj datoteka."
+paragraph2 = "Razmotrite omogućivanje analitičkih podataka kako biste stvorili PlexPDF veće i da bismo bolje razumeli naših korisnika."
 privacyAssurance = "Ne pratimo osobne podatke niti sadržaj vaših datoteka."
 settings = "Možete promijeniti postavke za analitike u datoteci config/settings.yml"
-title = "Želite li da stvarate Stirling PDF bolji?"
+title = "Želite li da stvarate PlexPDF bolji?"
 
 [annotation]
 applyChanges = "Primijeni promjene"
@@ -2045,7 +2045,7 @@ bullet1 = "Podržava PEM, PKCS12, JKS i formate poslužiteljskog certifikata"
 bullet2 = "Opcija za prikaz ili skrivanje potpisa na PDF-u"
 bullet3 = "Dodajte razlog, lokaciju i ime potpisnika"
 bullet4 = "Odaberite na kojoj će se stranici postaviti vidljivi potpisi"
-bullet5 = "Koristite poslužiteljski certifikat za jednostavnu opciju 'Sign with Stirling-PDF'"
+bullet5 = "Koristite poslužiteljski certifikat za jednostavnu opciju 'Sign with PlexPDF'"
 text = "Za potpis PDF-a potreban je digitalni certifikat (kao PEM, PKCS12 ili JKS). Možete odabrati da potpis bude vidljiv na dokumentu ili nevidljiv samo radi sigurnosti."
 title = "Dodavanje potpisa"
 
@@ -2474,14 +2474,14 @@ upgradeButton = "Nadogradi račun"
 chartAriaLabel = "Uporaba kredita: uključeno iskorišteno {{includedUsed}} od {{includedTotal}}, kupljeno {{purchasedUsed}} od {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiraj API ključ"
 description = "Vaš API ključ za pristup Stirlingovom paketu PDF alata. Kopirajte ga u svoj projekt ili osvježite za generiranje novog."
-docsDescription = "Saznajte više o integraciji sa Stirling PDF:"
+docsDescription = "Saznajte više o integraciji sa PlexPDF:"
 docsLink = "API dokumentacija"
 docsTitle = "API dokumentacija"
 generateError = "Nismo mogli generirati vaš API ključ."
 goToAccount = "Idi na račun"
 guestInfo = "Gostujući korisnici ne dobivaju API ključeve. Izradite račun kako biste dobili API ključ koji možete koristiti u svojim aplikacijama."
 includedCredits = "Uključeni krediti"
-intro = "Upotrijebite svoj API ključ za programatski pristup Stirling PDF mogućnostima obrade."
+intro = "Upotrijebite svoj API ključ za programatski pristup PlexPDF mogućnostima obrade."
 label = "API ključ"
 lastApiUse = "Zadnja upotreba API-ja"
 nextReset = "Sljedeće resetiranje"
@@ -2638,7 +2638,7 @@ showPreferencesBtn = "Upravljajte preferencijama"
 title = "Kako koristimo kolačiće"
 
 [cookieBanner.popUp.description]
-1 = "Koristimo kolačiće i druge tehnologije kako bismo Stirling PDF učinili boljim za vas — pomažu nam poboljšati naše alate i nastaviti graditi značajke koje ćete voljeti."
+1 = "Koristimo kolačiće i druge tehnologije kako bismo PlexPDF učinili boljim za vas — pomažu nam poboljšati naše alate i nastaviti graditi značajke koje ćete voljeti."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -2651,12 +2651,12 @@ subtitle = "Upotreba kolačića"
 title = "Centar preferencija privole"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Ovi kolačići pomažu nam razumjeti kako se naši alati koriste, kako bismo se mogli usredotočiti na izgradnju značajki koje naša zajednica najviše cijeni. Budite bez brige — Stirling PDF ne može i nikada neće pratiti sadržaj dokumenata s kojima radite."
+description = "Ovi kolačići pomažu nam razumjeti kako se naši alati koriste, kako bismo se mogli usredotočiti na izgradnju značajki koje naša zajednica najviše cijeni. Budite bez brige — PlexPDF ne može i nikada neće pratiti sadržaj dokumenata s kojima radite."
 title = "Analitika"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF koristi kolačiće i slične tehnologije za poboljšanje vašeg iskustva i razumijevanje kako se naši alati koriste. To nam pomaže poboljšati performanse, razviti značajke do kojih vam je stalo i pružati stalnu podršku našim korisnicima."
-2 = "Stirling PDF ne može — i nikada neće — pratiti ili pristupati sadržaju dokumenata koje koristite."
+1 = "PlexPDF koristi kolačiće i slične tehnologije za poboljšanje vašeg iskustva i razumijevanje kako se naši alati koriste. To nam pomaže poboljšati performanse, razviti značajke do kojih vam je stalo i pružati stalnu podršku našim korisnicima."
+2 = "PlexPDF ne može — i nikada neće — pratiti ili pristupati sadržaju dokumenata koje koristite."
 3 = "Vaša privatnost i povjerenje u središtu su svega što radimo."
 
 [cookieBanner.preferencesModal.necessary]
@@ -2754,7 +2754,7 @@ unexpectedError = "Došlo je do pogreške pri obradi datoteke. Pokušajte ponovn
 [defaultApp]
 description = "To možete kasnije promijeniti u postavkama sustava."
 dismiss = "Odbaci"
-message = "Želite li postaviti Stirling PDF kao zadani PDF uređivač?"
+message = "Želite li postaviti PlexPDF kao zadani PDF uređivač?"
 notNow = "Ne sada"
 setDefault = "Postavi kao zadano"
 title = "Postavi kao zadanu PDF aplikaciju"
@@ -2764,15 +2764,15 @@ message = "Nije uspjelo postaviti zadanu aplikaciju za PDF"
 title = "Pogreška"
 
 [defaultApp.prompt]
-message = "Postavite Stirling PDF kao zadanu aplikaciju za otvaranje PDF datoteka."
+message = "Postavite PlexPDF kao zadanu aplikaciju za otvaranje PDF datoteka."
 title = "Postavi kao zadani PDF uređivač"
 
 [defaultApp.settingsOpened]
-message = "Odaberite Stirling PDF u postavkama sustava"
+message = "Odaberite PlexPDF u postavkama sustava"
 title = "Otvorene postavke"
 
 [defaultApp.success]
-message = "Stirling PDF je sada vaš zadani PDF uređivač"
+message = "PlexPDF je sada vaš zadani PDF uređivač"
 title = "Zadana aplikacija postavljena"
 
 [editTableOfContents]
@@ -2909,9 +2909,9 @@ visitsTooltip = "Posjete: {0} ({1}% od ukupnog broja)"
 
 [enterpriseEdition]
 button = "Ažurirajte na Pro"
-ssoAdvert = "Tražite još funkcija za upravljanje korisnicima? Razmotrite Stirling PDF Pro"
+ssoAdvert = "Tražite još funkcija za upravljanje korisnicima? Razmotrite PlexPDF Pro"
 warning = "Ova funkcija je dostupna samo pro korisnicima."
-yamlAdvert = "Stirling PDF Pro podrzava konfiguiracione datoteke u formati YAML i druga osobine SSO."
+yamlAdvert = "PlexPDF Pro podrzava konfiguiracione datoteke u formati YAML i druga osobine SSO."
 
 [error]
 _value = "Greška"
@@ -3287,7 +3287,7 @@ multimedia = "Multimedija"
 dismiss = "Odbaci baner"
 message = "Izradite besplatan račun kako biste spremili svoj rad, pristupili više značajki i podržali projekt."
 signUp = "Registrirajte se besplatno"
-title = "Koristite Stirling PDF kao gost!"
+title = "Koristite PlexPDF kao gost!"
 
 [home]
 alphabetical = "Abecedno"
@@ -3461,7 +3461,7 @@ tags = "spoji,pridruži,ujedini"
 title = "Spajanje"
 
 [home.mobile]
-brandAlt = "Stirling PDF logotip"
+brandAlt = "PlexPDF logotip"
 openFiles = "Otvori datoteke"
 swipeHint = "Povucite lijevo ili desno za promjenu prikaza"
 tools = "Alati"
@@ -3496,7 +3496,7 @@ tags = "organiziraj,preuredi,promijeni redoslijed"
 title = "Organiziranje"
 
 [home.pdfTextEditor]
-desc = "Pregledajte i uredite Stirling PDF JSON izvoze s grupnim uređivanjem teksta i ponovnim generiranjem PDF-a"
+desc = "Pregledajte i uredite PlexPDF JSON izvoze s grupnim uređivanjem teksta i ponovnim generiranjem PDF-a"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDF uređivač teksta"
 
@@ -3697,7 +3697,7 @@ passwordTooShort = "Lozinka mora imati najmanje 6 znakova"
 signIn = "Prijavite se"
 validating = "Provjera poziva..."
 validationError = "Provjera poveznice za poziv nije uspjela"
-welcome = "Dobrodošli u Stirling PDF"
+welcome = "Dobrodošli u PlexPDF"
 welcomeSubtitle = "Dovršite postavljanje računa kako biste započeli"
 welcomeTitle = "Pozvani ste!"
 
@@ -3804,7 +3804,7 @@ subtitle = "S više od desetak alata za redaktiranje, potpisivanje, čitanje i o
 title = "Uredite PDF-ove kako biste prikazali/zaštitili željene informacije"
 
 [login.slides.overview]
-alt = "Pregled Stirling PDF-a"
+alt = "Pregled PlexPDF-a"
 subtitle = "Cloud paket s fokusom na privatnost za PDF-ove koji omogućuje pretvaranje, potpisivanje, redaktiranje i upravljanje dokumentima, uz 50+ drugih moćnih alata."
 title = "Sve za PDF na jednom mjestu."
 
@@ -3968,7 +3968,7 @@ message = "Autentikacija nije bila uspješna. Možete zatvoriti ovaj prozor i po
 title = "Autentikacija nije uspjela"
 
 [oauth.success]
-message = "Možete zatvoriti ovaj prozor i vratiti se u Stirling PDF."
+message = "Možete zatvoriti ovaj prozor i vratiti se u PlexPDF."
 title = "Autentikacija uspješna"
 
 [ocr]
@@ -4092,7 +4092,7 @@ runButton = "Kada je alat konfiguriran, ovim gumbom možete pokrenuti alat na sv
 selectControls = "<strong>Desni panel</strong> sadrži gumbe za brzo odabiranje/poništavanje odabira svih aktivnih PDF-ova, kao i gumbe za promjenu teme ili jezika aplikacije."
 selectCropTool = "Odaberimo alat <strong>Obrezivanje</strong> kako bismo pokazali kako koristiti jedan od alata."
 startTour = "Započni obilazak"
-startTourDescription = "Krenite u vođeni obilazak ključnih značajki alata Stirling PDF"
+startTourDescription = "Krenite u vođeni obilazak ključnih značajki alata PlexPDF"
 toolInterface = "Ovo je sučelje alata <strong>Obrezivanje</strong>. Kao što vidite, nema mnogo toga jer još nismo dodali PDF datoteke s kojima bismo radili."
 viewer = "<strong>Preglednik</strong> vam omogućuje čitanje i komentiranje PDF-ova."
 viewSwitcher = "Upotrijebite ove kontrole kako biste odabrali način prikaza svojih PDF-ova."
@@ -4132,7 +4132,7 @@ skip = "Preskoči zasad"
 upgrade = "Nadogradi odmah →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 dolazi s desecima alata i osvježenim izgledom. Uzmite kratki obilazak da vidite što se promijenilo i gdje pronaći potrebne značajke."
+body = "PlexPDF V2 dolazi s desecima alata i osvježenim izgledom. Uzmite kratki obilazak da vidite što se promijenilo i gdje pronaći potrebne značajke."
 title = "Pregled obilaska"
 
 [onboarding.welcomeModal]
@@ -4141,10 +4141,10 @@ dontShowAgain = "Ne prikazuj ponovno"
 helpHint = "Ovaj obilazak uvijek možete pokrenuti kasnije putem gumba <strong>Pomoć</strong> u donjem lijevom kutu."
 maybeLater = "Možda kasnije"
 startTour = "Započni obilazak"
-title = "Dobrodošli u Stirling PDF!"
+title = "Dobrodošli u PlexPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF je sada spreman za timove svih veličina. Ovo ažuriranje donosi novi izgled, moćne nove administratorske mogućnosti i našu najtraženiju značajku - <strong>Uredi tekst</strong>."
+body = "PlexPDF je sada spreman za timove svih veličina. Ovo ažuriranje donosi novi izgled, moćne nove administratorske mogućnosti i našu najtraženiju značajku - <strong>Uredi tekst</strong>."
 title = "Dobrodošli u Stirling"
 
 [onboarding.whatsNew]
@@ -4880,7 +4880,7 @@ included = "Uključeno"
 name = "Besplatno"
 
 [plan.licenseWarning]
-body = "Imate {{total}} korisnika, ali besplatni sloj podržava samo {{limit}} po poslužitelju. Nadogradite kako bi Stirling PDF radio bez problema."
+body = "Imate {{total}} korisnika, ali besplatni sloj podržava samo {{limit}} po poslužitelju. Nadogradite kako bi PlexPDF radio bez problema."
 cta = "Pogledaj planove"
 overLimit = "više od {{limit}}"
 title = "Dosegnuto ograničenje besplatne self-hosted verzije"
@@ -5577,7 +5577,7 @@ autoUnzipFileLimitDescription = "Maksimalan broj datoteka za izdvajanje iz ZIP-a
 autoUnzipFileLimitTooltip = "Raspakiraj samo ako ZIP sadrži ovoliko ili manje datoteka. Postavite više za izdvajanje većih ZIP-ova."
 autoUnzipTooltip = "Automatski izdvoji ZIP datoteke vraćene iz API operacija. Isključite da biste zadržali ZIP datoteke netaknute. Ovo ne utječe na automatizirane tijekove rada."
 defaultPdfEditor = "Zadani PDF uređivač"
-defaultPdfEditorActive = "Stirling PDF je vaš zadani PDF uređivač"
+defaultPdfEditorActive = "PlexPDF je vaš zadani PDF uređivač"
 defaultPdfEditorChecking = "Provjera..."
 defaultPdfEditorInactive = "Druga je aplikacija postavljena kao zadana"
 defaultPdfEditorSet = "Već je zadano"
@@ -5690,13 +5690,13 @@ teams = "Timovi"
 title = "Radni prostor"
 
 [setup]
-description = "Započnite tako da odaberete kako želite koristiti Stirling PDF"
-welcome = "Dobrodošli u Stirling PDF"
+description = "Započnite tako da odaberete kako želite koristiti PlexPDF"
+welcome = "Dobrodošli u PlexPDF"
 
 [setup.login]
 connectingTo = "Povezivanje na:"
 hideInstructions = "Sakrij upute"
-instructions = "Da biste omogućili prijavu na svom Stirling PDF poslužitelju:"
+instructions = "Da biste omogućili prijavu na svom PlexPDF poslužitelju:"
 instructionsEnvVar = "Postavite varijablu okruženja:"
 instructionsOrYml = "Ili u settings.yml:"
 instructionsRestart = "Zatim ponovno pokrenite poslužitelj kako bi promjene stupile na snagu."
@@ -5733,7 +5733,7 @@ description = "Prijavite se svojim Stirling računom"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "Povežite se s vlastitim Stirling PDF poslužiteljem"
+description = "Povežite se s vlastitim PlexPDF poslužiteljem"
 title = "Self-hosted poslužitelj"
 
 [setup.saas]
@@ -5746,7 +5746,7 @@ subtitle = "Unesite vjerodajnice poslužitelja"
 title = "Prijavite se na poslužitelj"
 
 [setup.server]
-subtitle = "Unesite URL svog self-hosted Stirling PDF poslužitelja"
+subtitle = "Unesite URL svog self-hosted PlexPDF poslužitelja"
 testing = "Testiranje veze..."
 title = "Povežite se s poslužiteljem"
 useLast = "Last used server: {{serverUrl}}"
@@ -5766,11 +5766,11 @@ step3 = "Ponovno pokrenite poslužitelj"
 title = "Prijava nije omogućena"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "PlexPDF SaaS"
 selfhosted = "Self-hosted poslužitelj"
 
 [setup.server.url]
-description = "Unesite puni URL svog self-hosted Stirling PDF poslužitelja"
+description = "Unesite puni URL svog self-hosted PlexPDF poslužitelja"
 label = "URL poslužitelja"
 
 [setup.step1]
@@ -5955,7 +5955,7 @@ passwordsDoNotMatch = "Lozinke se ne podudaraju"
 passwordTooShort = "Lozinka mora imati najmanje 6 znakova"
 pleaseFillAllFields = "Ispunite sva polja"
 signUp = "Registrirajte se"
-subtitle = "Pridružite se Stirling PDF-u kako biste započeli"
+subtitle = "Pridružite se PlexPDF-u kako biste započeli"
 title = "Stvorite račun"
 unexpectedError = "Neočekivana pogreška: {{message}}"
 useEmailInstead = "Umjesto toga koristite e-poštu"
@@ -6204,28 +6204,28 @@ trialing = "Probno razdoblje"
 
 [survey]
 button = "Izvrsi upitnicu"
-changes = "Stirling-PDF je promenjen od poslednje upitnice! Za više informacija, proverite naš blog ovdje:"
+changes = "PlexPDF je promenjen od poslednje upitnice! Za više informacija, proverite naš blog ovdje:"
 changes2 = "S ovim promenama dobivamo platnu podršku i financiranje poslovnim aktivnostima"
-description = "Stirling-PDF nema praćenje pa želimo svesnost korisnika da bi poboljšali Stirling-PDF!"
+description = "PlexPDF nema praćenje pa želimo svesnost korisnika da bi poboljšali PlexPDF!"
 disabled = "(Upitnica popup će biti onemogućena u sljedećim ažuracanjima aliće se nalaziti na dnu stranice)"
 dontShowAgain = "Ne prikazujući ponovo"
 nav = "Upitnica"
 please = "Please consider taking our survey!"
-title = "Stirling-PDF Upitnica"
+title = "PlexPDF Upitnica"
 
 [survey.meeting]
-1 = "Ako koristite Stirling PDF na poslu, voljeli bismo razgovarati s vama. Nudimo sesije tehničke podrške u zamjenu za 15-minutnu sesiju upoznavanja korisnika."
+1 = "Ako koristite PlexPDF na poslu, voljeli bismo razgovarati s vama. Nudimo sesije tehničke podrške u zamjenu za 15-minutnu sesiju upoznavanja korisnika."
 2 = "Ovo je prilika da:"
 3 = "Dobijete pomoć oko implementacije, integracija ili otklanjanja poteškoća"
 4 = "Pružite izravne povratne informacije o performansama, rubnim slučajevima i nedostacima funkcionalnosti"
-5 = "Pomognete nam unaprijediti Stirling PDF za stvarnu upotrebu u poduzećima"
+5 = "Pomognete nam unaprijediti PlexPDF za stvarnu upotrebu u poduzećima"
 6 = "Ako ste zainteresirani, možete izravno rezervirati termin s našim timom. (samo na engleskom)"
-7 = "Veselimo se analiziranju vaših slučajeva korištenja i daljnjem poboljšanju Stirling PDF-a!"
+7 = "Veselimo se analiziranju vaših slučajeva korištenja i daljnjem poboljšanju PlexPDF-a!"
 button = "Zakažite sastanak"
 notInterested = "Niste tvrtka i/ili niste zainteresirani za sastanak?"
 
 [swagger]
-desc = "Pregledajte i testirajte Stirling PDF API krajnje točke"
+desc = "Pregledajte i testirajte PlexPDF API krajnje točke"
 header = "API dokumentacija"
 tags = "api,documentation,swagger,endpoints,development"
 title = "API dokumentacija"
@@ -6257,7 +6257,7 @@ unfavorite = "Ukloni iz omiljenih"
 [toolPanel.modePrompt]
 chooseFullscreen = "Koristi način cijelog zaslona"
 chooseSidebar = "Koristi način bočne trake"
-description = "Pregledajte oba izgleda i odlučite kako želite istraživati Stirling PDF alate."
+description = "Pregledajte oba izgleda i odlučite kako želite istraživati PlexPDF alate."
 dismiss = "Možda kasnije"
 fullscreenDescription = "Pregledajte svaki alat u katalogu koji prekriva radni prostor dok ne odaberete jedan."
 fullscreenTitle = "Način cijelog zaslona - (zastarjelo)"
@@ -6351,7 +6351,7 @@ attentionBody = "Vaš se administrator treba prijaviti za više informacija. Odm
 attentionBodyAdmin = "Pregledajte zahtjeve licence kako bi ovaj poslužitelj bio usklađen."
 attentionTitle = "Ovom poslužitelju treba pažnja administratora"
 dismiss = "Odbaci banner"
-message = "Iskoristite Stirling PDF uz neograničene korisnike i napredne značajke"
+message = "Iskoristite PlexPDF uz neograničene korisnike i napredne značajke"
 seeInfo = "Prikaži informacije"
 title = "Nadogradite na plan Server"
 upgradeButton = "Nadogradi odmah"
@@ -6469,7 +6469,7 @@ continued = "Nastavak"
 downloads = "Preuzimanja"
 entryLabel = "Sažetak potpisa"
 filesEvaluated = "{{count}} datoteka obrađeno"
-footer = "Provjereno putem Stirling PDF"
+footer = "Provjereno putem PlexPDF"
 generatedAt = "Generirano"
 noPdf = "PDF izvješće bit će dostupno nakon uspješne provjere."
 page = "Stranica"

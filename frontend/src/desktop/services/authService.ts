@@ -343,7 +343,7 @@ export class AuthService {
         // 404 - endpoint not found
         else if (errMsg.includes('404') || errMsg.includes('not found')) {
           this.setAuthStatus('unauthenticated', null);
-          throw new Error('Login endpoint not found. Please ensure you are connecting to a valid Stirling PDF server.');
+          throw new Error('Login endpoint not found. Please ensure you are connecting to a valid PlexPDF server.');
         }
         // 403 - security disabled
         else if (errMsg.includes('403') || errMsg.includes('forbidden')) {

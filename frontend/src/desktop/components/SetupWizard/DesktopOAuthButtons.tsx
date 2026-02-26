@@ -47,7 +47,7 @@ export const DesktopOAuthButtons: React.FC<DesktopOAuthButtonsProps> = ({
       // Build callback page HTML with translations and dark mode support
       const successHtml = buildOAuthCallbackHtml({
         title: t('oauth.success.title', 'Authentication Successful'),
-        message: t('oauth.success.message', 'You can close this window and return to Stirling PDF.'),
+        message: t('oauth.success.message', 'You can close this window and return to PlexPDF.'),
         isError: false,
       });
 

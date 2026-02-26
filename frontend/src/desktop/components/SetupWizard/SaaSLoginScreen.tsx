@@ -57,7 +57,7 @@ export const SaaSLoginScreen: React.FC<SaaSLoginScreenProps> = ({
 
   return (
     <>
-      <LoginHeader title={t('setup.saas.title', 'Sign in to Stirling Cloud')} />
+      <LoginHeader title={t('setup.saas.title', 'Sign in to PlexPDF Cloud')} />
 
       <ErrorMessage error={displayError} />
 

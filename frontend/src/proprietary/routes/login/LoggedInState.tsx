@@ -39,7 +39,7 @@ export default function LoggedInState() {
           <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
             <img
               src={logoPath}
-              alt="Stirling PDF Logo"
+              alt="PlexPDF Logo"
               style={{ width: '64px', height: '64px', objectFit: 'contain' }}
             />
           </div>

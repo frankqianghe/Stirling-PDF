@@ -52,7 +52,7 @@ export const startReportPage = ({
     color: colorPalette.textMuted,
   });
 
-  page.drawText(t('validateSignature.report.footer', 'Validated via Stirling PDF'), {
+  page.drawText(t('validateSignature.report.footer', 'Validated via PlexPDF'), {
     x: marginX,
     y: marginY / 2,
     size: 9,

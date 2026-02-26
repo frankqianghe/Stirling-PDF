@@ -38,9 +38,9 @@ export default function Signup() {
 
   // Set document meta
   useDocumentMeta({
-    title: `${t('signup.title', 'Create an account')} - Stirling PDF`,
+    title: `${t('signup.title', 'Create an account')} - PlexPDF`,
     description: t('app.description', 'The Free Adobe Acrobat alternative (10M+ Downloads)'),
-    ogTitle: `${t('signup.title', 'Create an account')} - Stirling PDF`,
+    ogTitle: `${t('signup.title', 'Create an account')} - PlexPDF`,
     ogDescription: t('app.description', 'The Free Adobe Acrobat alternative (10M+ Downloads)'),
     ogImage: `${baseUrl}/og_images/home.png`,
     ogUrl: `${window.location.origin}${window.location.pathname}`
@@ -79,7 +79,7 @@ export default function Signup() {
 
   return (
     <AuthLayout>
-      <LoginHeader title={t('signup.title', 'Create an account')} subtitle={t('signup.subtitle', 'Join Stirling PDF')} />
+      <LoginHeader title={t('signup.title', 'Create an account')} subtitle={t('signup.subtitle', 'Join PlexPDF')} />
 
       <ErrorMessage error={error} />
 

@@ -587,7 +587,7 @@ description = "Konfigurera lagring och rensning av temporära filer"
 label = "Hantering av temporära filer"
 
 [admin.settings.advanced.tempFileManagement.baseTmpDir]
-description = "Baskatalog för temporära filer (lämna tomt för standard: java.io.tmpdir/stirling-pdf)"
+description = "Baskatalog för temporära filer (lämna tomt för standard: java.io.tmpdir/PlexPDF)"
 label = "Baskatalog för temporära filer"
 
 [admin.settings.advanced.tempFileManagement.cleanupIntervalMinutes]
@@ -866,11 +866,11 @@ description = "Konfigurera valfria funktioner och funktionalitet."
 title = "Funktioner"
 
 [admin.settings.features.serverCertificate]
-description = "Konfigurera servergenerering av certifikat för funktionen \"Sign with Stirling-PDF\""
+description = "Konfigurera servergenerering av certifikat för funktionen \"Sign with PlexPDF\""
 label = "Servercertifikat"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Aktivera servercertifikat för alternativet \"Sign with Stirling-PDF\""
+description = "Aktivera servercertifikat för alternativet \"Sign with PlexPDF\""
 label = "Aktivera servercertifikat"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1006,7 +1006,7 @@ description = "URL eller filnamn till cookiepolicy"
 label = "Cookiepolicy"
 
 [admin.settings.legal.disclaimer]
-message = "Genom att anpassa dessa juridiska dokument tar du fullt ansvar för att säkerställa efterlevnad av alla tillämpliga lagar och regler, inklusive men inte begränsat till GDPR och andra EU-krav för dataskydd. Ändra endast dessa inställningar om: (1) du driver en personlig/privat instans, (2) du befinner dig utanför EU:s jurisdiktion och förstår dina lokala rättsliga skyldigheter, eller (3) du har erhållit korrekt juridisk rådgivning och accepterar ensamt ansvar för all användardata och rättslig efterlevnad. Stirling-PDF och dess utvecklare tar inget ansvar för dina rättsliga skyldigheter."
+message = "Genom att anpassa dessa juridiska dokument tar du fullt ansvar för att säkerställa efterlevnad av alla tillämpliga lagar och regler, inklusive men inte begränsat till GDPR och andra EU-krav för dataskydd. Ändra endast dessa inställningar om: (1) du driver en personlig/privat instans, (2) du befinner dig utanför EU:s jurisdiktion och förstår dina lokala rättsliga skyldigheter, eller (3) du har erhållit korrekt juridisk rådgivning och accepterar ensamt ansvar för all användardata och rättslig efterlevnad. PlexPDF och dess utvecklare tar inget ansvar för dina rättsliga skyldigheter."
 title = "Varning om juridiskt ansvar"
 
 [admin.settings.legal.impressum]
@@ -1326,7 +1326,7 @@ description = "När aktiverat kan endast listade användar-ID:n använda boten."
 label = "Tillåt specifika användar-ID:n"
 
 [admin.settings.telegram.enabled]
-description = "Låt användare interagera med Stirling PDF via din konfigurerade Telegram-bot."
+description = "Låt användare interagera med PlexPDF via din konfigurerade Telegram-bot."
 label = "Aktivera Telegram-bot"
 
 [admin.settings.telegram.feedback]
@@ -1403,7 +1403,7 @@ settingsOverview = "Detta är <strong>Inställningspanelen</strong>. Administrat
 systemCustomization = "Vi har omfattande sätt att anpassa gränssnittet: <strong>Systeminställningar</strong> låter dig ändra appnamn och språk, <strong>Funktioner</strong> möjliggör hantering av servercertifikat och <strong>Ändpunkter</strong> låter dig aktivera eller inaktivera specifika verktyg för dina användare."
 teamsAndUsers = "Hantera <strong>Team</strong> och enskilda användare här. Du kan bjuda in nya användare via e-post, delningsbara länkar eller skapa anpassade konton åt dem själv."
 welcome = "Välkommen till <strong>Admin-rundturen</strong>! Låt oss utforska de kraftfulla företagsfunktionerna och inställningarna som finns tillgängliga för systemadministratörer."
-wrapUp = "Det var admin-rundturen! Du har sett de företagsfunktioner som gör Stirling PDF till en kraftfull, anpassningsbar lösning för organisationer. Du kan nå denna rundtur när som helst från menyn <strong>Hjälp</strong>."
+wrapUp = "Det var admin-rundturen! Du har sett de företagsfunktioner som gör PlexPDF till en kraftfull, anpassningsbar lösning för organisationer. Du kan nå denna rundtur när som helst från menyn <strong>Hjälp</strong>."
 
 [adminUserSettings]
 actions = "Åtgärder"
@@ -1440,11 +1440,11 @@ webOnlyUser = "Endast webbanvändare"
 disable = "Avaktivera analys"
 enable = "Aktivera analys"
 learnMore = "Läs mer"
-paragraph1 = "Stirling PDF har inaktiverad analys för att hjälpa oss förbättra produkten. Vi spårar ingen personlig information eller filinnehåll."
-paragraph2 = "Var god aktivera analyser för att hjälpa Stirling-PDF att växa och tillåta oss att förstå våra användare bättre."
+paragraph1 = "PlexPDF har inaktiverad analys för att hjälpa oss förbättra produkten. Vi spårar ingen personlig information eller filinnehåll."
+paragraph2 = "Var god aktivera analyser för att hjälpa PlexPDF att växa och tillåta oss att förstå våra användare bättre."
 privacyAssurance = "Vi spårar inte någon personlig information eller innehållet i dina filer."
 settings = "Du kan ändra analysinställningarna i config/settings.yml-filen"
-title = "Vill du göra Stirling PDF bättre?"
+title = "Vill du göra PlexPDF bättre?"
 
 [annotation]
 applyChanges = "Verkställ ändringar"
@@ -1736,7 +1736,7 @@ tags = "pdf,dela,dokument,organisation"
 description = "Skriv ut, infoga, skanna, ladda upp och låt oss automatiskt separera dina dokument. Inget manuellt sorteringsarbete behövs."
 dividerDownload2 = "Ladda ner 'Auto-delningsavdelare (med instruktioner).pdf'"
 duplexMode = "Duplexläge (Fram- och baksideskanning)"
-formPrompt = "Skicka PDF som innehåller Stirling-PDF-sidavdelare:"
+formPrompt = "Skicka PDF som innehåller PlexPDF-sidavdelare:"
 header = "Auto-dela PDF"
 submit = "Skicka"
 tags = "QR-baserad,separera,skanna-segment,organisera"
@@ -1745,7 +1745,7 @@ title = "Auto-dela PDF"
 [autoSplitPDF.selectText]
 1 = "Skriv ut några avdelare från nedan (Svartvitt går bra)."
 2 = "Skanna alla dina dokument på en gång genom att infoga avdelaren mellan dem."
-3 = "Ladda upp den enda stora skannade PDF-filen och låt Stirling PDF hantera resten."
+3 = "Ladda upp den enda stora skannade PDF-filen och låt PlexPDF hantera resten."
 4 = "Avdelarsidor detekteras automatiskt och tas bort, vilket garanterar ett prydligt slutdokument."
 
 [backendHealth]
@@ -2045,7 +2045,7 @@ bullet1 = "Stöd för PEM, PKCS12, JKS och servercertifikatformat"
 bullet2 = "Alternativ att visa eller dölja signatur på PDF:en"
 bullet3 = "Lägg till anledning, plats och undertecknarens namn"
 bullet4 = "Välj vilken sida som synliga signaturer ska placeras på"
-bullet5 = "Använd servercertifikat för enkelt alternativ 'Sign with Stirling-PDF'"
+bullet5 = "Använd servercertifikat för enkelt alternativ 'Sign with PlexPDF'"
 text = "För att signera en PDF behöver du ett digitalt certifikat (som PEM, PKCS12 eller JKS). Du kan välja att göra signaturen synlig i dokumentet eller hålla den osynlig endast för säkerhet."
 title = "Lägga till signaturer"
 
@@ -2474,14 +2474,14 @@ upgradeButton = "Uppgradera konto"
 chartAriaLabel = "Kreditförbrukning: inkluderade {{includedUsed}} av {{includedTotal}}, köpta {{purchasedUsed}} av {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiera API-nyckel"
 description = "Din API-nyckel för att komma åt Stirlings svit av PDF-verktyg. Kopiera den till ditt projekt eller uppdatera för att generera en ny."
-docsDescription = "Läs mer om integration med Stirling PDF:"
+docsDescription = "Läs mer om integration med PlexPDF:"
 docsLink = "API-dokumentation"
 docsTitle = "API-dokumentation"
 generateError = "Vi kunde inte generera din API-nyckel."
 goToAccount = "Gå till konto"
 guestInfo = "Gästanvändare får inga API-nycklar. Skapa ett konto för att få en API-nyckel att använda i dina applikationer."
 includedCredits = "Inkluderade krediter"
-intro = "Använd din API-nyckel för att programmässigt komma åt Stirling PDFs bearbetningsfunktioner."
+intro = "Använd din API-nyckel för att programmässigt komma åt PlexPDFs bearbetningsfunktioner."
 label = "API-nyckel"
 lastApiUse = "Senaste API-användning"
 nextReset = "Nästa återställning"
@@ -2638,7 +2638,7 @@ showPreferencesBtn = "Hantera inställningar"
 title = "Hur vi använder cookies"
 
 [cookieBanner.popUp.description]
-1 = "Vi använder cookies och annan teknik för att få Stirling PDF att fungera bättre för dig—det hjälper oss att förbättra våra verktyg och fortsätta bygga funktioner du kommer att gilla."
+1 = "Vi använder cookies och annan teknik för att få PlexPDF att fungera bättre för dig—det hjälper oss att förbättra våra verktyg och fortsätta bygga funktioner du kommer att gilla."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -2651,12 +2651,12 @@ subtitle = "Användning av cookies"
 title = "Center för samtyckesinställningar"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Dessa cookies hjälper oss att förstå hur våra verktyg används, så att vi kan fokusera på att bygga de funktioner vår community värdesätter mest. Var lugn—Stirling PDF kan inte och kommer aldrig att spåra innehållet i de dokument du arbetar med."
+description = "Dessa cookies hjälper oss att förstå hur våra verktyg används, så att vi kan fokusera på att bygga de funktioner vår community värdesätter mest. Var lugn—PlexPDF kan inte och kommer aldrig att spåra innehållet i de dokument du arbetar med."
 title = "Analys"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF använder cookies och liknande teknik för att förbättra din upplevelse och förstå hur våra verktyg används. Detta hjälper oss att förbättra prestanda, utveckla de funktioner du bryr dig om och ge löpande stöd till våra användare."
-2 = "Stirling PDF kan inte—och kommer aldrig att—spåra eller få åtkomst till innehållet i de dokument du använder."
+1 = "PlexPDF använder cookies och liknande teknik för att förbättra din upplevelse och förstå hur våra verktyg används. Detta hjälper oss att förbättra prestanda, utveckla de funktioner du bryr dig om och ge löpande stöd till våra användare."
+2 = "PlexPDF kan inte—och kommer aldrig att—spåra eller få åtkomst till innehållet i de dokument du använder."
 3 = "Din integritet och ditt förtroende är kärnan i det vi gör."
 
 [cookieBanner.preferencesModal.necessary]
@@ -2754,7 +2754,7 @@ unexpectedError = "Det uppstod ett fel vid processering av filen. Vänligen för
 [defaultApp]
 description = "Du kan ändra detta senare i systeminställningarna."
 dismiss = "Stäng"
-message = "Vill du ange Stirling PDF som din standard-PDF-redigerare?"
+message = "Vill du ange PlexPDF som din standard-PDF-redigerare?"
 notNow = "Inte nu"
 setDefault = "Ange som standard"
 title = "Ange som standardapp för PDF"
@@ -2764,15 +2764,15 @@ message = "Det gick inte att ange standard-PDF-hanterare"
 title = "Fel"
 
 [defaultApp.prompt]
-message = "Gör Stirling PDF till din standardapp för att öppna PDF-filer."
+message = "Gör PlexPDF till din standardapp för att öppna PDF-filer."
 title = "Ange som standard-PDF-redigerare"
 
 [defaultApp.settingsOpened]
-message = "Välj Stirling PDF i systeminställningarna"
+message = "Välj PlexPDF i systeminställningarna"
 title = "Inställningar öppnade"
 
 [defaultApp.success]
-message = "Stirling PDF är nu din standard-PDF-redigerare"
+message = "PlexPDF är nu din standard-PDF-redigerare"
 title = "Standardapp angiven"
 
 [editTableOfContents]
@@ -2909,9 +2909,9 @@ visitsTooltip = "Besök: {0} ({1}% av totalt)"
 
 [enterpriseEdition]
 button = "Uppgradera till Pro"
-ssoAdvert = "Söker du fler funktioner för användarhantering? Spana in Stirling PDF Pro."
+ssoAdvert = "Söker du fler funktioner för användarhantering? Spana in PlexPDF Pro."
 warning = "Den här funktionen är endast tillgänglig för Pro-användare."
-yamlAdvert = "Stirling PDF Pro stöder YAML-konfigurationsfiler och andra SSO funktioner."
+yamlAdvert = "PlexPDF Pro stöder YAML-konfigurationsfiler och andra SSO funktioner."
 
 [error]
 _value = "Fel"
@@ -3287,7 +3287,7 @@ multimedia = "Multimedia"
 dismiss = "Stäng bannern"
 message = "Skapa ett gratis konto för att spara ditt arbete, få tillgång till fler funktioner och stödja projektet."
 signUp = "Registrera dig gratis"
-title = "Du använder Stirling PDF som gäst!"
+title = "Du använder PlexPDF som gäst!"
 
 [home]
 alphabetical = "Alfabetisk"
@@ -3461,7 +3461,7 @@ tags = "slå ihop,sammanfoga,förena"
 title = "Sammanfoga"
 
 [home.mobile]
-brandAlt = "Stirling PDF‑logotyp"
+brandAlt = "PlexPDF‑logotyp"
 openFiles = "Öppna filer"
 swipeHint = "Svep vänster eller höger för att byta vy"
 tools = "Verktyg"
@@ -3496,7 +3496,7 @@ tags = "organisera,arrangera,ordna om"
 title = "Ordna"
 
 [home.pdfTextEditor]
-desc = "Granska och redigera Stirling PDF JSON-exporter med grupperad textredigering och PDF-återgenerering"
+desc = "Granska och redigera PlexPDF JSON-exporter med grupperad textredigering och PDF-återgenerering"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDF-textredigerare"
 
@@ -3697,7 +3697,7 @@ passwordTooShort = "Lösenordet måste vara minst 6 tecken"
 signIn = "Logga in"
 validating = "Validerar inbjudan..."
 validationError = "Misslyckades med att validera inbjudningslänken"
-welcome = "Välkommen till Stirling PDF"
+welcome = "Välkommen till PlexPDF"
 welcomeSubtitle = "Slutför din kontoinställning för att komma igång"
 welcomeTitle = "Du har bjudits in!"
 
@@ -3804,7 +3804,7 @@ subtitle = "Med över ett dussin verktyg för att maskera, signera, läsa och ma
 title = "Redigera PDF-filer för att visa/säkra den information du vill"
 
 [login.slides.overview]
-alt = "Översikt över Stirling PDF"
+alt = "Översikt över PlexPDF"
 subtitle = "En integritetsfokuserad molnsuite för PDF som låter dig konvertera, signera, maskera och hantera dokument, plus 50+ andra kraftfulla verktyg."
 title = "Din allt-i-ett-lösning för alla dina PDF-behov."
 
@@ -3968,7 +3968,7 @@ message = "Autentiseringen lyckades inte. Du kan stänga detta fönster och för
 title = "Autentisering misslyckades"
 
 [oauth.success]
-message = "Du kan stänga detta fönster och återgå till Stirling PDF."
+message = "Du kan stänga detta fönster och återgå till PlexPDF."
 title = "Autentisering lyckades"
 
 [ocr]
@@ -4092,7 +4092,7 @@ runButton = "När verktyget har konfigurerats låter denna knapp dig köra verkt
 selectControls = "<strong>Högerspalten</strong> innehåller knappar för att snabbt markera/avmarkera alla dina aktiva PDF:er samt knappar för att byta appens tema eller språk."
 selectCropTool = "Låt oss välja verktyget <strong>Beskär</strong> för att visa hur man använder ett av verktygen."
 startTour = "Starta rundtur"
-startTourDescription = "Ta en guidad tur av Stirling PDFs nyckelfunktioner"
+startTourDescription = "Ta en guidad tur av PlexPDFs nyckelfunktioner"
 toolInterface = "Detta är gränssnittet för verktyget <strong>Beskär</strong>. Som du ser finns det inte mycket där eftersom vi ännu inte har lagt till några PDF-filer att arbeta med."
 viewer = "<strong>Visaren</strong> låter dig läsa och kommentera dina PDF:er."
 viewSwitcher = "Använd dessa kontroller för att välja hur du vill visa dina PDF:er."
@@ -4132,7 +4132,7 @@ skip = "Hoppa över nu"
 upgrade = "Uppgradera nu →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 levereras med dussintals verktyg och en uppdaterad layout. Ta en snabb tur för att se vad som ändrats och var du hittar de funktioner du behöver."
+body = "PlexPDF V2 levereras med dussintals verktyg och en uppdaterad layout. Ta en snabb tur för att se vad som ändrats och var du hittar de funktioner du behöver."
 title = "Översikt över rundtur"
 
 [onboarding.welcomeModal]
@@ -4141,10 +4141,10 @@ dontShowAgain = "Visa inte igen"
 helpHint = "Du kan alltid nå denna rundtur senare via knappen <strong>Hjälp</strong> längst ned till vänster."
 maybeLater = "Kanske senare"
 startTour = "Starta rundtur"
-title = "Välkommen till Stirling PDF!"
+title = "Välkommen till PlexPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF är nu redo för team i alla storlekar. Denna uppdatering innehåller en ny layout, kraftfulla nya adminfunktioner och vår mest efterfrågade funktion - <strong>Redigera text</strong>."
+body = "PlexPDF är nu redo för team i alla storlekar. Denna uppdatering innehåller en ny layout, kraftfulla nya adminfunktioner och vår mest efterfrågade funktion - <strong>Redigera text</strong>."
 title = "Välkommen till Stirling"
 
 [onboarding.whatsNew]
@@ -4880,7 +4880,7 @@ included = "Ingår"
 name = "Gratis"
 
 [plan.licenseWarning]
-body = "Du har {{total}} användare men gratisnivån stöder endast {{limit}} per server. Uppgradera för att hålla Stirling PDF igång smidigt."
+body = "Du har {{total}} användare men gratisnivån stöder endast {{limit}} per server. Uppgradera för att hålla PlexPDF igång smidigt."
 cta = "Se planer"
 overLimit = "mer än {{limit}}"
 title = "Gräns för gratis självhostad nådd"
@@ -5577,7 +5577,7 @@ autoUnzipFileLimitDescription = "Maximalt antal filer att extrahera från ZIP"
 autoUnzipFileLimitTooltip = "Packa bara upp om ZIP:en innehåller högst så här många filer. Ange högre för att extrahera större ZIP:ar."
 autoUnzipTooltip = "Packa automatiskt upp ZIP‑filer som returneras från API‑operationer. Inaktivera för att behålla ZIP‑filer intakta. Detta påverkar inte automationsarbetsflöden."
 defaultPdfEditor = "Standard-PDF-redigerare"
-defaultPdfEditorActive = "Stirling PDF är din standard-PDF-redigerare"
+defaultPdfEditorActive = "PlexPDF är din standard-PDF-redigerare"
 defaultPdfEditorChecking = "Kontrollerar..."
 defaultPdfEditorInactive = "En annan app är standard"
 defaultPdfEditorSet = "Redan standard"
@@ -5690,13 +5690,13 @@ teams = "Team"
 title = "Arbetsyta"
 
 [setup]
-description = "Kom igång genom att välja hur du vill använda Stirling PDF"
-welcome = "Välkommen till Stirling PDF"
+description = "Kom igång genom att välja hur du vill använda PlexPDF"
+welcome = "Välkommen till PlexPDF"
 
 [setup.login]
 connectingTo = "Ansluter till:"
 hideInstructions = "Dölj instruktioner"
-instructions = "För att aktivera inloggning på din Stirling PDF-server:"
+instructions = "För att aktivera inloggning på din PlexPDF-server:"
 instructionsEnvVar = "Ställ in miljövariabeln:"
 instructionsOrYml = "Eller i settings.yml:"
 instructionsRestart = "Starta sedan om servern för att ändringarna ska börja gälla."
@@ -5733,7 +5733,7 @@ description = "Logga in med ditt Stirling-konto"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "Anslut till din egen Stirling PDF-server"
+description = "Anslut till din egen PlexPDF-server"
 title = "Självhostad server"
 
 [setup.saas]
@@ -5766,11 +5766,11 @@ step3 = "Starta om servern"
 title = "Inloggning inte aktiverad"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "PlexPDF SaaS"
 selfhosted = "Självhostad server"
 
 [setup.server.url]
-description = "Ange den fullständiga URL:en till din självhostade Stirling PDF-server"
+description = "Ange den fullständiga URL:en till din självhostade PlexPDF-server"
 label = "Server-URL"
 
 [setup.step1]
@@ -5955,7 +5955,7 @@ passwordsDoNotMatch = "Lösenorden matchar inte"
 passwordTooShort = "Lösenordet måste vara minst 6 tecken långt"
 pleaseFillAllFields = "Fyll i alla fält"
 signUp = "Registrera dig"
-subtitle = "Gå med i Stirling PDF för att komma igång"
+subtitle = "Gå med i PlexPDF för att komma igång"
 title = "Skapa ett konto"
 unexpectedError = "Oväntat fel: {{message}}"
 useEmailInstead = "Använd e-post i stället"
@@ -6204,28 +6204,28 @@ trialing = "Testperiod"
 
 [survey]
 button = "Delta i undersökningen"
-changes = "Stirling-PDF har ändrats sedan den senaste undersökningen. Lär dig mer på vår blogg här:"
+changes = "PlexPDF har ändrats sedan den senaste undersökningen. Lär dig mer på vår blogg här:"
 changes2 = "Med dessa ändringar fås betalat företagsstöd och finansiering"
-description = "Stirling-PDF har ingen spårning så vi vill höra från våra användare för att förbättra Stirling-PDF!"
+description = "PlexPDF har ingen spårning så vi vill höra från våra användare för att förbättra PlexPDF!"
 disabled = "(Undersökningspopup kommer att inaktiveras i kommande uppdateringar men finns tillgänglig längst ner på sidan)"
 dontShowAgain = "Visa inte igen"
 nav = "Undersökning"
 please = "Vänligen överväg att delta i vår undersökning!"
-title = "Stirling-PDF-undersökning"
+title = "PlexPDF-undersökning"
 
 [survey.meeting]
-1 = "Om du använder Stirling PDF på jobbet skulle vi vilja prata med dig. Vi erbjuder teknisk support i utbyte mot ett 15 minuters samtal med dig som användare."
+1 = "Om du använder PlexPDF på jobbet skulle vi vilja prata med dig. Vi erbjuder teknisk support i utbyte mot ett 15 minuters samtal med dig som användare."
 2 = "Detta är en chans att:"
 3 = "Få hjälp med utrullning, integrationer eller felsökning"
 4 = "Ge direkt feedback på prestanda, sällan uppkomna problem och verktyg som saknas."
-5 = "Hjälp oss refinera Stirling PDF för företagsanvändning"
+5 = "Hjälp oss refinera PlexPDF för företagsanvändning"
 6 = "Om du är intresserad kan du boka en tid med vårt team omgående. (Endast engelsktalande)"
-7 = "Ser fram emot att gräva ned oss i din användning och se till att Stirling PDF blir ännu bättre!"
+7 = "Ser fram emot att gräva ned oss i din användning och se till att PlexPDF blir ännu bättre!"
 button = "Boka möte"
 notInterested = "Inte ett företag och/eller intresserad i ett möte?"
 
 [swagger]
-desc = "Visa och testa Stirling PDF API-slutpunkter"
+desc = "Visa och testa PlexPDF API-slutpunkter"
 header = "API-dokumentation"
 tags = "api,dokumentation,swagger,ändpunkter,utveckling"
 title = "API-dokumentation"
@@ -6257,7 +6257,7 @@ unfavorite = "Ta bort från favoriter"
 [toolPanel.modePrompt]
 chooseFullscreen = "Använd helskärmsläge"
 chooseSidebar = "Använd sidopanelläge"
-description = "Förhandsgranska båda layouterna och bestäm hur du vill utforska Stirling PDF‑verktygen."
+description = "Förhandsgranska båda layouterna och bestäm hur du vill utforska PlexPDF‑verktygen."
 dismiss = "Kanske senare"
 fullscreenDescription = "Bläddra i alla verktyg i en katalog som täcker arbetsytan tills du väljer ett."
 fullscreenTitle = "Helskärmsläge – (äldre)"
@@ -6351,7 +6351,7 @@ attentionBody = "Din admin behöver logga in för att se mer info. Kontakta dem 
 attentionBodyAdmin = "Gå igenom licenskraven för att hålla denna server kompatibel."
 attentionTitle = "Denna server kräver adminåtgärd"
 dismiss = "Avvisa banderoll"
-message = "Få ut det mesta av Stirling PDF med obegränsade användare och avancerade funktioner"
+message = "Få ut det mesta av PlexPDF med obegränsade användare och avancerade funktioner"
 seeInfo = "Visa info"
 title = "Uppgradera till Server-planen"
 upgradeButton = "Uppgradera nu"
@@ -6469,7 +6469,7 @@ continued = "Fortsättning"
 downloads = "Nedladdningar"
 entryLabel = "Signatursammanfattning"
 filesEvaluated = "{{count}} filer utvärderade"
-footer = "Validerad via Stirling PDF"
+footer = "Validerad via PlexPDF"
 generatedAt = "Genererad"
 noPdf = "PDF-rapporten blir tillgänglig efter en lyckad validering."
 page = "Sida"

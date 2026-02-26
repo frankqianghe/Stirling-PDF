@@ -31,8 +31,8 @@ const AdminOverviewBody: React.FC<{ freeTierLimit: number; loginEnabled: boolean
     : 'onboarding.planOverview.adminBodyLoginDisabled';
 
   const defaultValue = loginEnabled
-    ? 'As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge.'
-    : 'Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge.';
+    ? 'As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use PlexPDF free of charge.'
+    : 'Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use PlexPDF free of charge.';
 
   return (
     <Trans

@@ -43,7 +43,7 @@ export default function AdminFeaturesSection() {
       const result: any = {
         serverCertificate: systemData.serverCertificate || {
           enabled: true,
-          organizationName: 'Stirling-PDF',
+          organizationName: 'PlexPDF',
           validity: 365,
           regenerateOnStartup: false
         }
@@ -132,14 +132,14 @@ export default function AdminFeaturesSection() {
           </Group>
 
           <Text size="xs" c="dimmed">
-            {t('admin.settings.features.serverCertificate.description', 'Configure server-side certificate generation for "Sign with Stirling-PDF" functionality')}
+            {t('admin.settings.features.serverCertificate.description', 'Configure server-side certificate generation for "Sign with PlexPDF" functionality')}
           </Text>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <Text fw={500} size="sm">{t('admin.settings.features.serverCertificate.enabled.label', 'Enable Server Certificate')}</Text>
               <Text size="xs" c="dimmed" mt={4}>
-                {t('admin.settings.features.serverCertificate.enabled.description', 'Enable server-side certificate for "Sign with Stirling-PDF" option')}
+                {t('admin.settings.features.serverCertificate.enabled.description', 'Enable server-side certificate for "Sign with PlexPDF" option')}
               </Text>
             </div>
             <Group gap="xs">
@@ -168,12 +168,12 @@ export default function AdminFeaturesSection() {
                 </Group>
               }
               description={t('admin.settings.features.serverCertificate.organizationName.description', 'Organization name for generated certificates')}
-              value={settings.serverCertificate?.organizationName || 'Stirling-PDF'}
+              value={settings.serverCertificate?.organizationName || 'PlexPDF'}
               onChange={(e) => setSettings({
                 ...settings,
                 serverCertificate: { ...settings.serverCertificate, organizationName: e.target.value }
               })}
-              placeholder="Stirling-PDF"
+              placeholder="PlexPDF"
               disabled={!loginEnabled}
             />
           </div>

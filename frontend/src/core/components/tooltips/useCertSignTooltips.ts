@@ -37,7 +37,7 @@ export const useCertSignTooltips = (): TooltipContent => {
           t("certSign.tooltip.signing.bullet2", "Option to show or hide signature on the PDF"),
           t("certSign.tooltip.signing.bullet3", "Add reason, location, and signer name"),
           t("certSign.tooltip.signing.bullet4", "Choose which page to place visible signatures"),
-          t("certSign.tooltip.signing.bullet5", "Use server certificate for simple 'Sign with Stirling-PDF' option")
+          t("certSign.tooltip.signing.bullet5", "Use server certificate for simple 'Sign with PlexPDF' option")
         ]
       }
     ]

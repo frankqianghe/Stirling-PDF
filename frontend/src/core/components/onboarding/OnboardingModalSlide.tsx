@@ -48,7 +48,7 @@ export default function OnboardingModalSlide({
       return (
         <div className={styles.heroIconsContainer}>
           <div className={styles.iconWrapper}>
-            <img src={`${BASE_PATH}/modern-logo/logo512.png`} alt="Stirling icon" className={styles.downloadIcon} />
+            <img src={`${BASE_PATH}/modern-logo/logo512.png`} alt="PlexPDF icon" className={styles.downloadIcon} />
           </div>
         </div>
       );
@@ -70,7 +70,7 @@ export default function OnboardingModalSlide({
         )}
         {slideDefinition.hero.type === 'diamond' && <DiamondOutlinedIcon sx={{ fontSize: 64, color: '#000000' }} />}
         {slideDefinition.hero.type === 'logo' && (
-          <img src={`${BASE_PATH}/branding/StirlingPDFLogoNoTextLightHC.svg`} alt="Stirling logo" />
+          <img src={`${BASE_PATH}/branding/StirlingPDFLogoNoTextLightHC.svg`} alt="PlexPDF logo" />
         )}
       </div>
     );

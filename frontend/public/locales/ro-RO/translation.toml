@@ -587,7 +587,7 @@ description = "Configurați stocarea fișierelor temporare și comportamentul de
 label = "Gestionarea fișierelor temporare"
 
 [admin.settings.advanced.tempFileManagement.baseTmpDir]
-description = "Directorul de bază pentru fișiere temporare (lăsați gol pentru implicit: java.io.tmpdir/stirling-pdf)"
+description = "Directorul de bază pentru fișiere temporare (lăsați gol pentru implicit: java.io.tmpdir/PlexPDF)"
 label = "Director temporar de bază"
 
 [admin.settings.advanced.tempFileManagement.cleanupIntervalMinutes]
@@ -866,11 +866,11 @@ description = "Configurați funcții opționale și funcționalități."
 title = "Funcții"
 
 [admin.settings.features.serverCertificate]
-description = "Configurați generarea certificatului pe server pentru funcția \"Sign with Stirling-PDF\""
+description = "Configurați generarea certificatului pe server pentru funcția \"Sign with PlexPDF\""
 label = "Certificat server"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Activează certificatul pe server pentru opțiunea \"Sign with Stirling-PDF\""
+description = "Activează certificatul pe server pentru opțiunea \"Sign with PlexPDF\""
 label = "Activează certificatul serverului"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1006,7 +1006,7 @@ description = "URL sau nume de fișier către politica de cookie-uri"
 label = "Politică cookie"
 
 [admin.settings.legal.disclaimer]
-message = "Prin personalizarea acestor documente legale, vă asumați întreaga responsabilitate pentru asigurarea conformității cu toate legile și reglementările aplicabile, inclusiv, dar fără a se limita la GDPR și alte cerințe de protecție a datelor din UE. Modificați aceste setări doar dacă: (1) operați o instanță personală/privată, (2) vă aflați în afara jurisdicției UE și înțelegeți obligațiile legale locale sau (3) ați obținut consultanță juridică adecvată și acceptați responsabilitatea exclusivă pentru toate datele utilizatorilor și conformitatea legală. Stirling-PDF și dezvoltatorii săi nu își asumă nicio răspundere pentru obligațiile dvs. legale."
+message = "Prin personalizarea acestor documente legale, vă asumați întreaga responsabilitate pentru asigurarea conformității cu toate legile și reglementările aplicabile, inclusiv, dar fără a se limita la GDPR și alte cerințe de protecție a datelor din UE. Modificați aceste setări doar dacă: (1) operați o instanță personală/privată, (2) vă aflați în afara jurisdicției UE și înțelegeți obligațiile legale locale sau (3) ați obținut consultanță juridică adecvată și acceptați responsabilitatea exclusivă pentru toate datele utilizatorilor și conformitatea legală. PlexPDF și dezvoltatorii săi nu își asumă nicio răspundere pentru obligațiile dvs. legale."
 title = "Avertisment privind responsabilitatea legală"
 
 [admin.settings.legal.impressum]
@@ -1326,7 +1326,7 @@ description = "Când este activat, doar ID-urile de utilizator listate pot folos
 label = "Permite ID-uri specifice de utilizator"
 
 [admin.settings.telegram.enabled]
-description = "Permite utilizatorilor să interacționeze cu Stirling PDF prin botul Telegram configurat."
+description = "Permite utilizatorilor să interacționeze cu PlexPDF prin botul Telegram configurat."
 label = "Activează botul Telegram"
 
 [admin.settings.telegram.feedback]
@@ -1403,7 +1403,7 @@ settingsOverview = "Acesta este <strong>Panoul de setări</strong>. Setările de
 systemCustomization = "Avem modalități extinse de a personaliza UI: <strong>Setările sistemului</strong> vă permit să schimbați numele aplicației și limbile, <strong>Funcții</strong> permite gestionarea certificatelor serverului, iar <strong>Puncte finale</strong> vă permite să activați sau să dezactivați instrumente specifice pentru utilizatorii dvs."
 teamsAndUsers = "Gestionați aici <strong>Echipe</strong> și utilizatori individuali. Puteți invita utilizatori noi prin email, linkuri partajabile sau le puteți crea conturi personalizate."
 welcome = "Bun venit la <strong>Turul Admin</strong>! Haideți să explorăm funcțiile enterprise și setările puternice disponibile administratorilor de sistem."
-wrapUp = "Acesta a fost turul admin! Ați văzut funcțiile enterprise care fac din Stirling PDF o soluție puternică și personalizabilă pentru organizații. Accesați acest tur oricând din meniul <strong>Ajutor</strong>."
+wrapUp = "Acesta a fost turul admin! Ați văzut funcțiile enterprise care fac din PlexPDF o soluție puternică și personalizabilă pentru organizații. Accesați acest tur oricând din meniul <strong>Ajutor</strong>."
 
 [adminUserSettings]
 actions = "Acțiuni"
@@ -1440,11 +1440,11 @@ webOnlyUser = "Utilizator Doar Web"
 disable = "Dezactivați analizele"
 enable = "Activați analizele"
 learnMore = "Aflați mai multe"
-paragraph1 = "Stirling PDF are analize opționale pentru a ne ajuta să îmbunătățim produsul. Nu urmărim nicio informație personală sau conținutul fișierelor."
-paragraph2 = "Vă rugăm să luați în considerare activarea analizelor pentru a ajuta Stirling-PDF să crească și pentru a ne permite să ne înțelegem mai bine utilizatorii."
+paragraph1 = "PlexPDF are analize opționale pentru a ne ajuta să îmbunătățim produsul. Nu urmărim nicio informație personală sau conținutul fișierelor."
+paragraph2 = "Vă rugăm să luați în considerare activarea analizelor pentru a ajuta PlexPDF să crească și pentru a ne permite să ne înțelegem mai bine utilizatorii."
 privacyAssurance = "Nu urmărim nicio informație personală și nici conținutul fișierelor tale."
 settings = "Puteți schimba setările pentru analize în fișierul config/settings.yml"
-title = "Vreți să faceți Stirling PDF mai bun?"
+title = "Vreți să faceți PlexPDF mai bun?"
 
 [annotation]
 applyChanges = "Aplică modificările"
@@ -1736,7 +1736,7 @@ tags = "pdf,împarte,document,organizare"
 description = "Tipărește, Inserează, Scanează, încarcă și lasă-ne să separăm automat documentele tale. Fără muncă manuală de sortare necesară."
 dividerDownload2 = "Descarcă 'Separator Auto Splitter (cu instrucțiuni).pdf'"
 duplexMode = "Mod Duplex (Scanare față-verso)"
-formPrompt = "Trimite PDF-ul conținând separatoarele de pagini Stirling-PDF:"
+formPrompt = "Trimite PDF-ul conținând separatoarele de pagini PlexPDF:"
 header = "Împarte Automat PDF"
 submit = "Trimite"
 tags = "bazat-pe-QR,separă,segment-scanat,organizează"
@@ -1745,7 +1745,7 @@ title = "Împarte Automat PDF"
 [autoSplitPDF.selectText]
 1 = "Tipărește câteva foi separatoare de mai jos (Alb-negru este suficient)."
 2 = "Scanează toate documentele tale o dată inserând foaia separatoare între ele."
-3 = "Încarcă fișierul PDF scanat mare și lasă Stirling PDF să se ocupe de rest."
+3 = "Încarcă fișierul PDF scanat mare și lasă PlexPDF să se ocupe de rest."
 4 = "Paginile separatoare sunt detectate automat și eliminate, garantând un document final ordonat."
 
 [backendHealth]
@@ -2045,7 +2045,7 @@ bullet1 = "Suportă formatele PEM, PKCS12, JKS și certificat de server"
 bullet2 = "Opțiune de afișare sau ascundere a semnăturii în PDF"
 bullet3 = "Adăugați motiv, locație și numele semnatarului"
 bullet4 = "Alegeți pagina pe care să plasați semnăturile vizibile"
-bullet5 = "Folosiți certificatul serverului pentru opțiunea simplă „Semnează cu Stirling-PDF”"
+bullet5 = "Folosiți certificatul serverului pentru opțiunea simplă „Semnează cu PlexPDF”"
 text = "Pentru a semna un PDF, aveți nevoie de un certificat digital (precum PEM, PKCS12 sau JKS). Puteți alege ca semnătura să fie vizibilă în document sau invizibilă doar pentru securitate."
 title = "Adăugarea semnăturilor"
 
@@ -2474,14 +2474,14 @@ upgradeButton = "Actualizați contul"
 chartAriaLabel = "Utilizare credite: incluse {{includedUsed}} din {{includedTotal}}, achiziționate {{purchasedUsed}} din {{purchasedTotal}}"
 copyKeyAriaLabel = "Copiați cheia API"
 description = "Cheia dvs. API pentru accesarea suitei de instrumente PDF Stirling. Copiați-o în proiectul dvs. sau reîmprospătați pentru a genera una nouă."
-docsDescription = "Aflați mai multe despre integrarea cu Stirling PDF:"
+docsDescription = "Aflați mai multe despre integrarea cu PlexPDF:"
 docsLink = "Documentație API"
 docsTitle = "Documentație API"
 generateError = "Nu am putut genera cheia API."
 goToAccount = "Mergeți la Cont"
 guestInfo = "Utilizatorii invitați nu primesc chei API. Creați un cont pentru a obține o cheie API pe care o puteți folosi în aplicațiile dvs."
 includedCredits = "Credite incluse"
-intro = "Folosiți cheia API pentru a accesa programatic capabilitățile de procesare ale Stirling PDF."
+intro = "Folosiți cheia API pentru a accesa programatic capabilitățile de procesare ale PlexPDF."
 label = "Cheie API"
 lastApiUse = "Ultima utilizare API"
 nextReset = "Resetare următoare"
@@ -2638,7 +2638,7 @@ showPreferencesBtn = "Gestionați preferințele"
 title = "Cum folosim cookie-urile"
 
 [cookieBanner.popUp.description]
-1 = "Folosim cookie-uri și alte tehnologii pentru a face Stirling PDF să funcționeze mai bine pentru dvs.—ajutându-ne să ne îmbunătățim instrumentele și să continuăm să dezvoltăm funcții pe placul dvs."
+1 = "Folosim cookie-uri și alte tehnologii pentru a face PlexPDF să funcționeze mai bine pentru dvs.—ajutându-ne să ne îmbunătățim instrumentele și să continuăm să dezvoltăm funcții pe placul dvs."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -2651,12 +2651,12 @@ subtitle = "Utilizarea cookie-urilor"
 title = "Centrul preferințelor de consimțământ"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Aceste cookie-uri ne ajută să înțelegem cum sunt folosite instrumentele noastre, astfel încât să ne concentrăm pe construirea funcțiilor pe care comunitatea noastră le apreciază cel mai mult. Stați liniștit—Stirling PDF nu poate și nu va urmări conținutul documentelor cu care lucrați."
+description = "Aceste cookie-uri ne ajută să înțelegem cum sunt folosite instrumentele noastre, astfel încât să ne concentrăm pe construirea funcțiilor pe care comunitatea noastră le apreciază cel mai mult. Stați liniștit—PlexPDF nu poate și nu va urmări conținutul documentelor cu care lucrați."
 title = "Analiză"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF folosește cookie-uri și tehnologii similare pentru a vă îmbunătăți experiența și a înțelege cum sunt folosite instrumentele noastre. Aceasta ne ajută să îmbunătățim performanța, să dezvoltăm funcțiile care vă interesează și să oferim suport constant utilizatorilor noștri."
-2 = "Stirling PDF nu poate—și nu va—urmări sau accesa conținutul documentelor pe care le utilizați."
+1 = "PlexPDF folosește cookie-uri și tehnologii similare pentru a vă îmbunătăți experiența și a înțelege cum sunt folosite instrumentele noastre. Aceasta ne ajută să îmbunătățim performanța, să dezvoltăm funcțiile care vă interesează și să oferim suport constant utilizatorilor noștri."
+2 = "PlexPDF nu poate—și nu va—urmări sau accesa conținutul documentelor pe care le utilizați."
 3 = "Confidențialitatea și încrederea dvs. sunt în centrul a tot ceea ce facem."
 
 [cookieBanner.preferencesModal.necessary]
@@ -2754,7 +2754,7 @@ unexpectedError = "A apărut o eroare la procesarea fișierului. Vă rugăm să 
 [defaultApp]
 description = "Poți schimba asta mai târziu din setările sistemului."
 dismiss = "Închide"
-message = "Vrei să setezi Stirling PDF ca editorul tău PDF implicit?"
+message = "Vrei să setezi PlexPDF ca editorul tău PDF implicit?"
 notNow = "Nu acum"
 setDefault = "Setează ca implicită"
 title = "Setează ca aplicație PDF implicită"
@@ -2764,15 +2764,15 @@ message = "Nu s-a putut seta gestionarul PDF implicit"
 title = "Eroare"
 
 [defaultApp.prompt]
-message = "Fă din Stirling PDF aplicația implicită pentru deschiderea fișierelor PDF."
+message = "Fă din PlexPDF aplicația implicită pentru deschiderea fișierelor PDF."
 title = "Setează ca editor PDF implicit"
 
 [defaultApp.settingsOpened]
-message = "Te rugăm să selectezi Stirling PDF în setările sistemului"
+message = "Te rugăm să selectezi PlexPDF în setările sistemului"
 title = "Setări deschise"
 
 [defaultApp.success]
-message = "Stirling PDF este acum editorul tău PDF implicit"
+message = "PlexPDF este acum editorul tău PDF implicit"
 title = "Aplicație implicită setată"
 
 [editTableOfContents]
@@ -2909,9 +2909,9 @@ visitsTooltip = "Vizite: {0} ({1}% din total)"
 
 [enterpriseEdition]
 button = "Faceți upgrade la Pro"
-ssoAdvert = "Căutați mai multe funcții de gestionare a utilizatorilor? Descoperiți Stirling PDF Pro"
+ssoAdvert = "Căutați mai multe funcții de gestionare a utilizatorilor? Descoperiți PlexPDF Pro"
 warning = "Această funcție este disponibilă doar pentru utilizatorii Pro."
-yamlAdvert = "Stirling PDF Pro acceptă fișiere de configurare YAML și alte funcții SSO."
+yamlAdvert = "PlexPDF Pro acceptă fișiere de configurare YAML și alte funcții SSO."
 
 [error]
 _value = "Eroare"
@@ -3287,7 +3287,7 @@ multimedia = "Multimedia"
 dismiss = "Închideți bannerul"
 message = "Creați un cont gratuit pentru a vă salva munca, a accesa mai multe funcții și a sprijini proiectul."
 signUp = "Înscriere gratuită"
-title = "Folosiți Stirling PDF ca invitat!"
+title = "Folosiți PlexPDF ca invitat!"
 
 [home]
 alphabetical = "Alfabetic"
@@ -3461,7 +3461,7 @@ tags = "combina,uni,alătura"
 title = "Unifică"
 
 [home.mobile]
-brandAlt = "Logo Stirling PDF"
+brandAlt = "Logo PlexPDF"
 openFiles = "Deschideți fișiere"
 swipeHint = "Glisați la stânga sau la dreapta pentru a schimba vizualizările"
 tools = "Instrumente"
@@ -3496,7 +3496,7 @@ tags = "organizează,rearanjează,reordonează"
 title = "Organizează"
 
 [home.pdfTextEditor]
-desc = "Revizuiește și editează exporturile JSON Stirling PDF cu editare de text grupată și regenerare PDF"
+desc = "Revizuiește și editează exporturile JSON PlexPDF cu editare de text grupată și regenerare PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "Editor text PDF"
 
@@ -3697,7 +3697,7 @@ passwordTooShort = "Parola trebuie să aibă cel puțin 6 caractere"
 signIn = "Autentificare"
 validating = "Se validează invitația..."
 validationError = "Validarea linkului de invitație a eșuat"
-welcome = "Bun venit la Stirling PDF"
+welcome = "Bun venit la PlexPDF"
 welcomeSubtitle = "Finalizați configurarea contului pentru a începe"
 welcomeTitle = "Ați fost invitat!"
 
@@ -3804,7 +3804,7 @@ subtitle = "Cu peste o duzină de instrumente pentru a redacta, semna, citi și 
 title = "Editați PDF-uri pentru a afișa/proteja informațiile dorite"
 
 [login.slides.overview]
-alt = "Prezentare generală Stirling PDF"
+alt = "Prezentare generală PlexPDF"
 subtitle = "O suită cloud axată pe confidențialitate pentru PDF-uri, care vă permite să convertiți, semnați, redactați și gestionați documente, plus peste 50 de alte instrumente puternice."
 title = "Un centru unic pentru toate nevoile PDF."
 
@@ -3968,7 +3968,7 @@ message = "Autentificarea nu a reușit. Puteți închide această fereastră și
 title = "Autentificare eșuată"
 
 [oauth.success]
-message = "Puteți închide această fereastră și reveni la Stirling PDF."
+message = "Puteți închide această fereastră și reveni la PlexPDF."
 title = "Autentificare reușită"
 
 [ocr]
@@ -4092,7 +4092,7 @@ runButton = "După ce instrumentul a fost configurat, acest buton vă permite s�
 selectControls = "<strong>Panoul din dreapta</strong> conține butoane pentru a selecta/deselecta rapid toate PDF-urile active, precum și butoane pentru a schimba tema sau limba aplicației."
 selectCropTool = "Să selectăm instrumentul <strong>Decupare</strong> pentru a demonstra cum se utilizează unul dintre instrumente."
 startTour = "Porniți turul"
-startTourDescription = "Faceți un tur ghidat al funcțiilor esențiale Stirling PDF"
+startTourDescription = "Faceți un tur ghidat al funcțiilor esențiale PlexPDF"
 toolInterface = "Aceasta este interfața instrumentului <strong>Decupare</strong>. După cum vedeți, nu este prea mult acolo deoarece încă nu am adăugat fișiere PDF cu care să lucrăm."
 viewer = "<strong>Vizualizatorul</strong> vă permite să citiți și să adnotați PDF-urile."
 viewSwitcher = "Folosiți aceste controale pentru a selecta modul în care doriți să vizualizați PDF-urile."
@@ -4132,7 +4132,7 @@ skip = "Sari peste deocamdată"
 upgrade = "Fă upgrade acum →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 vine cu zeci de instrumente și un layout reîmprospătat. Faceți un tur rapid pentru a vedea ce s-a schimbat și unde găsiți funcțiile de care aveți nevoie."
+body = "PlexPDF V2 vine cu zeci de instrumente și un layout reîmprospătat. Faceți un tur rapid pentru a vedea ce s-a schimbat și unde găsiți funcțiile de care aveți nevoie."
 title = "Prezentarea turului"
 
 [onboarding.welcomeModal]
@@ -4141,10 +4141,10 @@ dontShowAgain = "Nu mai arăta"
 helpHint = "Puteți accesa oricând acest tur mai târziu din butonul <strong>Ajutor</strong> din stânga jos."
 maybeLater = "Poate mai târziu"
 startTour = "Porniți turul"
-title = "Bun venit la Stirling PDF!"
+title = "Bun venit la PlexPDF!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF este acum pregătit pentru echipe de orice dimensiune. Această actualizare include un nou aspect, capabilități puternice pentru admin și cea mai solicitată funcție - <strong>Edit Text</strong>."
+body = "PlexPDF este acum pregătit pentru echipe de orice dimensiune. Această actualizare include un nou aspect, capabilități puternice pentru admin și cea mai solicitată funcție - <strong>Edit Text</strong>."
 title = "Bun venit la Stirling"
 
 [onboarding.whatsNew]
@@ -4880,7 +4880,7 @@ included = "Inclus"
 name = "Gratuit"
 
 [plan.licenseWarning]
-body = "Ai {{total}} utilizatori, dar nivelul gratuit suportă doar {{limit}} per server. Fă upgrade pentru ca Stirling PDF să ruleze fără probleme."
+body = "Ai {{total}} utilizatori, dar nivelul gratuit suportă doar {{limit}} per server. Fă upgrade pentru ca PlexPDF să ruleze fără probleme."
 cta = "Vezi planuri"
 overLimit = "mai mult de {{limit}}"
 title = "Limită self-hosted gratuită atinsă"
@@ -5577,7 +5577,7 @@ autoUnzipFileLimitDescription = "Numărul maxim de fișiere de extras din ZIP"
 autoUnzipFileLimitTooltip = "Dezarhivați doar dacă ZIP-ul conține atâtea fișiere sau mai puține. Setați mai mare pentru a extrage ZIP-uri mai mari."
 autoUnzipTooltip = "Extrage automat fișierele ZIP returnate de operațiile API. Dezactivați pentru a păstra fișierele ZIP intacte. Aceasta nu afectează fluxurile de automatizare."
 defaultPdfEditor = "Editor PDF implicit"
-defaultPdfEditorActive = "Stirling PDF este editorul tău PDF implicit"
+defaultPdfEditorActive = "PlexPDF este editorul tău PDF implicit"
 defaultPdfEditorChecking = "Se verifică..."
 defaultPdfEditorInactive = "O altă aplicație este setată ca implicită"
 defaultPdfEditorSet = "Deja implicit"
@@ -5690,13 +5690,13 @@ teams = "Echipe"
 title = "Spațiu de lucru"
 
 [setup]
-description = "Începe alegând cum vrei să folosești Stirling PDF"
-welcome = "Bun venit la Stirling PDF"
+description = "Începe alegând cum vrei să folosești PlexPDF"
+welcome = "Bun venit la PlexPDF"
 
 [setup.login]
 connectingTo = "Conectare la:"
 hideInstructions = "Ascunde instrucțiunile"
-instructions = "Pentru a activa autentificarea pe serverul dvs. Stirling PDF:"
+instructions = "Pentru a activa autentificarea pe serverul dvs. PlexPDF:"
 instructionsEnvVar = "Setați variabila de mediu:"
 instructionsOrYml = "Sau în settings.yml:"
 instructionsRestart = "Apoi reporniți serverul pentru ca modificările să intre în vigoare."
@@ -5733,7 +5733,7 @@ description = "Autentifică-te cu contul tău Stirling"
 title = "Stirling Cloud"
 
 [setup.mode.selfhosted]
-description = "Conectează-te la propriul tău server Stirling PDF"
+description = "Conectează-te la propriul tău server PlexPDF"
 title = "Server Self-Hosted"
 
 [setup.saas]
@@ -5766,11 +5766,11 @@ step3 = "Reporniți serverul"
 title = "Autentificarea nu este activată"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "PlexPDF SaaS"
 selfhosted = "Server găzduit local"
 
 [setup.server.url]
-description = "Introdu URL-ul complet al serverului tău Stirling PDF găzduit local"
+description = "Introdu URL-ul complet al serverului tău PlexPDF găzduit local"
 label = "URL server"
 
 [setup.step1]
@@ -5955,7 +5955,7 @@ passwordsDoNotMatch = "Parolele nu coincid"
 passwordTooShort = "Parola trebuie să aibă cel puțin 6 caractere"
 pleaseFillAllFields = "Vă rugăm să completați toate câmpurile"
 signUp = "Înregistrare"
-subtitle = "Alăturați-vă Stirling PDF pentru a începe"
+subtitle = "Alăturați-vă PlexPDF pentru a începe"
 title = "Creați un cont"
 unexpectedError = "Eroare neașteptată: {{message}}"
 useEmailInstead = "Folosiți emailul în schimb"
@@ -6204,28 +6204,28 @@ trialing = "Perioadă de probă"
 
 [survey]
 button = "Completează Sondajul"
-changes = "Stirling-PDF s-a schimbat de la ultimul chestionar! Pentru a afla mai multe, consultați articolul nostru de blog aici:"
+changes = "PlexPDF s-a schimbat de la ultimul chestionar! Pentru a afla mai multe, consultați articolul nostru de blog aici:"
 changes2 = "Odată cu aceste schimbări, obținem suport de business plătit și finanțare"
-description = "Stirling-PDF nu are urmărire, așa că vrem să auzim de la utilizatorii noștri pentru a îmbunătăți Stirling-PDF!"
+description = "PlexPDF nu are urmărire, așa că vrem să auzim de la utilizatorii noștri pentru a îmbunătăți PlexPDF!"
 disabled = "(Fereastra pop-up a sondajului va fi dezactivată în următoarele actualizări, dar va fi disponibilă în subsolul paginii)"
 dontShowAgain = "Nu mai arăta din nou"
 nav = "Sondaj"
 please = "Te rugăm să iei în considerare completarea sondajului nostru!"
-title = "Sondaj Stirling-PDF"
+title = "Sondaj PlexPDF"
 
 [survey.meeting]
-1 = "Dacă folosiți Stirling PDF la muncă, ne-ar plăcea să vorbim cu dvs. Oferim sesiuni de asistență tehnică în schimbul unei sesiuni de descoperire a utilizatorilor de 15 minute."
+1 = "Dacă folosiți PlexPDF la muncă, ne-ar plăcea să vorbim cu dvs. Oferim sesiuni de asistență tehnică în schimbul unei sesiuni de descoperire a utilizatorilor de 15 minute."
 2 = "Este o ocazie să:"
 3 = "Obțineți ajutor pentru implementare, integrări sau depanare"
 4 = "Oferiți feedback direct despre performanță, cazuri limită și lipsuri de funcționalitate"
-5 = "Ajutați-ne să rafinăm Stirling PDF pentru utilizare reală în mediul enterprise"
+5 = "Ajutați-ne să rafinăm PlexPDF pentru utilizare reală în mediul enterprise"
 6 = "Dacă sunteți interesat, vă puteți programa direct cu echipa noastră. (Numai în limba engleză)"
-7 = "Așteptăm cu interes să analizăm cazurile dvs. de utilizare și să facem Stirling PDF și mai bun!"
+7 = "Așteptăm cu interes să analizăm cazurile dvs. de utilizare și să facem PlexPDF și mai bun!"
 button = "Programează întâlnire"
 notInterested = "Nu sunteți o companie și/sau nu sunteți interesat de o întâlnire?"
 
 [swagger]
-desc = "Vizualizați și testați endpoint-urile API Stirling PDF"
+desc = "Vizualizați și testați endpoint-urile API PlexPDF"
 header = "Documentație API"
 tags = "api,documentație,swagger,endpoint-uri,dezvoltare"
 title = "Documentație API"
@@ -6257,7 +6257,7 @@ unfavorite = "Eliminați din favorite"
 [toolPanel.modePrompt]
 chooseFullscreen = "Utilizați modul ecran complet"
 chooseSidebar = "Utilizați modul bară laterală"
-description = "Previzualizați ambele layout-uri și decideți cum doriți să explorați instrumentele Stirling PDF."
+description = "Previzualizați ambele layout-uri și decideți cum doriți să explorați instrumentele PlexPDF."
 dismiss = "Poate mai târziu"
 fullscreenDescription = "Răsfoiți fiecare instrument într-un catalog care acoperă spațiul de lucru până când alegeți unul."
 fullscreenTitle = "Mod ecran complet - (învechit)"
@@ -6351,7 +6351,7 @@ attentionBody = "Adminul tău trebuie să se conecteze pentru mai multe informa�
 attentionBodyAdmin = "Revizuiește cerințele de licențiere pentru a menține conformitatea acestui server."
 attentionTitle = "Acest server necesită atenția adminului"
 dismiss = "Ascunde bannerul"
-message = "Profită la maximum de Stirling PDF cu utilizatori nelimitați și funcții avansate"
+message = "Profită la maximum de PlexPDF cu utilizatori nelimitați și funcții avansate"
 seeInfo = "Vezi info"
 title = "Upgrade la planul Server"
 upgradeButton = "Fă upgrade acum"
@@ -6469,7 +6469,7 @@ continued = "Continuare"
 downloads = "Descărcări"
 entryLabel = "Rezumat semnătură"
 filesEvaluated = "{{count}} fișiere evaluate"
-footer = "Validat prin Stirling PDF"
+footer = "Validat prin PlexPDF"
 generatedAt = "Generat"
 noPdf = "Raportul PDF va fi disponibil după o validare reușită."
 page = "Pagină"

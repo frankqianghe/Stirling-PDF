@@ -1,6 +1,6 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-    "productName": "Stirling-PDF",
+    "productName": "PlexPDF",
     "version": "2.5.3",
     "identifier": "stirling.pdf.dev",
     "build": {
@@ -12,7 +12,7 @@
     "app": {
         "windows": [
             {
-                "title": "Stirling-PDF",
+                "title": "PlexPDF",
                 "width": 1280,
                 "height": 800,
                 "minWidth": 1030,
@@ -25,7 +25,7 @@
     },
     "bundle": {
         "active": true,
-        "publisher": "Stirling PDF Inc.",
+        "publisher": "PlexPDF",
         "targets": [
             "deb",
             "rpm",
@@ -52,7 +52,7 @@
                     "pdf"
                 ],
                 "name": "PDF Document",
-                "description": "Open PDF files with Stirling-PDF",
+                "description": "Open PDF files with PlexPDF",
                 "role": "Editor",
                 "mimeType": "application/pdf"
             }

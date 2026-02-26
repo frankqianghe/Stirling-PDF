@@ -119,8 +119,8 @@ export class PDFExportService {
     }
 
     // Set metadata
-    newDoc.setCreator('Stirling PDF');
-    newDoc.setProducer('Stirling PDF');
+    newDoc.setCreator('PlexPDF');
+    newDoc.setProducer('PlexPDF');
     newDoc.setCreationDate(new Date());
     newDoc.setModificationDate(new Date());
 
@@ -159,8 +159,8 @@ export class PDFExportService {
     }
 
     // Set metadata
-    newDoc.setCreator('Stirling PDF');
-    newDoc.setProducer('Stirling PDF');
+    newDoc.setCreator('PlexPDF');
+    newDoc.setProducer('PlexPDF');
     newDoc.setCreationDate(new Date());
     newDoc.setModificationDate(new Date());
 

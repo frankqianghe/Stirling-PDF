@@ -71,7 +71,7 @@ const ToolPanelModePrompt = ({ onComplete, forceOpen }: ToolPanelModePromptProps
     >
       <Stack gap="lg">
         <Text size="sm" c="dimmed">
-          {t('toolPanel.modePrompt.description', 'Preview both layouts and decide how you want to explore Stirling PDF tools.')}
+          {t('toolPanel.modePrompt.description', 'Preview both layouts and decide how you want to explore PlexPDF tools.')}
         </Text>
         <div className="tool-panel-mode-prompt__options">
           <Card withBorder radius="lg" shadow="sm" padding="lg" className="tool-panel-mode-prompt__card tool-panel-mode-prompt__card--sidebar">

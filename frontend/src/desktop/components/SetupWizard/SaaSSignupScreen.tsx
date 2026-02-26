@@ -63,7 +63,7 @@ export const SaaSSignupScreen: React.FC<SaaSSignupScreenProps> = ({
     <>
       <LoginHeader
         title={t('signup.title', 'Create an account')}
-        subtitle={t('signup.subtitle', 'Join Stirling PDF')}
+        subtitle={t('signup.subtitle', 'Join PlexPDF')}
       />
 
       <ErrorMessage error={displayError} />

@@ -132,7 +132,7 @@ export function createAdminStepsConfig({ t, actions }: CreateAdminStepsConfigArg
     },
     [AdminTourStep.WRAP_UP]: {
       selector: '[data-tour="help-button"]',
-      content: t('adminOnboarding.wrapUp', "That's the admin tour! You've seen the enterprise features that make Stirling PDF a powerful, customisable solution for organisations. Access this tour anytime from the <strong>Help</strong> menu."),
+      content: t('adminOnboarding.wrapUp', "That's the admin tour! You've seen the enterprise features that make PlexPDF a powerful, customisable solution for organisations. Access this tour anytime from the <strong>Help</strong> menu."),
       position: 'right',
       padding: 10,
       action: () => {

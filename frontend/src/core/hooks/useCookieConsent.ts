@@ -157,7 +157,7 @@ export const useCookieConsent = ({
                 en: {
                   consentModal: {
                     title: t('cookieBanner.popUp.title', 'How we use Cookies'),
-                    description: t('cookieBanner.popUp.description.1', 'We use cookies and other technologies to make Stirling PDF work better for you—helping us improve our tools and keep building features you\'ll love.') +
+                    description: t('cookieBanner.popUp.description.1', 'We use cookies and other technologies to make PlexPDF work better for you—helping us improve our tools and keep building features you\'ll love.') +
                                "<br>" +
                                t('cookieBanner.popUp.description.2', 'If you\'d rather not, clicking \'No Thanks\' will only enable the essential cookies needed to keep things running smoothly.'),
                     acceptAllBtn: t('cookieBanner.popUp.acceptAllBtn', 'Okay'),
@@ -174,9 +174,9 @@ export const useCookieConsent = ({
                     sections: [
                       {
                         title: t('cookieBanner.preferencesModal.subtitle', 'Cookie Usage'),
-                        description: t('cookieBanner.preferencesModal.description.1', 'Stirling PDF uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users.') +
+                        description: t('cookieBanner.preferencesModal.description.1', 'PlexPDF uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users.') +
                                    "<br><br>" +
-                                   t('cookieBanner.preferencesModal.description.2', 'Stirling PDF cannot—and will never—track or access the content of the documents you use.') +
+                                   t('cookieBanner.preferencesModal.description.2', 'PlexPDF cannot—and will never—track or access the content of the documents you use.') +
                                    "<b> " +
                                    t('cookieBanner.preferencesModal.description.3', 'Your privacy and trust are at the core of what we do.') +
                                    "</b>"
@@ -191,7 +191,7 @@ export const useCookieConsent = ({
                       },
                       {
                         title: t('cookieBanner.preferencesModal.analytics.title', 'Analytics'),
-                        description: t('cookieBanner.preferencesModal.analytics.description', 'These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured—Stirling PDF cannot and will never track the content of the documents you work with.'),
+                        description: t('cookieBanner.preferencesModal.analytics.description', 'These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured—PlexPDF cannot and will never track the content of the documents you work with.'),
                         linkedCategory: "analytics"
                       }
                     ]
