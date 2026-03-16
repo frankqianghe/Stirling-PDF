@@ -20,9 +20,9 @@ export default function Footer({
   const finalPrivacyPolicy = privacyPolicy ?? footerInfo?.privacyPolicy;
   const finalTermsAndConditions = termsAndConditions ?? footerInfo?.termsAndConditions;
 
-  // Default URLs
-  const defaultTermsUrl = "https://www.stirling.com/legal/terms-of-service";
-  const defaultPrivacyUrl = "https://www.stirling.com/legal/privacy-policy";
+  // Default URLs (local files in public/; must match actual filenames .htm)
+  const defaultTermsUrl = "https://plexpdf.wenxstudio.ai/static/terms-of-service.htm";
+  const defaultPrivacyUrl = "https://plexpdf.wenxstudio.ai/static/privacy-policy.htm";
 
   // Use provided URLs or fall back to defaults
   const finalTermsUrl = finalTermsAndConditions || defaultTermsUrl;
