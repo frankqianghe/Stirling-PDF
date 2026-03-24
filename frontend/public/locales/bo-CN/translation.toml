@@ -4123,9 +4123,9 @@ userTitle = "འཆར་གཞིའི་སྤྱི་བསྡོམས།"
 message = "ཉེ་ཆར་མཉེན་ཆས་དེ་ལ་འགྱུར་བ་ཆེན་པོ་བྱུང་ཡོད། ཁྱེད་ཀྱི་གསབ་ལེན་བདག་པོའི་དོ་སྣང་དགོས་སྲིད། ཁྱེད་རང་གི་ལས་འགན་མུ་མཐུད་དུ་གཏན་འཁེལ་གནང་རོགས།"
 
 [onboarding.serverLicense]
-freeBody = "ང་ཚོའི <strong>Open-Core</strong> ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། མ་ཆད་པར་འཕེལ་རྒྱས་བྱ་ཆེད་ Stirling Server འཆར་གཞི་ལ་<strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ <strong>SSO support</strong> སྤྲོད་པ་དེ་ $99/server/mo རིན་གོང་ཡིན།"
+freeBody = "ང་ཚོའི <strong>Open-Core</strong> ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། མ་ཆད་པར་འཕེལ་རྒྱས་བྱ་ཆེད་ PlexPDF Server འཆར་གཞི་ལ་<strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ <strong>SSO support</strong> སྤྲོད་པ་དེ་ $99/server/mo རིན་གོང་ཡིན།"
 freeTitle = "སར་བར་ལག་ཁྱེར།"
-overLimitBody = "ང་ཚོའི་ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། ཁྱེད་ལ་<strong>{{overLimitUserCopy}}</strong> Stirling སྤྱོད་མཁན་ཡོད། མ་ཆད་པར་མུ་མཐུད་བྱ་དགོས་ན་ Stirling Server འཆར་གཞི་ལ་རིམ་སྤོར་བྱོས། <strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ PDF ཡིག་གཟུགས་རྩོམ་སྒྲིག དེ་བཞིན་འཛིན་སྐྱོང་ཆ་ཚང་ $99/server/mo རིན་གོང་ཡིན།"
+overLimitBody = "ང་ཚོའི་ཆོག་མཆན་ནས་སར་བར་རེ་ལ་སྤྱོད་མཁན་<strong>{{freeTierLimit}}</strong> བར་རིན་མེད་དུ་ཆོག་པ་ཡིན། ཁྱེད་ལ་<strong>{{overLimitUserCopy}}</strong> PlexPDF སྤྱོད་མཁན་ཡོད། མ་ཆད་པར་མུ་མཐུད་བྱ་དགོས་ན་ PlexPDF Server འཆར་གཞི་ལ་རིམ་སྤོར་བྱོས། <strong>སྡོད་སྒྲིག་མཐའ་མེད</strong> དང་ PDF ཡིག་གཟུགས་རྩོམ་སྒྲིག དེ་བཞིན་འཛིན་སྐྱོང་ཆ་ཚང་ $99/server/mo རིན་གོང་ཡིན།"
 overLimitTitle = "སར་བར་ཆོག་མཆན་དགོས་པ།"
 seePlans = "འཆར་གཞི་ལ་གཟིགས།"
 skip = "ད་ལྟ་མཆོང་།"

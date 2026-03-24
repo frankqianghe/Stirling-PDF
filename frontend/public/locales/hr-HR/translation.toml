@@ -2473,7 +2473,7 @@ upgradeButton = "Nadogradi račun"
 [config.apiKeys]
 chartAriaLabel = "Uporaba kredita: uključeno iskorišteno {{includedUsed}} od {{includedTotal}}, kupljeno {{purchasedUsed}} od {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiraj API ključ"
-description = "Vaš API ključ za pristup Stirlingovom paketu PDF alata. Kopirajte ga u svoj projekt ili osvježite za generiranje novog."
+description = "Vaš API ključ za pristup PlexPDFovom paketu PDF alata. Kopirajte ga u svoj projekt ili osvježite za generiranje novog."
 docsDescription = "Saznajte više o integraciji sa PlexPDF:"
 docsLink = "API dokumentacija"
 docsTitle = "API dokumentacija"
@@ -4108,13 +4108,13 @@ skipForNow = "Preskoči zasad"
 skipTheTour = "Preskoči obilazak"
 
 [onboarding.desktopInstall]
-body = "Stirling najbolje radi kao desktop aplikacija. Možete ga koristiti izvan mreže, brže pristupati dokumentima i uređivati lokalno na računalu."
+body = "PlexPDF najbolje radi kao desktop aplikacija. Možete ga koristiti izvan mreže, brže pristupati dokumentima i uređivati lokalno na računalu."
 title = "Preuzimanje"
 titleWithOs = "Preuzmi za {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Kad omogućite način prijave, moći ćete upravljati korisnicima, konfigurirati postavke i nadzirati zdravlje poslužitelja. Prvih <strong>{{freeTierLimit}}</strong> osoba na vašem poslužitelju koristi Stirling besplatno."
-adminBodyLoginEnabled = "Kao administrator možete upravljati korisnicima, konfigurirati postavke i nadzirati zdravlje poslužitelja. Prvih <strong>{{freeTierLimit}}</strong> osoba na vašem poslužitelju koristi Stirling besplatno."
+adminBodyLoginDisabled = "Kad omogućite način prijave, moći ćete upravljati korisnicima, konfigurirati postavke i nadzirati zdravlje poslužitelja. Prvih <strong>{{freeTierLimit}}</strong> osoba na vašem poslužitelju koristi PlexPDF besplatno."
+adminBodyLoginEnabled = "Kao administrator možete upravljati korisnicima, konfigurirati postavke i nadzirati zdravlje poslužitelja. Prvih <strong>{{freeTierLimit}}</strong> osoba na vašem poslužitelju koristi PlexPDF besplatno."
 adminTitle = "Pregled za administratore"
 userBody = "Pozovite suradnike, dodijelite uloge i držite dokumente organiziranima u jednom sigurnom radnom prostoru. Omogućite način prijave kad budete spremni prerasti samostalnu upotrebu."
 userTitle = "Pregled plana"
@@ -4123,9 +4123,9 @@ userTitle = "Pregled plana"
 message = "Aplikacija je nedavno pretrpjela značajne promjene. Možda je potrebna pažnja vašeg administratora poslužitelja. Potvrdite svoju ulogu za nastavak."
 
 [onboarding.serverLicense]
-freeBody = "Naše <strong>Open-Core</strong> licenciranje dopušta do <strong>{{freeTierLimit}}</strong> korisnika besplatno po poslužitelju. Za nesmetano skaliranje i rani pristup našem novom <strong>alatu za uređivanje teksta u PDF-u</strong>, preporučujemo Stirling Server plan - potpuno uređivanje i <strong>neograničena mjesta</strong> za $99/server/mo."
+freeBody = "Naše <strong>Open-Core</strong> licenciranje dopušta do <strong>{{freeTierLimit}}</strong> korisnika besplatno po poslužitelju. Za nesmetano skaliranje i rani pristup našem novom <strong>alatu za uređivanje teksta u PDF-u</strong>, preporučujemo PlexPDF Server plan - potpuno uređivanje i <strong>neograničena mjesta</strong> za $99/server/mo."
 freeTitle = "Poslužiteljska licenca"
-overLimitBody = "Naše licenciranje dopušta do <strong>{{freeTierLimit}}</strong> korisnika besplatno po poslužitelju. Imate <strong>{{overLimitUserCopy}}</strong> Stirling korisnika. Za nesmetan nastavak, nadogradite na Stirling Server plan - <strong>neograničena mjesta</strong>, uređivanje teksta u PDF-u i puna admin kontrola za $99/server/mo."
+overLimitBody = "Naše licenciranje dopušta do <strong>{{freeTierLimit}}</strong> korisnika besplatno po poslužitelju. Imate <strong>{{overLimitUserCopy}}</strong> PlexPDF korisnika. Za nesmetan nastavak, nadogradite na PlexPDF Server plan - <strong>neograničena mjesta</strong>, uređivanje teksta u PDF-u i puna admin kontrola za $99/server/mo."
 overLimitTitle = "Potrebna poslužiteljska licenca"
 seePlans = "Pogledaj planove →"
 skip = "Preskoči zasad"
@@ -4145,7 +4145,7 @@ title = "Dobrodošli u PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF je sada spreman za timove svih veličina. Ovo ažuriranje donosi novi izgled, moćne nove administratorske mogućnosti i našu najtraženiju značajku - <strong>Uredi tekst</strong>."
-title = "Dobrodošli u Stirling"
+title = "Dobrodošli u PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Koristite Aktivne datoteke da vidite sve što je otvoreno i odaberete na čemu raditi."
@@ -5562,7 +5562,7 @@ title = "Način povezivanja"
 user = "Prijavljeni kao"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Self-hosted"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Korisničko ime"
 placeholder = "Unesite korisničko ime"
 
 [setup.mode.saas]
-description = "Prijavite se svojim Stirling računom"
-title = "Stirling Cloud"
+description = "Prijavite se svojim PlexPDF računom"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Povežite se s vlastitim PlexPDF poslužiteljem"
 title = "Self-hosted poslužitelj"
 
 [setup.saas]
-subtitle = "Prijavite se svojim Stirling računom"
-title = "Prijavite se u Stirling"
+subtitle = "Prijavite se svojim PlexPDF računom"
+title = "Prijavite se u PlexPDF"
 
 [setup.selfhosted]
 link = "ili se povežite sa samohostiranim računom"

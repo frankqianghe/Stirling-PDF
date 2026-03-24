@@ -2473,7 +2473,7 @@ upgradeButton = "Opgradér konto"
 [config.apiKeys]
 chartAriaLabel = "Forbrug af kreditter: inkluderet {{includedUsed}} af {{includedTotal}}, købt {{purchasedUsed}} af {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiér API-nøgle"
-description = "Din API-nøgle til adgang til Stirlings pakke af PDF-værktøjer. Kopiér den til dit projekt, eller opdatér for at generere en ny."
+description = "Din API-nøgle til adgang til PlexPDFs pakke af PDF-værktøjer. Kopiér den til dit projekt, eller opdatér for at generere en ny."
 docsDescription = "Lær mere om integration med PlexPDF:"
 docsLink = "API-dokumentation"
 docsTitle = "API-dokumentation"
@@ -4108,13 +4108,13 @@ skipForNow = "Spring over for nu"
 skipTheTour = "Spring rundvisningen over"
 
 [onboarding.desktopInstall]
-body = "Stirling fungerer bedst som desktop-app. Du kan bruge den offline, få hurtigere adgang til dokumenter og redigere lokalt på din computer."
+body = "PlexPDF fungerer bedst som desktop-app. Du kan bruge den offline, få hurtigere adgang til dokumenter og redigere lokalt på din computer."
 title = "Download"
 titleWithOs = "Download til {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Når du aktiverer login-tilstand, kan du administrere brugere, konfigurere indstillinger og overvåge serverens tilstand. De første <strong>{{freeTierLimit}}</strong> personer på din server kan bruge Stirling gratis."
-adminBodyLoginEnabled = "Som admin kan du administrere brugere, konfigurere indstillinger og overvåge serverens tilstand. De første <strong>{{freeTierLimit}}</strong> personer på din server kan bruge Stirling gratis."
+adminBodyLoginDisabled = "Når du aktiverer login-tilstand, kan du administrere brugere, konfigurere indstillinger og overvåge serverens tilstand. De første <strong>{{freeTierLimit}}</strong> personer på din server kan bruge PlexPDF gratis."
+adminBodyLoginEnabled = "Som admin kan du administrere brugere, konfigurere indstillinger og overvåge serverens tilstand. De første <strong>{{freeTierLimit}}</strong> personer på din server kan bruge PlexPDF gratis."
 adminTitle = "Admin-overblik"
 userBody = "Invitér teammedlemmer, tildel roller, og hold dine dokumenter organiseret i ét sikkert arbejdsområde. Aktiver login-tilstand, når du er klar til at vokse ud over solo-brug."
 userTitle = "Plan-overblik"
@@ -4123,9 +4123,9 @@ userTitle = "Plan-overblik"
 message = "Applikationen har gennemgået væsentlige ændringer for nylig. Din serveradmins opmærksomhed kan være påkrævet. Bekræft din rolle for at fortsætte."
 
 [onboarding.serverLicense]
-freeBody = "Vores <strong>Open-Core</strong>-licens tillader op til <strong>{{freeTierLimit}}</strong> brugere gratis pr. server. For at skalere uden afbrydelser og få tidlig adgang til vores nye <strong>PDF-tekstredigeringsværktøj</strong> anbefaler vi Stirling Server-planen – fuld redigering og <strong>ubegrænsede pladser</strong> for $99/server/md."
+freeBody = "Vores <strong>Open-Core</strong>-licens tillader op til <strong>{{freeTierLimit}}</strong> brugere gratis pr. server. For at skalere uden afbrydelser og få tidlig adgang til vores nye <strong>PDF-tekstredigeringsværktøj</strong> anbefaler vi PlexPDF Server-planen – fuld redigering og <strong>ubegrænsede pladser</strong> for $99/server/md."
 freeTitle = "Serverlicens"
-overLimitBody = "Vores licens tillader op til <strong>{{freeTierLimit}}</strong> brugere gratis pr. server. Du har <strong>{{overLimitUserCopy}}</strong> Stirling-brugere. For at fortsætte uden afbrydelser skal du opgradere til Stirling Server-abonnementet – <strong>ubegrænsede pladser</strong>, PDF-tekstredigering og fuld admin-kontrol for $99/server/md."
+overLimitBody = "Vores licens tillader op til <strong>{{freeTierLimit}}</strong> brugere gratis pr. server. Du har <strong>{{overLimitUserCopy}}</strong> PlexPDF-brugere. For at fortsætte uden afbrydelser skal du opgradere til PlexPDF Server-abonnementet – <strong>ubegrænsede pladser</strong>, PDF-tekstredigering og fuld admin-kontrol for $99/server/md."
 overLimitTitle = "Serverlicens påkrævet"
 seePlans = "Se planer →"
 skip = "Spring over for nu"
@@ -4145,7 +4145,7 @@ title = "Velkommen til PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF er nu klar til teams i alle størrelser. Denne opdatering indeholder et nyt layout, stærke nye admin-funktioner og vores mest efterspurgte funktion – <strong>Rediger tekst</strong>."
-title = "Velkommen til Stirling"
+title = "Velkommen til PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Brug Aktive filer til at se alt, du har åbent, og vælge, hvad du vil arbejde på."
@@ -5562,7 +5562,7 @@ title = "Forbindelsestilstand"
 user = "Logget ind som"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Selvhostet"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Brugernavn"
 placeholder = "Indtast dit brugernavn"
 
 [setup.mode.saas]
-description = "Log ind med din Stirling-konto"
-title = "Stirling Cloud"
+description = "Log ind med din PlexPDF-konto"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Forbind til din egen PlexPDF-server"
 title = "Selvhostet server"
 
 [setup.saas]
-subtitle = "Log ind med din Stirling-konto"
-title = "Log ind på Stirling"
+subtitle = "Log ind med din PlexPDF-konto"
+title = "Log ind på PlexPDF"
 
 [setup.selfhosted]
 link = "eller opret forbindelse til en selvhostet konto"

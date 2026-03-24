@@ -2473,7 +2473,7 @@ upgradeButton = "Actualitza el compte"
 [config.apiKeys]
 chartAriaLabel = "Ús de crèdits: inclosos {{includedUsed}} de {{includedTotal}}, comprats {{purchasedUsed}} de {{purchasedTotal}}"
 copyKeyAriaLabel = "Copia la clau API"
-description = "La vostra clau API per accedir al conjunt d’eines PDF de Stirling. Copieu-la al vostre projecte o actualitzeu-la per generar-ne una de nova."
+description = "La vostra clau API per accedir al conjunt d’eines PDF de PlexPDF. Copieu-la al vostre projecte o actualitzeu-la per generar-ne una de nova."
 docsDescription = "Més informació sobre la integració amb PlexPDF:"
 docsLink = "Documentació de l’API"
 docsTitle = "Documentació de l’API"
@@ -4108,13 +4108,13 @@ skipForNow = "Omet per ara"
 skipTheTour = "Omet la visita guiada"
 
 [onboarding.desktopInstall]
-body = "Stirling funciona millor com a aplicació d'escriptori. Pots usar-la fora de línia, accedir als documents més ràpid i fer edicions localment a l'ordinador."
+body = "PlexPDF funciona millor com a aplicació d'escriptori. Pots usar-la fora de línia, accedir als documents més ràpid i fer edicions localment a l'ordinador."
 title = "Baixa"
 titleWithOs = "Baixa per a {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Quan habilitis el mode d'inici de sessió, podràs gestionar usuaris, configurar paràmetres i supervisar la salut del servidor. Les primeres <strong>{{freeTierLimit}}</strong> persones del teu servidor poden usar Stirling gratuïtament."
-adminBodyLoginEnabled = "Com a administrador, pots gestionar usuaris, configurar paràmetres i supervisar la salut del servidor. Les primeres <strong>{{freeTierLimit}}</strong> persones del teu servidor poden usar Stirling gratuïtament."
+adminBodyLoginDisabled = "Quan habilitis el mode d'inici de sessió, podràs gestionar usuaris, configurar paràmetres i supervisar la salut del servidor. Les primeres <strong>{{freeTierLimit}}</strong> persones del teu servidor poden usar PlexPDF gratuïtament."
+adminBodyLoginEnabled = "Com a administrador, pots gestionar usuaris, configurar paràmetres i supervisar la salut del servidor. Les primeres <strong>{{freeTierLimit}}</strong> persones del teu servidor poden usar PlexPDF gratuïtament."
 adminTitle = "Resum d'administració"
 userBody = "Convida companys, assigna rols i mantén els documents organitzats en un espai de treball segur. Habilita el mode d'inici de sessió quan estiguis llest per anar més enllà de l'ús individual."
 userTitle = "Resum del pla"
@@ -4123,9 +4123,9 @@ userTitle = "Resum del pla"
 message = "L'aplicació ha patit canvis importants recentment. Pot ser necessària l'atenció de l'administrador del servidor. Confirma el teu rol per continuar."
 
 [onboarding.serverLicense]
-freeBody = "La nostra llicència <strong>Open-Core</strong> permet fins a <strong>{{freeTierLimit}}</strong> usuaris gratuïts per servidor. Per escalar sense interrupcions i obtenir accés anticipat a la nova <strong>eina d'edició de text PDF</strong>, recomanem el pla Stirling Server: edició completa i <strong>seients il·limitats</strong> per 99 $/servidor/mes."
+freeBody = "La nostra llicència <strong>Open-Core</strong> permet fins a <strong>{{freeTierLimit}}</strong> usuaris gratuïts per servidor. Per escalar sense interrupcions i obtenir accés anticipat a la nova <strong>eina d'edició de text PDF</strong>, recomanem el pla PlexPDF Server: edició completa i <strong>seients il·limitats</strong> per 99 $/servidor/mes."
 freeTitle = "Llicència del servidor"
-overLimitBody = "La nostra llicència permet fins a <strong>{{freeTierLimit}}</strong> usuaris gratuïts per servidor. Tens <strong>{{overLimitUserCopy}}</strong> usuaris de Stirling. Per continuar sense interrupcions, actualitza al pla Stirling Server: <strong>seients il·limitats</strong>, edició de text de PDF i control d'administració complet per 99 $/servidor/mes."
+overLimitBody = "La nostra llicència permet fins a <strong>{{freeTierLimit}}</strong> usuaris gratuïts per servidor. Tens <strong>{{overLimitUserCopy}}</strong> usuaris de PlexPDF. Per continuar sense interrupcions, actualitza al pla PlexPDF Server: <strong>seients il·limitats</strong>, edició de text de PDF i control d'administració complet per 99 $/servidor/mes."
 overLimitTitle = "Cal una llicència de servidor"
 seePlans = "Veure plans →"
 skip = "Omet per ara"
@@ -4145,7 +4145,7 @@ title = "Us donem la benvinguda a PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF ara està llest per a equips de totes les mides. Aquesta actualització inclou un disseny nou, potents capacitats d'administració i la funció més demanada: <strong>Editar text</strong>."
-title = "Benvingut a Stirling"
+title = "Benvingut a PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Utilitza Fitxers actius per veure tot el que tens obert i triar amb què treballar."
@@ -5562,7 +5562,7 @@ title = "Mode de connexió"
 user = "Sessió iniciada com"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Autoallotjat"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Nom d'usuari"
 placeholder = "Introdueix el nom d'usuari"
 
 [setup.mode.saas]
-description = "Inicia sessió amb el teu compte de Stirling"
-title = "Stirling Cloud"
+description = "Inicia sessió amb el teu compte de PlexPDF"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Connecta't al teu servidor de PlexPDF"
 title = "Servidor autoallotjat"
 
 [setup.saas]
-subtitle = "Inicia sessió amb el teu compte de Stirling"
-title = "Inicia sessió a Stirling"
+subtitle = "Inicia sessió amb el teu compte de PlexPDF"
+title = "Inicia sessió a PlexPDF"
 
 [setup.selfhosted]
 link = "o connecteu-vos a un compte autoallotjat"

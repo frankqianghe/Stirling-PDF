@@ -2461,7 +2461,7 @@ upgradeButton = "Upgrade Account"
 [config.apiKeys]
 chartAriaLabel = "Credits usage: included {{includedUsed}} of {{includedTotal}}, purchased {{purchasedUsed}} of {{purchasedTotal}}"
 copyKeyAriaLabel = "Copy API key"
-description = "Your API key for accessing Stirling's suite of PDF tools. Copy it to your project or refresh to generate a new one."
+description = "Your API key for accessing PlexPDF's suite of PDF tools. Copy it to your project or refresh to generate a new one."
 docsDescription = "Learn more about integrating with PlexPDF:"
 docsLink = "API Documentation"
 docsTitle = "API Documentation"
@@ -4096,13 +4096,13 @@ skipForNow = "Skip for now"
 skipTheTour = "Skip the tour"
 
 [onboarding.desktopInstall]
-body = "Stirling works best as a desktop app. You can use it offline, access documents faster, and make edits locally on your computer."
+body = "PlexPDF works best as a desktop app. You can use it offline, access documents faster, and make edits locally on your computer."
 title = "Download"
 titleWithOs = "Download for {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge."
-adminBodyLoginEnabled = "As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use Stirling free of charge."
+adminBodyLoginDisabled = "Once you enable login mode, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use PlexPDF free of charge."
+adminBodyLoginEnabled = "As an admin, you can manage users, configure settings, and monitor server health. The first <strong>{{freeTierLimit}}</strong> people on your server get to use PlexPDF free of charge."
 adminTitle = "Admin Overview"
 userBody = "Invite teammates, assign roles, and keep your documents organized in one secure workspace. Enable login mode whenever you're ready to grow beyond solo use."
 userTitle = "Plan Overview"
@@ -4111,9 +4111,9 @@ userTitle = "Plan Overview"
 message = "The application has undergone significant changes recently. Your server admin's attention may be required. Please confirm your role to continue."
 
 [onboarding.serverLicense]
-freeBody = "Our <strong>Open-Core</strong> licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. To scale uninterrupted, we recommend the Stirling Server plan - <strong>unlimited seats</strong> and <strong>SSO support</strong> for $99/server/mo."
+freeBody = "Our <strong>Open-Core</strong> licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. To scale uninterrupted, we recommend the PlexPDF Server plan - <strong>unlimited seats</strong> and <strong>SSO support</strong> for $99/server/mo."
 freeTitle = "Server License"
-overLimitBody = "Our licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. You have <strong>{{overLimitUserCopy}}</strong> Stirling users. To continue uninterrupted, upgrade to the Stirling Server plan - <strong>unlimited seats</strong>, PDF text editing, and full admin control for $99/server/mo."
+overLimitBody = "Our licensing permits up to <strong>{{freeTierLimit}}</strong> users for free per server. You have <strong>{{overLimitUserCopy}}</strong> PlexPDF users. To continue uninterrupted, upgrade to the PlexPDF Server plan - <strong>unlimited seats</strong>, PDF text editing, and full admin control for $99/server/mo."
 overLimitTitle = "Server License Needed"
 seePlans = "See Plans →"
 skip = "Skip for now"
@@ -4133,7 +4133,7 @@ title = "Welcome to PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF is now ready for teams of all sizes. This update includes a new layout, powerful new admin capabilities, and our most requested feature - <strong>Edit Text</strong>."
-title = "Welcome to Stirling"
+title = "Welcome to PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Use Active Files to see everything you have open and pick what to work on."
@@ -5539,7 +5539,7 @@ title = "Connection Mode"
 user = "Logged in as"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Self-Hosted"
 
 [settings.developer]
@@ -5706,16 +5706,16 @@ label = "Username"
 placeholder = "Enter your username"
 
 [setup.mode.saas]
-description = "Sign in with your Stirling account"
-title = "Stirling Cloud"
+description = "Sign in with your PlexPDF account"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Connect to your own PlexPDF server with your personal account"
 title = "Self-Hosted Server"
 
 [setup.saas]
-subtitle = "Sign in with your Stirling account"
-title = "Sign in to Stirling"
+subtitle = "Sign in with your PlexPDF account"
+title = "Sign in to PlexPDF"
 
 [setup.selfhosted]
 link = "or connect to a self-hosted account"

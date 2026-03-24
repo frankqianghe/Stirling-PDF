@@ -4108,13 +4108,13 @@ skipForNow = "Kihagyás most"
 skipTheTour = "Körbevezetés kihagyása"
 
 [onboarding.desktopInstall]
-body = "A Stirling asztali alkalmazásként működik a legjobban. Használhatja offline, gyorsabban érheti el a dokumentumokat, és helyben szerkeszthet a gépén."
+body = "A PlexPDF asztali alkalmazásként működik a legjobban. Használhatja offline, gyorsabban érheti el a dokumentumokat, és helyben szerkeszthet a gépén."
 title = "Letöltés"
 titleWithOs = "Letöltés: {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "A bejelentkezési mód engedélyezése után kezelheti a felhasználókat, beállításokat és figyelheti a szerver állapotát. A szerver első <strong>{{freeTierLimit}}</strong> felhasználója ingyen használhatja a Stirlinget."
-adminBodyLoginEnabled = "Adminisztrátorként kezelheti a felhasználókat, beállításokat és figyelheti a szerver állapotát. A szerver első <strong>{{freeTierLimit}}</strong> felhasználója ingyen használhatja a Stirlinget."
+adminBodyLoginDisabled = "A bejelentkezési mód engedélyezése után kezelheti a felhasználókat, beállításokat és figyelheti a szerver állapotát. A szerver első <strong>{{freeTierLimit}}</strong> felhasználója ingyen használhatja a PlexPDFet."
+adminBodyLoginEnabled = "Adminisztrátorként kezelheti a felhasználókat, beállításokat és figyelheti a szerver állapotát. A szerver első <strong>{{freeTierLimit}}</strong> felhasználója ingyen használhatja a PlexPDFet."
 adminTitle = "Admin áttekintés"
 userBody = "Hívja meg a csapattagokat, rendeljen szerepköröket, és tartsa rendezve dokumentumait egy biztonságos munkaterületen. Engedélyezze a bejelentkezési módot, amikor továbblépne az egyéni használatról."
 userTitle = "Csomag áttekintése"
@@ -4123,9 +4123,9 @@ userTitle = "Csomag áttekintése"
 message = "Az alkalmazás nemrég jelentős változásokon ment keresztül. Előfordulhat, hogy a szerver adminisztrátorának beavatkozása szükséges. A folytatáshoz erősítse meg a szerepkörét."
 
 [onboarding.serverLicense]
-freeBody = "Az <strong>Open-Core</strong> licencelésünk szerverenként legfeljebb <strong>{{freeTierLimit}}</strong> felhasználót enged ingyen. A zavartalan bővüléshez és az új <strong>PDF szövegszerkesztő eszköz</strong> korai eléréséhez a Stirling Server csomagot ajánljuk – teljes szerkesztés és <strong>korlátlan hely</strong> $99/szerver/hó áron."
+freeBody = "Az <strong>Open-Core</strong> licencelésünk szerverenként legfeljebb <strong>{{freeTierLimit}}</strong> felhasználót enged ingyen. A zavartalan bővüléshez és az új <strong>PDF szövegszerkesztő eszköz</strong> korai eléréséhez a PlexPDF Server csomagot ajánljuk – teljes szerkesztés és <strong>korlátlan hely</strong> $99/szerver/hó áron."
 freeTitle = "Szerverlicenc"
-overLimitBody = "Licencelésünk szerverenként legfeljebb <strong>{{freeTierLimit}}</strong> felhasználót enged ingyen. Önnek <strong>{{overLimitUserCopy}}</strong> Stirling felhasználója van. A zavartalan használathoz váltson a Stirling Server csomagra – <strong>korlátlan hely</strong>, PDF szövegszerkesztés és teljes adminisztrátori vezérlés $99/szerver/hó áron."
+overLimitBody = "Licencelésünk szerverenként legfeljebb <strong>{{freeTierLimit}}</strong> felhasználót enged ingyen. Önnek <strong>{{overLimitUserCopy}}</strong> PlexPDF felhasználója van. A zavartalan használathoz váltson a PlexPDF Server csomagra – <strong>korlátlan hely</strong>, PDF szövegszerkesztés és teljes adminisztrátori vezérlés $99/szerver/hó áron."
 overLimitTitle = "Szerverlicenc szükséges"
 seePlans = "Csomagok megtekintése →"
 skip = "Kihagyás most"
@@ -4145,7 +4145,7 @@ title = "Üdvözli a PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "A PlexPDF mostantól minden méretű csapat számára készen áll. Ez a frissítés új elrendezést, erőteljes új adminisztrátori képességeket és a leggyakrabban kért funkciónkat – a <strong>Szöveg szerkesztése</strong>-t tartalmazza."
-title = "Üdvözöljük a Stirlingben"
+title = "Üdvözöljük a PlexPDFben"
 
 [onboarding.whatsNew]
 activeFilesView = "Az Aktív fájlokban láthat mindent, ami meg van nyitva, és kiválaszthatja, min dolgozik."
@@ -5562,7 +5562,7 @@ title = "Kapcsolati mód"
 user = "Bejelentkezve mint"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Önhostolt"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Felhasználónév"
 placeholder = "Adja meg a felhasználónevét"
 
 [setup.mode.saas]
-description = "Jelentkezzen be Stirling-fiókjával"
-title = "Stirling Cloud"
+description = "Jelentkezzen be PlexPDF-fiókjával"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Csatlakozás a saját PlexPDF szerveréhez"
 title = "Önhostolt szerver"
 
 [setup.saas]
-subtitle = "Jelentkezzen be Stirling-fiókjával"
-title = "Bejelentkezés a Stirlingbe"
+subtitle = "Jelentkezzen be PlexPDF-fiókjával"
+title = "Bejelentkezés a PlexPDFbe"
 
 [setup.selfhosted]
 link = "vagy csatlakozzon egy saját üzemeltetésű fiókhoz"
