@@ -957,8 +957,6 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
     };
 
     const hiddenToolIds = new Set<ToolId>([
-      'convert',
-      'ocr',
       'scannerEffect',
       'sanitize',
       'flatten',
