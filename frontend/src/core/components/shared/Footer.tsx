@@ -16,17 +16,9 @@ export default function Footer({
   const { t } = useTranslation();
   const { footerInfo } = useFooterInfo();
 
-  // Use props if provided, otherwise fall back to fetched footer info
-  const finalPrivacyPolicy = privacyPolicy ?? footerInfo?.privacyPolicy;
-  const finalTermsAndConditions = termsAndConditions ?? footerInfo?.termsAndConditions;
-
-  // Default URLs (local files in public/; must match actual filenames .htm)
-  const defaultTermsUrl = "https://plexpdf.wenxstudio.ai/static/terms-of-service.htm";
-  const defaultPrivacyUrl = "https://plexpdf.wenxstudio.ai/static/privacy-policy.htm";
-
-  // Use provided URLs or fall back to defaults
-  const finalTermsUrl = finalTermsAndConditions || defaultTermsUrl;
-  const finalPrivacyUrl = finalPrivacyPolicy || defaultPrivacyUrl;
+  // Fixed URLs as per requirement
+  const finalPrivacyUrl = "https://plexpdf.wenxstudio.ai/static/privacy-policy.htm";
+  const finalTermsUrl = "https://plexpdf.wenxstudio.ai/static/terms-of-service.htm";
 
   return (
     <div style={{

@@ -16,10 +16,11 @@
                 "title": "PlexPDF",
                 "width": 1280,
                 "height": 800,
-                "minWidth": 1030,
+                "minWidth": 1080,
                 "minHeight": 700,
                 "resizable": true,
                 "fullscreen": false,
+                "maximized": true,
                 "additionalBrowserArgs": "--enable-features=CertVerifierBuiltinFeature"
             }
         ]
