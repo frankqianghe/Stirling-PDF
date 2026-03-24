@@ -2473,7 +2473,7 @@ upgradeButton = "Nâng cấp tài khoản"
 [config.apiKeys]
 chartAriaLabel = "Sử dụng tín dụng: đã dùng {{includedUsed}} trên {{includedTotal}} đi kèm, đã dùng {{purchasedUsed}} trên {{purchasedTotal}} đã mua"
 copyKeyAriaLabel = "Sao chép khóa API"
-description = "Khóa API của bạn để truy cập bộ công cụ PDF của Stirling. Sao chép vào dự án của bạn hoặc làm mới để tạo khóa mới."
+description = "Khóa API của bạn để truy cập bộ công cụ PDF của PlexPDF. Sao chép vào dự án của bạn hoặc làm mới để tạo khóa mới."
 docsDescription = "Tìm hiểu thêm về tích hợp với PlexPDF:"
 docsLink = "Tài liệu API"
 docsTitle = "Tài liệu API"
@@ -4108,13 +4108,13 @@ skipForNow = "Bỏ qua tạm thời"
 skipTheTour = "Bỏ qua hướng dẫn"
 
 [onboarding.desktopInstall]
-body = "Stirling hoạt động tốt nhất như ứng dụng desktop. Bạn có thể dùng offline, truy cập tài liệu nhanh hơn và chỉnh sửa trực tiếp trên máy."
+body = "PlexPDF hoạt động tốt nhất như ứng dụng desktop. Bạn có thể dùng offline, truy cập tài liệu nhanh hơn và chỉnh sửa trực tiếp trên máy."
 title = "Tải xuống"
 titleWithOs = "Tải cho {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Khi bật chế độ đăng nhập, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng Stirling miễn phí."
-adminBodyLoginEnabled = "Là admin, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng Stirling miễn phí."
+adminBodyLoginDisabled = "Khi bật chế độ đăng nhập, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng PlexPDF miễn phí."
+adminBodyLoginEnabled = "Là admin, bạn có thể quản lý người dùng, cấu hình cài đặt và theo dõi tình trạng server. <strong>{{freeTierLimit}}</strong> người đầu tiên trên server của bạn được dùng PlexPDF miễn phí."
 adminTitle = "Tổng quan Admin"
 userBody = "Mời đồng đội, gán vai trò và quản lý tài liệu gọn gàng trong một không gian làm việc an toàn. Bật chế độ đăng nhập khi bạn sẵn sàng vượt qua chế độ dùng cá nhân."
 userTitle = "Tổng quan gói"
@@ -4123,9 +4123,9 @@ userTitle = "Tổng quan gói"
 message = "Ứng dụng vừa có nhiều thay đổi. Có thể cần sự chú ý của quản trị viên server. Vui lòng xác nhận vai trò của bạn để tiếp tục."
 
 [onboarding.serverLicense]
-freeBody = "Giấy phép <strong>Open-Core</strong> của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Để mở rộng không gián đoạn và truy cập sớm <strong>công cụ chỉnh sửa văn bản PDF</strong> mới, chúng tôi khuyến nghị gói Stirling Server - chỉnh sửa đầy đủ và <strong>số ghế không giới hạn</strong> với $99/server/tháng."
+freeBody = "Giấy phép <strong>Open-Core</strong> của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Để mở rộng không gián đoạn và truy cập sớm <strong>công cụ chỉnh sửa văn bản PDF</strong> mới, chúng tôi khuyến nghị gói PlexPDF Server - chỉnh sửa đầy đủ và <strong>số ghế không giới hạn</strong> với $99/server/tháng."
 freeTitle = "Giấy phép Server"
-overLimitBody = "Giấy phép của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Bạn có <strong>{{overLimitUserCopy}}</strong> người dùng Stirling. Để tiếp tục không gián đoạn, hãy nâng cấp lên gói Stirling Server - <strong>số ghế không giới hạn</strong>, chỉnh sửa văn bản PDF và toàn quyền quản trị với $99/server/tháng."
+overLimitBody = "Giấy phép của chúng tôi cho phép tối đa <strong>{{freeTierLimit}}</strong> người dùng miễn phí mỗi server. Bạn có <strong>{{overLimitUserCopy}}</strong> người dùng PlexPDF. Để tiếp tục không gián đoạn, hãy nâng cấp lên gói PlexPDF Server - <strong>số ghế không giới hạn</strong>, chỉnh sửa văn bản PDF và toàn quyền quản trị với $99/server/tháng."
 overLimitTitle = "Cần giấy phép Server"
 seePlans = "Xem gói →"
 skip = "Bỏ qua tạm thời"
@@ -4145,7 +4145,7 @@ title = "Chào mừng đến với PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF nay sẵn sàng cho mọi quy mô đội nhóm. Bản cập nhật này có bố cục mới, khả năng quản trị mạnh mẽ và tính năng được yêu cầu nhiều nhất - <strong>Chỉnh sửa văn bản</strong>."
-title = "Chào mừng đến với Stirling"
+title = "Chào mừng đến với PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Dùng Tệp đang hoạt động để xem mọi thứ bạn đang mở và chọn việc cần làm."
@@ -5562,7 +5562,7 @@ title = "Chế độ kết nối"
 user = "Đăng nhập với tư cách"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Tự lưu trữ"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Tên người dùng"
 placeholder = "Nhập tên người dùng"
 
 [setup.mode.saas]
-description = "Đăng nhập bằng tài khoản Stirling"
-title = "Stirling Cloud"
+description = "Đăng nhập bằng tài khoản PlexPDF"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Kết nối đến server PlexPDF của bạn"
 title = "Server tự lưu trữ"
 
 [setup.saas]
-subtitle = "Đăng nhập bằng tài khoản Stirling"
-title = "Đăng nhập vào Stirling"
+subtitle = "Đăng nhập bằng tài khoản PlexPDF"
+title = "Đăng nhập vào PlexPDF"
 
 [setup.selfhosted]
 link = "hoặc kết nối tới tài khoản tự lưu trữ"

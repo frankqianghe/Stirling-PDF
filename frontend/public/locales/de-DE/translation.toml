@@ -2473,7 +2473,7 @@ upgradeButton = "Konto upgraden"
 [config.apiKeys]
 chartAriaLabel = "Credit-Verbrauch: enthalten {{includedUsed}} von {{includedTotal}}, gekauft {{purchasedUsed}} von {{purchasedTotal}}"
 copyKeyAriaLabel = "API-Schlüssel kopieren"
-description = "Ihr API-Schlüssel für den Zugriff auf Stirlings PDF-Tools. Kopieren Sie ihn in Ihr Projekt oder aktualisieren Sie, um einen neuen zu generieren."
+description = "Ihr API-Schlüssel für den Zugriff auf PlexPDFs PDF-Tools. Kopieren Sie ihn in Ihr Projekt oder aktualisieren Sie, um einen neuen zu generieren."
 docsDescription = "Erfahren Sie mehr über die Integration mit PlexPDF:"
 docsLink = "API-Dokumentation"
 docsTitle = "API-Dokumentation"
@@ -4108,13 +4108,13 @@ skipForNow = "Für jetzt überspringen"
 skipTheTour = "Rundgang überspringen"
 
 [onboarding.desktopInstall]
-body = "Stirling funktioniert am besten als Desktop-App. Sie können es offline nutzen, schneller auf Dokumente zugreifen und lokal auf Ihrem Computer bearbeiten."
+body = "PlexPDF funktioniert am besten als Desktop-App. Sie können es offline nutzen, schneller auf Dokumente zugreifen und lokal auf Ihrem Computer bearbeiten."
 title = "Herunterladen"
 titleWithOs = "Herunterladen für {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Sobald Sie den Login-Modus aktivieren, können Sie Nutzer verwalten, Einstellungen konfigurieren und die Servergesundheit überwachen. Die ersten <strong>{{freeTierLimit}}</strong> Personen auf Ihrem Server nutzen Stirling kostenlos."
-adminBodyLoginEnabled = "Als Admin können Sie Nutzer verwalten, Einstellungen konfigurieren und die Servergesundheit überwachen. Die ersten <strong>{{freeTierLimit}}</strong> Personen auf Ihrem Server nutzen Stirling kostenlos."
+adminBodyLoginDisabled = "Sobald Sie den Login-Modus aktivieren, können Sie Nutzer verwalten, Einstellungen konfigurieren und die Servergesundheit überwachen. Die ersten <strong>{{freeTierLimit}}</strong> Personen auf Ihrem Server nutzen PlexPDF kostenlos."
+adminBodyLoginEnabled = "Als Admin können Sie Nutzer verwalten, Einstellungen konfigurieren und die Servergesundheit überwachen. Die ersten <strong>{{freeTierLimit}}</strong> Personen auf Ihrem Server nutzen PlexPDF kostenlos."
 adminTitle = "Admin-Übersicht"
 userBody = "Laden Sie Teammitglieder ein, weisen Sie Rollen zu und halten Sie Ihre Dokumente in einem sicheren Arbeitsbereich organisiert. Aktivieren Sie den Login-Modus, wenn Sie über die Einzelnutzung hinaus wachsen möchten."
 userTitle = "Plan-Übersicht"
@@ -4123,9 +4123,9 @@ userTitle = "Plan-Übersicht"
 message = "Die Anwendung hat kürzlich bedeutende Änderungen erfahren. Möglicherweise ist Aufmerksamkeit Ihres Server-Admins erforderlich. Bitte bestätigen Sie Ihre Rolle, um fortzufahren."
 
 [onboarding.serverLicense]
-freeBody = "Unsere <strong>Open-Core</strong>-Lizenz erlaubt bis zu <strong>{{freeTierLimit}}</strong> Nutzern pro Server kostenlos. Um unterbrechungsfrei zu skalieren, empfehlen wir den Stirling Server-Plan - <strong>unbegrenzte Plätze</strong> und <strong>SSO-Unterstützung</strong> für $99/Server/Monat."
+freeBody = "Unsere <strong>Open-Core</strong>-Lizenz erlaubt bis zu <strong>{{freeTierLimit}}</strong> Nutzern pro Server kostenlos. Um unterbrechungsfrei zu skalieren, empfehlen wir den PlexPDF Server-Plan - <strong>unbegrenzte Plätze</strong> und <strong>SSO-Unterstützung</strong> für $99/Server/Monat."
 freeTitle = "Server-Lizenz"
-overLimitBody = "Unsere Lizenz erlaubt bis zu <strong>{{freeTierLimit}}</strong> Nutzer pro Server kostenlos. Sie haben <strong>{{overLimitUserCopy}}</strong> Stirling-Nutzer. Um ohne Unterbrechung fortzufahren, upgraden Sie auf den Stirling-Server-Plan – <strong>unbegrenzte Plätze</strong>, PDF-Textbearbeitung und volle Admin-Kontrolle für $99/Server/Monat."
+overLimitBody = "Unsere Lizenz erlaubt bis zu <strong>{{freeTierLimit}}</strong> Nutzer pro Server kostenlos. Sie haben <strong>{{overLimitUserCopy}}</strong> PlexPDF-Nutzer. Um ohne Unterbrechung fortzufahren, upgraden Sie auf den PlexPDF-Server-Plan – <strong>unbegrenzte Plätze</strong>, PDF-Textbearbeitung und volle Admin-Kontrolle für $99/Server/Monat."
 overLimitTitle = "Server-Lizenz erforderlich"
 seePlans = "Pläne ansehen →"
 skip = "Für jetzt überspringen"
@@ -4145,7 +4145,7 @@ title = "Willkommen bei PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF ist jetzt bereit für Teams jeder Größe. Dieses Update bringt ein neues Layout, leistungsstarke neue Admin-Funktionen und unser meistgewünschtes Feature – <strong>Text bearbeiten</strong>."
-title = "Willkommen bei Stirling"
+title = "Willkommen bei PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Verwenden Sie „Aktive Dateien“, um alles Geöffnete zu sehen und auszuwählen, woran Sie arbeiten möchten."
@@ -5562,7 +5562,7 @@ title = "Verbindungsmodus"
 user = "Angemeldet als"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Selbst gehostet"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Benutzername"
 placeholder = "Benutzernamen eingeben"
 
 [setup.mode.saas]
-description = "Mit Ihrem Stirling-Konto anmelden"
-title = "Stirling Cloud"
+description = "Mit Ihrem PlexPDF-Konto anmelden"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Mit Ihrem eigenen PlexPDF-Server verbinden"
 title = "Self-Hosted-Server"
 
 [setup.saas]
-subtitle = "Mit Ihrem Stirling-Konto anmelden"
-title = "Bei Stirling anmelden"
+subtitle = "Mit Ihrem PlexPDF-Konto anmelden"
+title = "Bei PlexPDF anmelden"
 
 [setup.selfhosted]
 link = "oder mit einem selbstgehosteten Konto verbinden"

@@ -2473,7 +2473,7 @@ upgradeButton = "アカウントをアップグレード"
 [config.apiKeys]
 chartAriaLabel = "クレジット使用状況：含まれる分 {{includedUsed}} / {{includedTotal}}、購入分 {{purchasedUsed}} / {{purchasedTotal}}"
 copyKeyAriaLabel = "API キーをコピー"
-description = "Stirling の PDF ツール群にアクセスするための API キーです。プロジェクトにコピーするか、更新して新しいキーを生成できます。"
+description = "PlexPDF の PDF ツール群にアクセスするための API キーです。プロジェクトにコピーするか、更新して新しいキーを生成できます。"
 docsDescription = "PlexPDF との統合について詳しくはこちら:"
 docsLink = "API ドキュメント"
 docsTitle = "API ドキュメント"
@@ -4108,13 +4108,13 @@ skipForNow = "今はスキップ"
 skipTheTour = "ツアーをスキップ"
 
 [onboarding.desktopInstall]
-body = "Stirling はデスクトップアプリとして最適に動作します。オフラインでも使えて、文書に素早くアクセスし、PC上でローカル編集できます。"
+body = "PlexPDF はデスクトップアプリとして最適に動作します。オフラインでも使えて、文書に素早くアクセスし、PC上でローカル編集できます。"
 title = "ダウンロード"
 titleWithOs = "{{osLabel}} 用をダウンロード"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "ログインモードを有効にすると、ユーザー管理、設定の構成、サーバーの健全性監視が可能です。サーバー上の最初の <strong>{{freeTierLimit}}</strong> 人は無料で Stirling を利用できます。"
-adminBodyLoginEnabled = "管理者として、ユーザー管理、設定の構成、サーバーの健全性監視ができます。サーバー上の最初の <strong>{{freeTierLimit}}</strong> 人は無料で Stirling を利用できます。"
+adminBodyLoginDisabled = "ログインモードを有効にすると、ユーザー管理、設定の構成、サーバーの健全性監視が可能です。サーバー上の最初の <strong>{{freeTierLimit}}</strong> 人は無料で PlexPDF を利用できます。"
+adminBodyLoginEnabled = "管理者として、ユーザー管理、設定の構成、サーバーの健全性監視ができます。サーバー上の最初の <strong>{{freeTierLimit}}</strong> 人は無料で PlexPDF を利用できます。"
 adminTitle = "管理者向け概要"
 userBody = "メンバーを招待し、役割を割り当て、1つの安全なワークスペースで文書を整理できます。ソロ利用を超えて拡大する準備ができたら、いつでもログインモードを有効にしてください。"
 userTitle = "プラン概要"
@@ -4123,9 +4123,9 @@ userTitle = "プラン概要"
 message = "アプリケーションに最近大きな変更がありました。サーバー管理者の対応が必要な場合があります。続行するには、ご自身の役割を確認してください。"
 
 [onboarding.serverLicense]
-freeBody = "当社の <strong>オープンコア</strong> ライセンスでは、サーバーごとに最大 <strong>{{freeTierLimit}}</strong> ユーザーまで無料です。中断なく拡張し、新しい <strong>PDF テキスト編集ツール</strong> に早期アクセスするには、Stirling Server プランをお勧めします。完全編集と <strong>無制限席数</strong> が $99/サーバー/月 です。"
+freeBody = "当社の <strong>オープンコア</strong> ライセンスでは、サーバーごとに最大 <strong>{{freeTierLimit}}</strong> ユーザーまで無料です。中断なく拡張し、新しい <strong>PDF テキスト編集ツール</strong> に早期アクセスするには、PlexPDF Server プランをお勧めします。完全編集と <strong>無制限席数</strong> が $99/サーバー/月 です。"
 freeTitle = "サーバーライセンス"
-overLimitBody = "当社のライセンスでは、サーバーごとに <strong>{{freeTierLimit}}</strong> ユーザーまで無料です。現在 <strong>{{overLimitUserCopy}}</strong> の Stirling ユーザーがいます。中断なく利用を続けるには、Stirling Server プランにアップグレードしてください - <strong>無制限席数</strong>、PDF テキスト編集、完全な管理機能が $99/サーバー/月 です。"
+overLimitBody = "当社のライセンスでは、サーバーごとに <strong>{{freeTierLimit}}</strong> ユーザーまで無料です。現在 <strong>{{overLimitUserCopy}}</strong> の PlexPDF ユーザーがいます。中断なく利用を続けるには、PlexPDF Server プランにアップグレードしてください - <strong>無制限席数</strong>、PDF テキスト編集、完全な管理機能が $99/サーバー/月 です。"
 overLimitTitle = "サーバーライセンスが必要です"
 seePlans = "プランを見る →"
 skip = "今はスキップ"
@@ -4145,7 +4145,7 @@ title = "PlexPDF へようこそ！"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF はあらゆる規模のチームで使えるようになりました。このアップデートには新しいレイアウト、強力な管理機能、そして最も要望の多かった機能 - <strong>テキスト編集</strong> が含まれます。"
-title = "Stirling へようこそ"
+title = "PlexPDF へようこそ"
 
 [onboarding.whatsNew]
 activeFilesView = "アクティブファイルで開いているすべてを確認し、作業対象を選択できます。"
@@ -5562,7 +5562,7 @@ title = "接続モード"
 user = "ログイン中:"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "セルフホスト"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "ユーザー名"
 placeholder = "ユーザー名を入力"
 
 [setup.mode.saas]
-description = "Stirling アカウントでサインイン"
-title = "Stirling Cloud"
+description = "PlexPDF アカウントでサインイン"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "自分の PlexPDF サーバーに接続"
 title = "セルフホスト サーバー"
 
 [setup.saas]
-subtitle = "Stirling アカウントでサインイン"
-title = "Stirling にサインイン"
+subtitle = "PlexPDF アカウントでサインイン"
+title = "PlexPDF にサインイン"
 
 [setup.selfhosted]
 link = "またはセルフホスト型アカウントに接続"

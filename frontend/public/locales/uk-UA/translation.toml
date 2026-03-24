@@ -2473,7 +2473,7 @@ upgradeButton = "Оновити обліковий запис"
 [config.apiKeys]
 chartAriaLabel = "Використання кредитів: включені {{includedUsed}} із {{includedTotal}}, придбані {{purchasedUsed}} із {{purchasedTotal}}"
 copyKeyAriaLabel = "Скопіювати ключ API"
-description = "Ваш ключ API для доступу до пакета інструментів PDF Stirling. Скопіюйте його у свій проєкт або оновіть, щоб згенерувати новий."
+description = "Ваш ключ API для доступу до пакета інструментів PDF PlexPDF. Скопіюйте його у свій проєкт або оновіть, щоб згенерувати новий."
 docsDescription = "Дізнайтеся більше про інтеграцію зі PlexPDF:"
 docsLink = "Документація API"
 docsTitle = "Документація API"
@@ -4108,13 +4108,13 @@ skipForNow = "Пропустити зараз"
 skipTheTour = "Пропустити тур"
 
 [onboarding.desktopInstall]
-body = "Stirling найкраще працює як настільний додаток. Ви можете працювати офлайн, швидше отримувати доступ до документів і редагувати їх локально на своєму комп’ютері."
+body = "PlexPDF найкраще працює як настільний додаток. Ви можете працювати офлайн, швидше отримувати доступ до документів і редагувати їх локально на своєму комп’ютері."
 title = "Завантажити"
 titleWithOs = "Завантажити для {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Щойно ввімкнете режим входу, ви зможете керувати користувачами, налаштовувати параметри та відстежувати стан сервера. Перші <strong>{{freeTierLimit}}</strong> людей на вашому сервері користуються Stirling безкоштовно."
-adminBodyLoginEnabled = "Як адміністратор ви можете керувати користувачами, налаштовувати параметри та відстежувати стан сервера. Перші <strong>{{freeTierLimit}}</strong> людей на вашому сервері користуються Stirling безкоштовно."
+adminBodyLoginDisabled = "Щойно ввімкнете режим входу, ви зможете керувати користувачами, налаштовувати параметри та відстежувати стан сервера. Перші <strong>{{freeTierLimit}}</strong> людей на вашому сервері користуються PlexPDF безкоштовно."
+adminBodyLoginEnabled = "Як адміністратор ви можете керувати користувачами, налаштовувати параметри та відстежувати стан сервера. Перші <strong>{{freeTierLimit}}</strong> людей на вашому сервері користуються PlexPDF безкоштовно."
 adminTitle = "Огляд для адміністратора"
 userBody = "Запрошуйте колег, призначайте ролі та тримайте документи впорядкованими в одному безпечному робочому просторі. Увімкніть режим входу, коли будете готові вирости за межі сольного використання."
 userTitle = "Огляд плану"
@@ -4123,9 +4123,9 @@ userTitle = "Огляд плану"
 message = "Додаток нещодавно зазнав значних змін. Може знадобитися увага адміністратора сервера. Підтвердьте свою роль, щоб продовжити."
 
 [onboarding.serverLicense]
-freeBody = "Наша <strong>Open-Core</strong> ліцензія дозволяє до <strong>{{freeTierLimit}}</strong> користувачів безкоштовно на сервер. Щоб масштабуватися безперервно та отримати ранній доступ до нового <strong>інструмента редагування тексту PDF</strong>, рекомендуємо план Stirling Server — повне редагування та <strong>необмежена кількість місць</strong> за $99/server/mo."
+freeBody = "Наша <strong>Open-Core</strong> ліцензія дозволяє до <strong>{{freeTierLimit}}</strong> користувачів безкоштовно на сервер. Щоб масштабуватися безперервно та отримати ранній доступ до нового <strong>інструмента редагування тексту PDF</strong>, рекомендуємо план PlexPDF Server — повне редагування та <strong>необмежена кількість місць</strong> за $99/server/mo."
 freeTitle = "Ліцензія сервера"
-overLimitBody = "Наша ліцензія дозволяє до <strong>{{freeTierLimit}}</strong> користувачів безкоштовно на сервер. У вас <strong>{{overLimitUserCopy}}</strong> користувачів Stirling. Щоб працювати без перерв, перейдіть на план Stirling Server — <strong>необмежена кількість місць</strong>, редагування тексту PDF та повний адмін-контроль за $99/server/mo."
+overLimitBody = "Наша ліцензія дозволяє до <strong>{{freeTierLimit}}</strong> користувачів безкоштовно на сервер. У вас <strong>{{overLimitUserCopy}}</strong> користувачів PlexPDF. Щоб працювати без перерв, перейдіть на план PlexPDF Server — <strong>необмежена кількість місць</strong>, редагування тексту PDF та повний адмін-контроль за $99/server/mo."
 overLimitTitle = "Потрібна ліцензія сервера"
 seePlans = "Переглянути плани →"
 skip = "Пропустити зараз"
@@ -4145,7 +4145,7 @@ title = "Ласкаво просимо до PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "PlexPDF тепер готовий для команд будь-якого розміру. Це оновлення має нове компонування, потужні нові адмін-можливості та нашу найзапитуванішу функцію — <strong>Редагування тексту</strong>."
-title = "Ласкаво просимо до Stirling"
+title = "Ласкаво просимо до PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Використовуйте Активні файли, щоб бачити все відкрите й обирати, над чим працювати."
@@ -5562,7 +5562,7 @@ title = "Режим підключення"
 user = "Увійшли як"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Самохостинг"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Ім’я користувача"
 placeholder = "Введіть ім’я користувача"
 
 [setup.mode.saas]
-description = "Увійдіть через обліковий запис Stirling"
-title = "Stirling Cloud"
+description = "Увійдіть через обліковий запис PlexPDF"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Під’єднайтеся до власного сервера PlexPDF"
 title = "Власний сервер"
 
 [setup.saas]
-subtitle = "Увійдіть через обліковий запис Stirling"
-title = "Увійдіть до Stirling"
+subtitle = "Увійдіть через обліковий запис PlexPDF"
+title = "Увійдіть до PlexPDF"
 
 [setup.selfhosted]
 link = "або підключіться до самохостингового облікового запису"

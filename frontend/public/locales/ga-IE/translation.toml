@@ -1440,11 +1440,11 @@ webOnlyUser = "Úsáideoir Gréasáin Amháin"
 disable = "Díchumasaigh anailísíocht"
 enable = "Cumasaigh anailísíocht"
 learnMore = "Tuilleadh eolais"
-paragraph1 = "Tá rogha an diúltaithe ag PDF Stirling chun cabhrú linn an táirge a fheabhsú. Ní rianaimid aon fhaisnéis phearsanta nó ábhar comhaid."
+paragraph1 = "Tá rogha an diúltaithe ag PDF PlexPDF chun cabhrú linn an táirge a fheabhsú. Ní rianaimid aon fhaisnéis phearsanta nó ábhar comhaid."
 paragraph2 = "Smaoinigh le do thoil ar anailísíocht a chumasú chun cabhrú le PlexPDF fás agus chun ligean dúinn ár n-úsáideoirí a thuiscint níos fearr."
 privacyAssurance = "Ní dhéanaimid rianú ar aon fhaisnéis phearsanta ná ar ábhar do chuid comhad."
 settings = "Is féidir leat na socruithe don anailísíocht a athrú sa chomhad config/settings.yml"
-title = "An bhfuil fonn ort PDF Stirling a fheabhsú?"
+title = "An bhfuil fonn ort PDF PlexPDF a fheabhsú?"
 
 [annotation]
 applyChanges = "Cuir Athruithe i bhFeidhm"
@@ -2473,7 +2473,7 @@ upgradeButton = "Uasghrádaigh an Cuntas"
 [config.apiKeys]
 chartAriaLabel = "Úsáid creidmheasanna: san áireamh {{includedUsed}} as {{includedTotal}}, ceannaithe {{purchasedUsed}} as {{purchasedTotal}}"
 copyKeyAriaLabel = "Cóipeáil eochair API"
-description = "Do eochair API chun rochtain a fháil ar shraith uirlisí PDF Stirling. Cóipeáil chuig do thionscadal í nó déan athnuachan chun ceann nua a ghiniúint."
+description = "Do eochair API chun rochtain a fháil ar shraith uirlisí PDF PlexPDF. Cóipeáil chuig do thionscadal í nó déan athnuachan chun ceann nua a ghiniúint."
 docsDescription = "Tuilleadh eolais faoi chomhtháthú le PlexPDF:"
 docsLink = "Doiciméadú API"
 docsTitle = "Doiciméadú API"
@@ -4108,13 +4108,13 @@ skipForNow = "Scipeáil faoi láthair"
 skipTheTour = "Scipeáil an turas"
 
 [onboarding.desktopInstall]
-body = "Oibríonn Stirling is fearr mar aip deisce. Is féidir leat é a úsáid as líne, rochtain níos tapúla a fháil ar dhoiciméid, agus eagarthóireacht a dhéanamh go háitiúil ar do ríomhaire."
+body = "Oibríonn PlexPDF is fearr mar aip deisce. Is féidir leat é a úsáid as líne, rochtain níos tapúla a fháil ar dhoiciméid, agus eagarthóireacht a dhéanamh go háitiúil ar do ríomhaire."
 title = "Íoslódáil"
 titleWithOs = "Íoslódáil do {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Nuair a chumasaíonn tú mód logála isteach, is féidir leat úsáideoirí a bhainistiú, socruithe a chumrú, agus sláinte an fhreastalaí a mheas. Faigheann an chéad <strong>{{freeTierLimit}}</strong> duine ar do fhreastalaí Stirling saor in aisce."
-adminBodyLoginEnabled = "Mar riarthóir, is féidir leat úsáideoirí a bhainistiú, socruithe a chumrú, agus sláinte an fhreastalaí a mheas. Faigheann an chéad <strong>{{freeTierLimit}}</strong> duine ar do fhreastalaí Stirling saor in aisce."
+adminBodyLoginDisabled = "Nuair a chumasaíonn tú mód logála isteach, is féidir leat úsáideoirí a bhainistiú, socruithe a chumrú, agus sláinte an fhreastalaí a mheas. Faigheann an chéad <strong>{{freeTierLimit}}</strong> duine ar do fhreastalaí PlexPDF saor in aisce."
+adminBodyLoginEnabled = "Mar riarthóir, is féidir leat úsáideoirí a bhainistiú, socruithe a chumrú, agus sláinte an fhreastalaí a mheas. Faigheann an chéad <strong>{{freeTierLimit}}</strong> duine ar do fhreastalaí PlexPDF saor in aisce."
 adminTitle = "Forbhreathnú Riarthóra"
 userBody = "Tabhair cuireadh do chomhoibrithe, sann róil, agus coinnigh do dhoiciméid eagraithe in aon spás oibre slán amháin. Cumasaigh mód logála isteach aon uair is mian leat dul thar úsáid aonair."
 userTitle = "Forbhreathnú Plean"
@@ -4123,9 +4123,9 @@ userTitle = "Forbhreathnú Plean"
 message = "Tá athruithe suntasacha déanta ar an bhfeidhmchlár le déanaí. B’fhéidir go mbeidh aird riarthóir do fhreastalaí ag teastáil. Deimhnigh do ról le leanúint ar aghaidh."
 
 [onboarding.serverLicense]
-freeBody = "Ceadaíonn ár gceadúnú <strong>Open-Core</strong> suas le <strong>{{freeTierLimit}}</strong> úsáideoirí saor in aisce in aghaidh an fhreastalaí. Chun scálú gan bhriseadh, molaimid an plean Stirling Server - <strong>suíocháin neamhtheoranta</strong> agus <strong>tacaíocht SSO</strong> ar $99/server/mo."
+freeBody = "Ceadaíonn ár gceadúnú <strong>Open-Core</strong> suas le <strong>{{freeTierLimit}}</strong> úsáideoirí saor in aisce in aghaidh an fhreastalaí. Chun scálú gan bhriseadh, molaimid an plean PlexPDF Server - <strong>suíocháin neamhtheoranta</strong> agus <strong>tacaíocht SSO</strong> ar $99/server/mo."
 freeTitle = "Ceadúnas Freastalaí"
-overLimitBody = "Ceadaíonn ár gceadúnú suas le <strong>{{freeTierLimit}}</strong> úsáideoir in aisce in aghaidh freastalaí. Tá <strong>{{overLimitUserCopy}}</strong> úsáideoir Stirling agat. Chun leanúint gan bhriseadh, uasghrádaigh go plean Freastalaí Stirling - <strong>suíocháin neamhtheoranta</strong>, eagarthóireacht téacs PDF, agus lánrialú riaracháin ar $99/freastalaí/mí."
+overLimitBody = "Ceadaíonn ár gceadúnú suas le <strong>{{freeTierLimit}}</strong> úsáideoir in aisce in aghaidh freastalaí. Tá <strong>{{overLimitUserCopy}}</strong> úsáideoir PlexPDF agat. Chun leanúint gan bhriseadh, uasghrádaigh go plean Freastalaí PlexPDF - <strong>suíocháin neamhtheoranta</strong>, eagarthóireacht téacs PDF, agus lánrialú riaracháin ar $99/freastalaí/mí."
 overLimitTitle = "Ceadúnas Freastalaí de dhíth"
 seePlans = "Féach ar Phleananna →"
 skip = "Scipeáil faoi láthair"
@@ -4145,7 +4145,7 @@ title = "Fáilte go PlexPDF!"
 
 [onboarding.welcomeSlide]
 body = "Tá PlexPDF réidh anois do fhoirne de gach méid. Cuimsíonn an nuashonrú seo leagan amach nua, cumais riaracháin chumhachtacha nua, agus ár ngné is mó a iarradh - <strong>Cuir Téacs in Eagar</strong>."
-title = "Fáilte go Stirling"
+title = "Fáilte go PlexPDF"
 
 [onboarding.whatsNew]
 activeFilesView = "Bain úsáid as Comhaid Ghníomhacha chun gach rud atá oscailte agat a fheiceáil agus chun a roghnú cad atá le hoibriú air."
@@ -5562,7 +5562,7 @@ title = "Mód Ceangail"
 user = "Logáilte isteach mar"
 
 [settings.connection.mode]
-saas = "Stirling Cloud"
+saas = "PlexPDF Cloud"
 selfhosted = "Féin-óstáilte"
 
 [settings.developer]
@@ -5729,16 +5729,16 @@ label = "Ainm Úsáideora"
 placeholder = "Cuir isteach d’ainm úsáideora"
 
 [setup.mode.saas]
-description = "Sínigh isteach le do chuntas Stirling"
-title = "Stirling Cloud"
+description = "Sínigh isteach le do chuntas PlexPDF"
+title = "PlexPDF Cloud"
 
 [setup.mode.selfhosted]
 description = "Ceangail le do fhreastalaí PlexPDF féin"
 title = "Freastalaí Féin-Óstáilte"
 
 [setup.saas]
-subtitle = "Sínigh isteach le do chuntas Stirling"
-title = "Sínigh isteach i Stirling"
+subtitle = "Sínigh isteach le do chuntas PlexPDF"
+title = "Sínigh isteach i PlexPDF"
 
 [setup.selfhosted]
 link = "nó ceangail le cuntas féinóstáilte"
