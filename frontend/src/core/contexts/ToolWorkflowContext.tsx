@@ -48,7 +48,7 @@ interface ToolWorkflowContextValue extends ToolWorkflowState {
 
   // UI Actions
   setSidebarsVisible: (visible: boolean) => void;
-  setLeftPanelView: (view: 'toolPicker' | 'toolContent' | 'hidden') => void;
+  setLeftPanelView: (view: 'toolPicker' | 'toolContent' | 'hidden' | 'tasks') => void;
   setReaderMode: (mode: boolean) => void;
   setToolPanelMode: (mode: ToolPanelMode) => void;
   setPreviewFile: (file: File | null) => void;
@@ -131,7 +131,7 @@ export function ToolWorkflowProvider({ children }: ToolWorkflowProviderProps) {
     dispatch({ type: 'SET_SIDEBARS_VISIBLE', payload: visible });
   }, []);
 
-  const setLeftPanelView = useCallback((view: 'toolPicker' | 'toolContent' | 'hidden') => {
+  const setLeftPanelView = useCallback((view: 'toolPicker' | 'toolContent' | 'hidden' | 'tasks') => {
     dispatch({ type: 'SET_LEFT_PANEL_VIEW', payload: view });
   }, []);
 

@@ -4,7 +4,7 @@ import { type ToolPanelMode, DEFAULT_TOOL_PANEL_MODE } from '@app/constants/tool
 export interface ToolWorkflowState {
   // UI State
   sidebarsVisible: boolean;
-  leftPanelView: 'toolPicker' | 'toolContent' | 'hidden';
+  leftPanelView: 'toolPicker' | 'toolContent' | 'hidden' | 'tasks';
   readerMode: boolean;
   toolPanelMode: ToolPanelMode;
 
@@ -18,7 +18,7 @@ export interface ToolWorkflowState {
 // Actions
 export type ToolWorkflowAction =
   | { type: 'SET_SIDEBARS_VISIBLE'; payload: boolean }
-  | { type: 'SET_LEFT_PANEL_VIEW'; payload: 'toolPicker' | 'toolContent' | 'hidden' }
+  | { type: 'SET_LEFT_PANEL_VIEW'; payload: 'toolPicker' | 'toolContent' | 'hidden' | 'tasks' }
   | { type: 'SET_READER_MODE'; payload: boolean }
   | { type: 'SET_TOOL_PANEL_MODE'; payload: ToolPanelMode }
   | { type: 'SET_PREVIEW_FILE'; payload: File | null }

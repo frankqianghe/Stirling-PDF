@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useEndpointEnabled } from "@app/hooks/useEndpointConfig";
 import { useFileState, useFileSelection } from "@app/contexts/FileContext";
+import { useToolWorkflow } from "@app/contexts/ToolWorkflowContext";
 
 import { createToolFlow } from "@app/components/tools/shared/createToolFlow";
 
@@ -20,8 +20,11 @@ const Convert = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
 
   const convertParams = useConvertParameters();
   const convertOperation = useConvertOperation();
+  const { setLeftPanelView } = useToolWorkflow();
 
-  const { enabled: endpointEnabled, loading: endpointLoading } = useEndpointEnabled(convertParams.getEndpointName());
+  // Remote API is always available — no local endpoint check needed
+  const endpointEnabled = true;
+  const endpointLoading = false;
 
   // Prevent reset immediately after operation completes (when consumeFiles auto-selects outputs)
   const skipNextSelectionResetRef = useRef(false);
@@ -100,9 +103,8 @@ const Convert = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
   const handleConvert = async () => {
     try {
       await convertOperation.executeOperation(convertParams.parameters, selectedFiles);
-      if (convertOperation.files && onComplete) {
-        onComplete(convertOperation.files);
-      }
+      // Switch to the tasks panel so user can see progress
+      setLeftPanelView('tasks');
     } catch (error) {
       if (onError) {
         onError(error instanceof Error ? error.message : "Convert operation failed");

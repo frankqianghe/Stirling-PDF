@@ -43,17 +43,6 @@ export function useSuggestedAutomations(): SuggestedAutomation[] {
             }
           },
           {
-            operation: "convert",
-            parameters: {
-              fromExtension: 'pdf',
-              toExtension: 'pdfa',
-              pdfaOptions: {
-                outputFormat: 'pdfa-2b',
-                strict: false,
-              }
-            }
-          },
-          {
             operation: "compress",
             parameters: {
               compressionLevel: 5,
@@ -215,23 +204,8 @@ export function useSuggestedAutomations(): SuggestedAutomation[] {
       {
         id: "process-images",
         name: t("automation.suggested.processImages", "Process Images"),
-        description: t("automation.suggested.processImagesDesc", "Converts multiple image files into a single PDF document, then applies OCR technology to extract searchable text from the images."),
+        description: t("automation.suggested.processImagesDesc", "Applies OCR technology to extract searchable text from scanned PDF documents."),
         operations: [
-          {
-            operation: "convert",
-            parameters: {
-              fromExtension: 'image',
-              toExtension: 'pdf',
-              imageOptions: {
-                colorType: 'color',
-                dpi: 300,
-                singleOrMultiple: 'multiple',
-                fitOption: 'maintainAspectRatio',
-                autoRotate: true,
-                combineImages: true,
-              }
-            }
-          },
           {
             operation: "ocr",
             parameters: {

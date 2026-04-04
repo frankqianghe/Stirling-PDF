@@ -14,6 +14,7 @@ import { useIsMobile } from '@app/hooks/useIsMobile';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { useTranslation } from 'react-i18next';
 import FullscreenToolSurface from '@app/components/tools/FullscreenToolSurface';
+import TaskListPanel from '@app/components/tools/TaskListPanel';
 import { useToolPanelGeometry } from '@app/hooks/tools/useToolPanelGeometry';
 import { useRightRail } from '@app/contexts/RightRailContext';
 import { Tooltip } from '@app/components/shared/Tooltip';
@@ -123,44 +124,50 @@ export default function ToolPanel() {
             flexDirection: 'column'
           }}
         >
-          <div
-            className="tool-panel__search-row"
-            style={{
-              backgroundColor: 'var(--tool-panel-search-bg)',
-              borderBottom: '1px solid var(--tool-panel-search-border-bottom)'
-            }}
-          >
-            <ToolSearch
-              value={searchQuery}
-              onChange={setSearchQuery}
-              toolRegistry={toolRegistry}
-              mode="filter"
-            />
-            {!isMobile && leftPanelView === 'toolPicker' && (
-              <Tooltip
-                content={toggleLabel}
-                position="bottom"
-                arrow={true}
-                openOnFocus={false}
-              >
-                <ActionIcon
-                  variant="subtle"
-                  radius="xl"
-                  style={{ color: 'var(--right-rail-icon)' }}
-                  onClick={handleModeToggle}
-                  aria-label={toggleLabel}
-                  className="tool-panel__mode-toggle"
+          {leftPanelView !== 'tasks' && (
+            <div
+              className="tool-panel__search-row"
+              style={{
+                backgroundColor: 'var(--tool-panel-search-bg)',
+                borderBottom: '1px solid var(--tool-panel-search-border-bottom)'
+              }}
+            >
+              <ToolSearch
+                value={searchQuery}
+                onChange={setSearchQuery}
+                toolRegistry={toolRegistry}
+                mode="filter"
+              />
+              {!isMobile && leftPanelView === 'toolPicker' && (
+                <Tooltip
+                  content={toggleLabel}
+                  position="bottom"
+                  arrow={true}
+                  openOnFocus={false}
                 >
-                  <DoubleArrowIcon
-                    fontSize="small"
-                    style={{ transform: isRTL ? 'scaleX(-1)' : undefined }}
-                  />
-                </ActionIcon>
-              </Tooltip>
-            )}
-          </div>
+                  <ActionIcon
+                    variant="subtle"
+                    radius="xl"
+                    style={{ color: 'var(--right-rail-icon)' }}
+                    onClick={handleModeToggle}
+                    aria-label={toggleLabel}
+                    className="tool-panel__mode-toggle"
+                  >
+                    <DoubleArrowIcon
+                      fontSize="small"
+                      style={{ transform: isRTL ? 'scaleX(-1)' : undefined }}
+                    />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+            </div>
+          )}
 
-                {searchQuery.trim().length > 0 ? (
+                {leftPanelView === 'tasks' ? (
+                  <div className="flex-1 flex flex-col overflow-hidden">
+                    <TaskListPanel />
+                  </div>
+                ) : searchQuery.trim().length > 0 ? (
                   <div className="flex-1 flex flex-col overflow-y-auto">
                     <SearchResults
                       filteredTools={filteredTools}

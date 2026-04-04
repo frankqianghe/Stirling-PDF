@@ -30,7 +30,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   const location = useLocation();
   const { isRainbowMode } = useRainbowThemeContext();
   const { openFilesModal, isFilesModalOpen } = useFilesModalContext();
-  const { handleReaderToggle, selectedToolKey, leftPanelView, toolRegistry, readerMode, toolAvailability } = useToolWorkflow();
+  const { handleReaderToggle, selectedToolKey, leftPanelView, toolRegistry, readerMode, toolAvailability, setLeftPanelView } = useToolWorkflow();
   const { hasUnsavedChanges } = useNavigationState();
   const { actions: navigationActions } = useNavigationActions();
   const { getToolNavigation } = useSidebarNavigation();
@@ -156,6 +156,17 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
     config?.showSettingsWhenNoLogin === false;
 
   const bottomButtons: ButtonConfig[] = [
+    {
+      id: 'tasks',
+      name: t("quickAccess.tasks", "任务"),
+      icon: <LocalIcon icon="task-alt-rounded" width="1.25rem" height="1.25rem" />,
+      size: 'md' as const,
+      type: 'navigation' as const,
+      onClick: () => {
+        setActiveButton('tasks');
+        setLeftPanelView('tasks');
+      }
+    },
     ...(shouldHideSettingsButton ? [] : [{
       id: 'config',
       name: t("quickAccess.settings", "Settings"),
