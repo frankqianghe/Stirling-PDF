@@ -24,6 +24,11 @@ on:
       - "frontend/package-lock.json"
       - "frontend/vite.config.ts"
       - ".github/workflows/tauri-build.yml"
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'release/**'
 
 permissions:
   contents: read
