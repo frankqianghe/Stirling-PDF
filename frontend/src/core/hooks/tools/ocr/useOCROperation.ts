@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OCRParameters, defaultParameters } from '@app/hooks/tools/ocr/useOCRParameters';
-import { useToolOperation, ToolOperationConfig, ToolType } from '@app/hooks/tools/shared/useToolOperation';
-import { createStandardErrorHandler } from '@app/utils/toolErrorHandler';
-import { useToolResources } from '@app/hooks/tools/shared/useToolResources';
+import { useToolOperation, ToolType, CustomProcessorResult } from '@app/hooks/tools/shared/useToolOperation';
+import { submitOCRTask } from '@app/services/taskService';
+import { useTaskContext } from '@app/contexts/TaskContext';
 
-// Helper: get MIME type based on file extension
+// --- Legacy helpers preserved for future use / automation ---
+
 function getMimeType(filename: string): string {
   const ext = filename.toLowerCase().split('.').pop();
   switch (ext) {
@@ -16,7 +17,6 @@ function getMimeType(filename: string): string {
   }
 }
 
-// Lightweight ZIP extractor (keep or replace with a shared util if you have one)
 async function extractZipFile(zipBlob: Blob): Promise<File[]> {
   const JSZip = await import('jszip');
   const zip = new JSZip.default();
@@ -31,20 +31,18 @@ async function extractZipFile(zipBlob: Blob): Promise<File[]> {
   return out;
 }
 
-// Helper: strip extension
 function stripExt(name: string): string {
   const i = name.lastIndexOf('.');
   return i > 0 ? name.slice(0, i) : name;
 }
 
-// Static function that can be used by both the hook and automation executor
 export const buildOCRFormData = (parameters: OCRParameters, file: File): FormData => {
   const formData = new FormData();
   formData.append('fileInput', file);
   parameters.languages.forEach((lang) => formData.append('languages', lang));
   formData.append('ocrType', parameters.ocrType);
   formData.append('ocrRenderType', parameters.ocrRenderType);
-  
+
   const options = parameters.additionalOptions || [];
   formData.append('sidecar', options.includes('sidecar').toString());
   formData.append('deskew', options.includes('deskew').toString());
@@ -54,12 +52,10 @@ export const buildOCRFormData = (parameters: OCRParameters, file: File): FormDat
   return formData;
 };
 
-// Static response handler for OCR - can be used by automation executor
 export const ocrResponseHandler = async (blob: Blob, originalFiles: File[], extractZipFiles: (blob: Blob) => Promise<File[]>): Promise<File[]> => {
   const headBuf = await blob.slice(0, 8).arrayBuffer();
   const head = new TextDecoder().decode(new Uint8Array(headBuf));
 
-  // ZIP: sidecar or multi-asset output
   if (head.startsWith('PK')) {
     const base = stripExt(originalFiles[0].name);
     try {
@@ -67,13 +63,12 @@ export const ocrResponseHandler = async (blob: Blob, originalFiles: File[], extr
       if (extractedFiles.length > 0) return extractedFiles;
     } catch { /* ignore and try local extractor */ }
     try {
-      const local = await extractZipFile(blob); // local fallback
+      const local = await extractZipFile(blob);
       if (local.length > 0) return local;
     } catch { /* fall through */ }
     return [new File([blob], `ocr_${base}.zip`, { type: 'application/zip' })];
   }
 
-  // Not a PDF: surface error details if present
   if (!head.startsWith('%PDF')) {
     const textBuf = await blob.slice(0, 1024).arrayBuffer();
     const text = new TextDecoder().decode(new Uint8Array(textBuf));
@@ -94,34 +89,47 @@ export const ocrResponseHandler = async (blob: Blob, originalFiles: File[], extr
   return [new File([blob], originalName, { type: 'application/pdf' })];
 };
 
-// Static configuration object (without t function dependencies)
+// --- End legacy helpers ---
+
 export const ocrOperationConfig = {
-  toolType: ToolType.singleFile,
-  buildFormData: buildOCRFormData,
+  toolType: ToolType.custom,
+  customProcessor: async (_params: OCRParameters, _files: File[]): Promise<CustomProcessorResult> => {
+    return { files: [], consumedAllInputs: false };
+  },
   operationType: 'ocr',
-  endpoint: '/api/v1/misc/ocr-pdf',
   defaultParameters,
 } as const;
 
 export const useOCROperation = () => {
   const { t } = useTranslation();
-  const { extractZipFiles } = useToolResources();
+  const { addTask } = useTaskContext();
 
-  // OCR-specific parsing: ZIP (sidecar) vs PDF vs HTML error
-  const responseHandler = useCallback(async (blob: Blob, originalFiles: File[]): Promise<File[]> => {
-    // extractZipFiles from useToolResources already returns File[] directly
-    const simpleExtractZipFiles = extractZipFiles;
-    return ocrResponseHandler(blob, originalFiles, simpleExtractZipFiles);
-  }, [extractZipFiles]);
+  const customOCRProcessor = useCallback(async (
+    _parameters: OCRParameters,
+    selectedFiles: File[]
+  ): Promise<CustomProcessorResult> => {
+    for (const file of selectedFiles) {
+      try {
+        const task = await submitOCRTask(file);
+        addTask(task);
+      } catch (error) {
+        console.warn(`Failed to submit OCR task for ${file.name}:`, error);
+        throw error;
+      }
+    }
 
-  const ocrConfig: ToolOperationConfig<OCRParameters> = {
+    return {
+      files: [],
+      consumedAllInputs: true,
+    };
+  }, [addTask]);
+
+  return useToolOperation<OCRParameters>({
     ...ocrOperationConfig,
-    responseHandler,
-    getErrorMessage: (error) =>
-      error.message?.includes('OCR tools') && error.message?.includes('not installed')
-        ? 'OCR tools (OCRmyPDF or Tesseract) are not installed on the server. Use the standard or fat Docker image instead of ultra-lite, or install OCR tools manually.'
-        : createStandardErrorHandler(t('ocr.error.failed', 'OCR operation failed'))(error),
-  };
-
-  return useToolOperation(ocrConfig);
+    customProcessor: customOCRProcessor,
+    getErrorMessage: (error) => {
+      if (error.message) return error.message;
+      return t('ocr.error.failed', 'OCR operation failed');
+    },
+  });
 };

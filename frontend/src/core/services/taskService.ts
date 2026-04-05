@@ -11,6 +11,9 @@ export interface ConvertTask {
   outputUrl?: string;
   localPath?: string;
   createdAt: string;
+  taskType?: 'convert' | 'ocr';
+  ocrPhase?: 'pdf_to_docx' | 'docx_to_pdf';
+  activeTaskId?: string;
 }
 
 export function loadTasks(): ConvertTask[] {
@@ -106,4 +109,59 @@ export async function queryTaskStatus(taskId: string): Promise<TaskQueryResult> 
     status,
     outputUrl: data.output_url,
   };
+}
+
+export async function submitOCRTask(file: File): Promise<ConvertTask> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const resp = await fetch(`${API_BASE}/convert/pdf/to/docx`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!resp.ok) {
+    throw new Error(`Server error: ${resp.status}`);
+  }
+
+  const json = await resp.json();
+  if (json.code !== 0) {
+    throw new Error(`API error: code ${json.code}`);
+  }
+
+  const task: ConvertTask = {
+    id: json.data.id,
+    fileName: file.name,
+    toFormat: 'pdf',
+    status: (json.data.status === 'completed' ? 'completed'
+      : json.data.status === 'in_progress' || json.data.status === 'pending' ? 'in_progress'
+      : 'failed') as TaskStatus,
+    createdAt: json.data.created_at,
+    taskType: 'ocr',
+    ocrPhase: 'pdf_to_docx',
+  };
+
+  addTask(task);
+  return task;
+}
+
+export async function submitDocxToPdf(docxBlob: Blob, fileName: string): Promise<{ id: string; status: string; created_at: string }> {
+  const formData = new FormData();
+  formData.append('file', new File([docxBlob], fileName));
+
+  const resp = await fetch(`${API_BASE}/convert/docx/to/pdf`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!resp.ok) {
+    throw new Error(`Server error: ${resp.status}`);
+  }
+
+  const json = await resp.json();
+  if (json.code !== 0) {
+    throw new Error(`API error: code ${json.code}`);
+  }
+
+  return json.data;
 }

@@ -21,6 +21,8 @@ export const CONVERSION_ENDPOINTS = {
   'pdf-office-word': '/api/v1/convert/pdf/word',
   'pdf-office-presentation': '/api/v1/convert/pdf/presentation',
   'pdf-xlsx': '/api/v1/convert/pdf/xlsx',
+  'pdf-text-editor': '/api/v1/convert/pdf/text-editor',
+  'text-editor-pdf': '/api/v1/convert/text-editor/pdf',
 } as const;
 
 export const ENDPOINT_NAMES = {

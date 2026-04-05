@@ -37,4 +37,5 @@ export interface ButtonConfig {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   onClick: () => void;
   type?: 'navigation' | 'modal' | 'action';
+  badge?: React.ReactNode;
 }

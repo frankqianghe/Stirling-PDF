@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Stack, Text, Group, Badge, ScrollArea, Box, ActionIcon, Modal, Button, Progress } from '@mantine/core';
 import LocalIcon from '@app/components/shared/LocalIcon';
 import { useTaskContext } from '@app/contexts/TaskContext';
 import { type TaskStatus, type ConvertTask } from '@app/services/taskService';
 
 type DisplayStatus = 'success' | 'processing' | 'failed';
-
-const POLL_INTERVAL = 5000;
 
 const STATUS_CONFIG: Record<DisplayStatus, { label: string; color: string; icon: string }> = {
   success: { label: '转换成功', color: 'green', icon: 'check-circle-rounded' },
@@ -26,22 +24,10 @@ function getDownloadFileName(task: ConvertTask): string {
 }
 
 export default function TaskListPanel() {
-  const { tasks, pollAllTasks, removeTask, updateTask } = useTaskContext();
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { tasks, removeTask, updateTask } = useTaskContext();
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; fileName: string } | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<Record<string, number>>({});
   const downloadingRef = useRef<Set<string>>(new Set());
-
-  useEffect(() => {
-    pollAllTasks();
-    timerRef.current = setInterval(pollAllTasks, POLL_INTERVAL);
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [pollAllTasks]);
 
   const handleConfirmDelete = () => {
     if (deleteTarget) {

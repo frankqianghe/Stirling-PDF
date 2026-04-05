@@ -3466,7 +3466,7 @@ title = "PDF Multi Tool"
 [home.ocr]
 desc = "Cleanup scans and detects text from images within a PDF and re-adds it as text."
 tags = "extract,scan,OCR,optical character recognition,text recognition,scan to text,image to text,scanned document,searchable PDF,make searchable,extract text,recognize text,read scanned"
-title = "OCR / Cleanup scans"
+title = "OCR"
 
 [home.overlay-pdfs]
 desc = "Overlay one PDF on top of another"
@@ -3976,7 +3976,7 @@ additionalLanguages = "Looking for additional languages?"
 viewSetupGuide = "View setup guide →"
 
 [ocr.operation]
-submit = "Process OCR and Review"
+submit = "开始处理"
 
 [ocr.results]
 title = "OCR Results"

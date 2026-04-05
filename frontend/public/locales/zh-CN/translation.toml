@@ -3478,7 +3478,7 @@ title = "PDF 多功能工具"
 [home.ocr]
 desc = "清理和识别 PDF 中的图像文本，并将其转换为可编辑文本。"
 tags = "提取,扫描"
-title = "运行 OCR /清理扫描"
+title = "OCR"
 
 [home.overlay-pdfs]
 desc = "将一个 PDF 叠加在另一个之上"
@@ -3988,7 +3988,7 @@ additionalLanguages = "需要更多语言？"
 viewSetupGuide = "查看设置指南 →"
 
 [ocr.operation]
-submit = "处理 OCR 并预览"
+submit = "开始处理"
 
 [ocr.results]
 title = "OCR 结果"

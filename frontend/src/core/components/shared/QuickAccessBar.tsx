@@ -16,6 +16,7 @@ import ActiveToolButton from "@app/components/shared/quickAccessBar/ActiveToolBu
 import AppConfigModal from '@app/components/shared/AppConfigModal';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
 import { useLicenseAlert } from "@app/hooks/useLicenseAlert";
+import { useTaskContext } from '@app/contexts/TaskContext';
 import QuickAccessButton from '@app/components/shared/quickAccessBar/QuickAccessButton';
 
 import {
@@ -36,6 +37,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { getToolNavigation } = useSidebarNavigation();
   const { config } = useAppConfig();
   const licenseAlert = useLicenseAlert();
+  const { taskBadge } = useTaskContext();
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const [activeButton, setActiveButton] = useState<string>('tools');
   const scrollableRef = useRef<HTMLDivElement>(null);
@@ -47,8 +49,12 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const next = getActiveNavButton(selectedToolKey, readerMode);
-    setActiveButton(next);
+    if (leftPanelView === 'tasks') {
+      setActiveButton('tasks');
+    } else {
+      const next = getActiveNavButton(selectedToolKey, readerMode);
+      setActiveButton(next);
+    }
   }, [leftPanelView, selectedToolKey, toolRegistry, readerMode]);
 
   const handleFilesButtonClick = () => {
@@ -100,6 +106,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
           component={navProps ? 'a' : 'button'}
           dataTestId={`${config.id}-button`}
           dataTour={`${config.id}-button`}
+          badge={config.badge}
         />
       </div>
     );
@@ -155,6 +162,37 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
     config?.enableLogin === false &&
     config?.showSettingsWhenNoLogin === false;
 
+  const taskBadgeNode = taskBadge ? (
+    <div
+      style={{
+        minWidth: 16,
+        height: 16,
+        borderRadius: 8,
+        backgroundColor:
+          taskBadge.type === 'count'
+            ? 'var(--mantine-color-blue-6)'
+            : taskBadge.type === 'success'
+              ? 'var(--mantine-color-green-6)'
+              : 'var(--mantine-color-red-6)',
+        color: '#fff',
+        fontSize: 10,
+        fontWeight: 700,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0 4px',
+        lineHeight: 1,
+        boxShadow: '0 0 0 2px var(--bg-muted)',
+      }}
+    >
+      {taskBadge.type === 'count'
+        ? taskBadge.count
+        : taskBadge.type === 'success'
+          ? '✓'
+          : '✕'}
+    </div>
+  ) : undefined;
+
   const bottomButtons: ButtonConfig[] = [
     {
       id: 'tasks',
@@ -165,7 +203,8 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
       onClick: () => {
         setActiveButton('tasks');
         setLeftPanelView('tasks');
-      }
+      },
+      badge: taskBadgeNode,
     },
     ...(shouldHideSettingsButton ? [] : [{
       id: 'config',

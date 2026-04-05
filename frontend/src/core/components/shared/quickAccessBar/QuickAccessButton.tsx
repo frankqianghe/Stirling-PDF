@@ -17,6 +17,7 @@ interface QuickAccessButtonProps {
   component?: 'a' | 'button';
   dataTestId?: string;
   dataTour?: string;
+  badge?: React.ReactNode;
 }
 
 const QuickAccessButton: React.FC<QuickAccessButtonProps> = ({
@@ -34,6 +35,7 @@ const QuickAccessButton: React.FC<QuickAccessButtonProps> = ({
   component = 'button',
   dataTestId,
   dataTour,
+  badge,
 }) => {
   const buttonSize = size || (isActive ? 'lg' : 'md');
   const bgColor = backgroundColor || (isActive ? 'var(--icon-tools-bg)' : 'var(--icon-inactive-bg)');
@@ -53,22 +55,29 @@ const QuickAccessButton: React.FC<QuickAccessButtonProps> = ({
 
   return (
     <div className="flex flex-col items-center gap-1" data-tour={dataTour}>
-      <ActionIcon
-        {...actionIconProps}
-        size={buttonSize}
-        variant="subtle"
-        style={{
-          backgroundColor: bgColor,
-          color: textColor,
-          border: 'none',
-          borderRadius: '8px',
-          textDecoration: 'none',
-        }}
-        className={className || (isActive ? 'activeIconScale' : '')}
-        data-testid={dataTestId}
-      >
-        <span className="iconContainer">{icon}</span>
-      </ActionIcon>
+      <div style={{ position: 'relative', display: 'inline-flex' }}>
+        <ActionIcon
+          {...actionIconProps}
+          size={buttonSize}
+          variant="subtle"
+          style={{
+            backgroundColor: bgColor,
+            color: textColor,
+            border: 'none',
+            borderRadius: '8px',
+            textDecoration: 'none',
+          }}
+          className={className || (isActive ? 'activeIconScale' : '')}
+          data-testid={dataTestId}
+        >
+          <span className="iconContainer">{icon}</span>
+        </ActionIcon>
+        {badge && (
+          <div style={{ position: 'absolute', top: -4, right: -6, zIndex: 1 }}>
+            {badge}
+          </div>
+        )}
+      </div>
       <div style={{ width: '100%' }}>
         <FitText
           as="span"
