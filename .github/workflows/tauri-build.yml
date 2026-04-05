@@ -51,18 +51,18 @@ jobs:
                 echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"}]}' >> $GITHUB_OUTPUT
                 ;;
               "macos")
-                echo 'matrix={"include":[{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"}]}' >> $GITHUB_OUTPUT
+                echo 'matrix={"include":[{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"}]}' >> $GITHUB_OUTPUT
                 ;;
               "linux")
                 echo 'matrix={"include":[{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
                 ;;
               *)
-                echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
+                echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
                 ;;
             esac
           else
             # For PR/push events, build all platforms
-            echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
+            echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
           fi
 
   build:
@@ -101,7 +101,7 @@ jobs:
         uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # stable
         with:
           toolchain: stable
-          targets: ${{ (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ matrix.platform == 'macos-15' && 'aarch64-apple-darwin' || '' }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
@@ -273,7 +273,7 @@ jobs:
           }
 
       - name: Import Apple Developer Certificate
-        if: ${{ (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && env.APPLE_CERTIFICATE != '' }}
+        if: ${{ matrix.platform == 'macos-15' && env.APPLE_CERTIFICATE != '' }}
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -294,7 +294,7 @@ jobs:
           rm certificate.p12
 
       - name: Verify Certificate
-        if: ${{ (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && env.APPLE_CERTIFICATE != '' }}
+        if: ${{ matrix.platform == 'macos-15' && env.APPLE_CERTIFICATE != '' }}
         run: |
           echo "Verifying Apple Developer Certificate..."
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
@@ -306,7 +306,7 @@ jobs:
           echo "Certificate imported successfully."
 
       - name: Check DMG creation dependencies (macOS only)
-        if: matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel'
+        if: matrix.platform == 'macos-15'
         run: |
           echo "🔍 Checking DMG creation dependencies on ${{ matrix.platform }}..."
           echo "hdiutil version: $(hdiutil --version || echo 'NOT FOUND')"
@@ -317,7 +317,7 @@ jobs:
           ls -la /usr/bin/hd* || echo "No hd* tools found"
 
       - name: Build Tauri app (with Apple signing)
-        if: ${{ (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && env.APPLE_CERTIFICATE != '' }}
+        if: ${{ matrix.platform == 'macos-15' && env.APPLE_CERTIFICATE != '' }}
         uses: tauri-apps/tauri-action@51a9f1156b33df106d827c3a78f8f894946c5faa # v0.5.25
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -338,7 +338,7 @@ jobs:
           args: ${{ matrix.args }}
 
       - name: Build Tauri app (without Apple signing)
-        if: ${{ !(matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') || env.APPLE_CERTIFICATE == '' }}
+        if: ${{ matrix.platform != 'macos-15' || env.APPLE_CERTIFICATE == '' }}
         uses: tauri-apps/tauri-action@51a9f1156b33df106d827c3a78f8f894946c5faa # v0.5.25
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -514,7 +514,7 @@ jobs:
           Write-Host "[SUCCESS] Signed $signedCount/$($filesToSign.Count) files successfully"
 
       - name: Verify notarization (macOS only)
-        if: ${{ (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && env.APPLE_CERTIFICATE != '' }}
+        if: ${{ matrix.platform == 'macos-15' && env.APPLE_CERTIFICATE != '' }}
         run: |
           echo "🔍 Verifying notarization status..."
           cd ./frontend/src-tauri/target
@@ -538,7 +538,7 @@ jobs:
           if [ "${{ matrix.platform }}" = "windows-latest" ]; then
             find . -name "*.exe" -exec cp {} "../../../dist/Stirling-PDF-${{ matrix.name }}.exe" \;
             find . -name "*.msi" -exec cp {} "../../../dist/Stirling-PDF-${{ matrix.name }}.msi" \;
-          elif [ "${{ matrix.platform }}" = "macos-15" ] || [ "${{ matrix.platform }}" = "macos-15-intel" ]; then
+          elif [ "${{ matrix.platform }}" = "macos-15" ]; then
             find . -name "*.dmg" -exec cp {} "../../../dist/Stirling-PDF-${{ matrix.name }}.dmg" \;
           else
             find . -name "*.deb" -exec cp {} "../../../dist/Stirling-PDF-${{ matrix.name }}.deb" \;
@@ -625,7 +625,7 @@ jobs:
               echo "❌ No Windows executable found"
               exit 1
             fi
-          elif [ "${{ matrix.platform }}" = "macos-15" ] || [ "${{ matrix.platform }}" = "macos-15-intel" ]; then
+          elif [ "${{ matrix.platform }}" = "macos-15" ]; then
             echo "Checking for macOS artifacts..."
             find . -name "*.dmg" | head -5
             if [ $(find . -name "*.dmg" | wc -l) -eq 0 ]; then
