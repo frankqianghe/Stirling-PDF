@@ -276,7 +276,7 @@ jobs:
           }
 
       - name: Import Apple Developer Certificate
-        if: matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel'
+        if: (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && secrets.APPLE_CERTIFICATE != ''
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -297,7 +297,7 @@ jobs:
           rm certificate.p12
 
       - name: Verify Certificate
-        if: matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel'
+        if: (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && secrets.APPLE_CERTIFICATE != ''
         run: |
           echo "Verifying Apple Developer Certificate..."
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
@@ -503,7 +503,7 @@ jobs:
           Write-Host "[SUCCESS] Signed $signedCount/$($filesToSign.Count) files successfully"
 
       - name: Verify notarization (macOS only)
-        if: matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel'
+        if: (matrix.platform == 'macos-15' || matrix.platform == 'macos-15-intel') && secrets.APPLE_CERTIFICATE != ''
         run: |
           echo "🔍 Verifying notarization status..."
           cd ./frontend/src-tauri/target
