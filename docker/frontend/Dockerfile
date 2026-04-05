@@ -16,7 +16,7 @@ COPY frontend .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine@sha256:b0f7830b6bfaa1258f45d94c240ab668ced1b3651c8a222aefe6683447c7bf55
+FROM nginx:alpine@sha256:e7257f1ef28ba17cf7c248cb8ccf6f0c6e0228ab9c315c152f9c203cd34cf6d1
 
 # Copy built files from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
