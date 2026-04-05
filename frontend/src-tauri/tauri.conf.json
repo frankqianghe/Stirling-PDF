@@ -61,7 +61,7 @@
         ],
         "linux": {
             "deb": {
-                "desktopTemplate": "plex-pdf.desktop"
+                "desktopTemplate": "plexpdf.desktop"
             }
         },
         "windows": {
