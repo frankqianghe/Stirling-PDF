@@ -12,6 +12,7 @@ import { useFileActionIcons } from "@app/hooks/useFileActionIcons";
 import { saveOperationResults } from "@app/services/operationResultsSaveService";
 import { useFileActions, useFileState } from "@app/contexts/FileContext";
 import { FileId } from "@app/types/fileContext";
+import { alert } from "@app/components/toast";
 import i18n from "@app/i18n";
 
 export interface ReviewToolStepProps<TParams = unknown> {
@@ -59,7 +60,7 @@ function ReviewStepContent<TParams = unknown>({
   const handleDownload = async () => {
     if (!operation.downloadUrl) return;
     try {
-      await saveOperationResults({
+      const result = await saveOperationResults({
         downloadUrl: operation.downloadUrl,
         downloadFilename: operation.downloadFilename || "download",
         downloadLocalPath: operation.downloadLocalPath,
@@ -74,10 +75,13 @@ function ReviewStepContent<TParams = unknown>({
           });
         }
       });
+      if (result?.savedPath) {
+        alert({ alertType: 'success', title: t('fileSaved', 'File saved'), expandable: false, durationMs: 3000 });
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       console.error("[ReviewToolStep] Failed to download file:", message);
-      alert(`Failed to download file: ${message}`);
+      alert({ alertType: 'error', title: t('fileSaveFailed', 'Failed to save file'), body: message, expandable: true, durationMs: 5000 });
     }
   };
 

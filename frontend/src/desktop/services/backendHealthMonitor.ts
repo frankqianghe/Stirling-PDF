@@ -4,20 +4,23 @@ import type { BackendHealthState } from '@app/types/backendHealth';
 
 type Listener = (state: BackendHealthState) => void;
 
+const FOREGROUND_INTERVAL = 5000;
+const BACKGROUND_INTERVAL = 60000;
+
 class BackendHealthMonitor {
   private listeners = new Set<Listener>();
   private intervalId: ReturnType<typeof setInterval> | null = null;
-  private readonly intervalMs: number;
+  private currentIntervalMs: number;
+  private isAppVisible = true;
   private state: BackendHealthState = {
     status: tauriBackendService.getBackendStatus(),
     error: null,
     isHealthy: tauriBackendService.getBackendStatus() === 'healthy',
   };
 
-  constructor(pollingInterval = 5000) {
-    this.intervalMs = pollingInterval;
+  constructor() {
+    this.currentIntervalMs = FOREGROUND_INTERVAL;
 
-    // Reflect status updates from the backend service immediately
     tauriBackendService.subscribeToStatus((status) => {
       this.updateState({
         status,
@@ -27,6 +30,27 @@ class BackendHealthMonitor {
           : this.state.message ?? i18n.t('backendHealth.offline', 'Backend Offline'),
       });
     });
+
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', () => {
+        this.isAppVisible = !document.hidden;
+        this.adjustPollingRate();
+      });
+    }
+  }
+
+  private adjustPollingRate() {
+    const targetInterval = this.isAppVisible ? FOREGROUND_INTERVAL : BACKGROUND_INTERVAL;
+    if (targetInterval === this.currentIntervalMs) return;
+    this.currentIntervalMs = targetInterval;
+
+    // Restart interval only if currently polling
+    if (this.intervalId !== null && this.listeners.size > 0) {
+      this.stopPolling();
+      this.intervalId = setInterval(() => {
+        void this.pollOnce();
+      }, this.currentIntervalMs);
+    }
   }
 
   private updateState(partial: Partial<BackendHealthState>) {
@@ -38,7 +62,6 @@ class BackendHealthMonitor {
       isHealthy: nextStatus === 'healthy',
     };
 
-    // Only notify listeners if meaningful state changed
     const meaningfulChange =
       this.state.status !== nextState.status ||
       this.state.error !== nextState.error ||
@@ -58,7 +81,7 @@ class BackendHealthMonitor {
     void this.pollOnce();
     this.intervalId = setInterval(() => {
       void this.pollOnce();
-    }, this.intervalMs);
+    }, this.currentIntervalMs);
   }
 
   private stopPolling() {

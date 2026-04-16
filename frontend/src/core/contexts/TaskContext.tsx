@@ -8,6 +8,9 @@ import {
 } from '@app/services/taskService';
 
 const POLL_INTERVAL = 5000;
+const POLL_INTERVAL_BACKGROUND = 30000;
+const MAX_POLL_ATTEMPTS_PER_TASK = 360; // ~30 min at 5s interval
+const STALE_TASK_AGE_MS = 30 * 60 * 1000; // 30 minutes
 
 export type TaskBadgeState =
   | { type: 'count'; count: number }
@@ -31,6 +34,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<ConvertTask[]>(loadTasks);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const transitioningRef = useRef(new Set<string>());
+  const pollAttemptsRef = useRef(new Map<string, number>());
+  const isVisibleRef = useRef(!document.hidden);
 
   const taskBadge = useMemo<TaskBadgeState>(() => {
     if (tasks.length === 0) return null;
@@ -59,6 +64,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
     if (pending.length === 0) {
       stopPolling();
+      pollAttemptsRef.current.clear();
       setTasks(current);
       return;
     }
@@ -67,6 +73,21 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     for (const task of pending) {
       try {
         if (transitioningRef.current.has(task.id)) continue;
+
+        // Auto-fail stale tasks that have been polling too long
+        const attempts = pollAttemptsRef.current.get(task.id) ?? 0;
+        const taskAge = Date.now() - new Date(task.createdAt).getTime();
+        if (attempts >= MAX_POLL_ATTEMPTS_PER_TASK || taskAge > STALE_TASK_AGE_MS) {
+          console.warn(`[TaskContext] Task ${task.id} exceeded poll limit (${attempts} attempts, ${Math.round(taskAge / 1000)}s old), marking as failed`);
+          const idx = current.findIndex(t => t.id === task.id);
+          if (idx !== -1) {
+            current[idx] = { ...current[idx], status: 'failed' };
+            changed = true;
+          }
+          pollAttemptsRef.current.delete(task.id);
+          continue;
+        }
+        pollAttemptsRef.current.set(task.id, attempts + 1);
 
         const pollId = task.activeTaskId || task.id;
         const result = await queryTaskStatus(pollId);
@@ -93,23 +114,28 @@ export function TaskProvider({ children }: { children: ReactNode }) {
               outputUrl: undefined,
             };
             changed = true;
+            pollAttemptsRef.current.set(task.id, 0);
           } catch (err) {
             console.error('[TaskContext] OCR phase transition failed:', err);
             current[idx] = { ...current[idx], status: 'failed' };
             changed = true;
+            pollAttemptsRef.current.delete(task.id);
           } finally {
             transitioningRef.current.delete(task.id);
           }
-        } else if (current[idx].status !== result.status) {
+        } else if (result.status === 'completed' || result.status === 'failed') {
           current[idx] = {
             ...current[idx],
             status: result.status,
             outputUrl: result.outputUrl,
           };
           changed = true;
+          pollAttemptsRef.current.delete(task.id);
         }
       } catch {
-        // Ignore transient errors
+        // Count failed network requests toward the limit too
+        const attempts = pollAttemptsRef.current.get(task.id) ?? 0;
+        pollAttemptsRef.current.set(task.id, attempts + 1);
       }
     }
     if (changed) {
@@ -117,15 +143,25 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       const stillActive = current.some(t => t.status === 'in_progress');
       if (!stillActive) {
         stopPolling();
+        pollAttemptsRef.current.clear();
       }
     }
     setTasks(current);
   }, [stopPolling]);
 
+  const restartPollingWithInterval = useCallback((interval: number) => {
+    stopPolling();
+    const current = loadTasks();
+    if (current.some(t => t.status === 'in_progress')) {
+      timerRef.current = setInterval(pollAllTasks, interval);
+    }
+  }, [stopPolling, pollAllTasks]);
+
   const startPollingIfNeeded = useCallback(() => {
     if (timerRef.current) return;
     pollAllTasks();
-    timerRef.current = setInterval(pollAllTasks, POLL_INTERVAL);
+    const interval = isVisibleRef.current ? POLL_INTERVAL : POLL_INTERVAL_BACKGROUND;
+    timerRef.current = setInterval(pollAllTasks, interval);
   }, [pollAllTasks]);
 
   const addTask = useCallback((task: ConvertTask) => {
@@ -135,6 +171,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       return next;
     });
     if (task.status === 'in_progress') {
+      pollAttemptsRef.current.set(task.id, 0);
       if (timerRef.current) {
         pollAllTasks();
       } else {
@@ -150,9 +187,11 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       const stillActive = next.some(t => t.status === 'in_progress');
       if (!stillActive) {
         stopPolling();
+        pollAttemptsRef.current.clear();
       }
       return next;
     });
+    pollAttemptsRef.current.delete(id);
   }, [stopPolling]);
 
   const updateTask = useCallback((id: string, updates: Partial<ConvertTask>) => {
@@ -163,13 +202,30 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  // Pause/slow polling when app is hidden, resume when visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      isVisibleRef.current = !document.hidden;
+      if (document.hidden) {
+        restartPollingWithInterval(POLL_INTERVAL_BACKGROUND);
+      } else {
+        // Immediately poll then switch to normal interval
+        pollAllTasks();
+        restartPollingWithInterval(POLL_INTERVAL);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [pollAllTasks, restartPollingWithInterval]);
+
   useEffect(() => {
     const initial = loadTasks();
     if (initial.length > 0) {
       pollAllTasks().then(() => {
         const current = loadTasks();
         if (current.some(t => t.status === 'in_progress') && !timerRef.current) {
-          timerRef.current = setInterval(pollAllTasks, POLL_INTERVAL);
+          const interval = isVisibleRef.current ? POLL_INTERVAL : POLL_INTERVAL_BACKGROUND;
+          timerRef.current = setInterval(pollAllTasks, interval);
         }
       });
     }

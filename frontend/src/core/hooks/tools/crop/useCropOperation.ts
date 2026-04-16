@@ -18,6 +18,7 @@ export const buildCropFormData = (parameters: CropParameters, file: File): FormD
   }
 
   formData.append("autoCrop", parameters.autoCrop.toString());
+  formData.append("removeDataOutsideCrop", "false");
 
   return formData;
 };
