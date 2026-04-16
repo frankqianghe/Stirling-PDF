@@ -204,7 +204,8 @@ fn run_stirling_pdf_jar(app: &tauri::AppHandle, java_path: &PathBuf, jar_path: &
     let log_path_option = format!("-Dlogging.file.path={}", log_dir.display());
 
     let java_options = vec![
-        "-Xmx8g",
+        "-Xmx2g",
+        "-XX:+ExitOnOutOfMemoryError",
         "-DBROWSER_OPEN=false",
         "-DSTIRLING_PDF_TAURI_MODE=true",
         &log_path_option,

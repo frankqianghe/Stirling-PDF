@@ -138,13 +138,21 @@ class PDFWorkerManager {
    */
   private async waitForAvailableWorker(): Promise<void> {
     return new Promise((resolve) => {
+      const startTime = Date.now();
+      const timeoutMs = 30_000;
+
       const checkAvailability = () => {
         if (this.activeDocuments.size < this.maxWorkers) {
+          resolve();
+        } else if (Date.now() - startTime >= timeoutMs) {
+          // Self-heal if a worker slot appears stuck
+          this.emergencyCleanup();
           resolve();
         } else {
           setTimeout(checkAvailability, 100);
         }
       };
+
       checkAvailability();
     });
   }

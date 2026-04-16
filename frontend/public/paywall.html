@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlexPDF — Upgrade to VIP</title>
+  <style>
+    /* ─── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F1117;
+      --surface:      #1A1D27;
+      --surface-alt:  #20232E;
+      --border:       rgba(255,255,255,0.08);
+      --border-glow:  rgba(245,158,11,0.45);
+      --text-primary: #F3F4F6;
+      --text-muted:   #9CA3AF;
+      --text-dim:     #6B7280;
+      --gold:         #F59E0B;
+      --gold-light:   #FCD34D;
+      --gold-dark:    #D97706;
+      --blue:         #3B82F6;
+      --blue-light:   #60A5FA;
+      --green:        #10B981;
+      --radius-lg:    16px;
+      --radius-xl:    24px;
+      --shadow-card:  0 4px 32px rgba(0,0,0,0.5);
+      --shadow-glow:  0 0 40px rgba(245,158,11,0.15);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Background decoration ────────────────────────────────── */
+    .bg-decor {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 900px 600px at 50% -100px, rgba(245,158,11,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 400px at 90% 80%, rgba(59,130,246,0.06) 0%, transparent 60%);
+    }
+
+    /* ─── Layout ────────────────────────────────────────────────── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+
+    /* ─── Close button ───────────────────────────────────────────── */
+    .close-btn {
+      position: fixed; top: 20px; right: 20px;
+      width: 36px; height: 36px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 18px; line-height: 36px; text-align: center;
+      cursor: pointer; transition: all 0.2s; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .close-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    .header { text-align: center; margin-bottom: 48px; }
+
+    .crown-icon {
+      font-size: 52px; display: block; margin: 0 auto 16px;
+      filter: drop-shadow(0 0 16px rgba(245,158,11,0.6));
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    .header h1 {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .header p {
+      font-size: 16px; color: var(--text-muted); max-width: 480px; margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ─── Feature highlights ──────────────────────────────────── */
+    .highlights {
+      display: flex; justify-content: center; gap: 32px;
+      flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .highlight-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .highlight-item .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+
+    /* ─── Plans grid ────────────────────────────────────────────── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 600px) {
+      .plans-grid { grid-template-columns: 1fr; }
+      .plan-card.recommended { order: -1; }
+    }
+
+    /* ─── Plan card ─────────────────────────────────────────────── */
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px 24px;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .plan-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Recommended (Lifetime) */
+    .plan-card.recommended {
+      border-color: var(--gold-dark);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+    .plan-card.recommended::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 200px 120px at 50% 0%, rgba(245,158,11,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; margin-bottom: 16px;
+      align-self: flex-start;
+    }
+    .badge-gold {
+      background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(253,211,77,0.15));
+      color: var(--gold-light);
+      border: 1px solid rgba(245,158,11,0.3);
+    }
+    .badge-blue {
+      background: rgba(59,130,246,0.15);
+      color: var(--blue-light);
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+
+    .plan-name {
+      font-size: 20px; font-weight: 700; margin-bottom: 6px;
+    }
+    .plan-description {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .price-row {
+      display: flex; align-items: baseline; gap: 6px;
+      margin-bottom: 4px;
+    }
+    .price-amount {
+      font-size: 42px; font-weight: 800; letter-spacing: -1px;
+      line-height: 1;
+    }
+    .price-currency {
+      font-size: 20px; font-weight: 600; color: var(--text-muted);
+    }
+    .price-period {
+      font-size: 14px; color: var(--text-dim); margin-bottom: 24px;
+    }
+
+    /* Feature list */
+    .feature-list {
+      list-style: none; flex: 1;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13.5px; color: var(--text-muted); line-height: 1.4;
+    }
+    .check-icon {
+      width: 18px; height: 18px; flex-shrink: 0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      margin-top: 1px;
+    }
+    .check-gold  { background: rgba(245,158,11,0.2); color: var(--gold); }
+    .check-blue  { background: rgba(59,130,246,0.2); color: var(--blue-light); }
+
+    /* CTA button */
+    .cta-btn {
+      width: 100%; padding: 14px;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; letter-spacing: 0.2px;
+      cursor: pointer; transition: all 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0); transition: background 0.2s;
+    }
+    .cta-btn:hover::after { background: rgba(255,255,255,0.08); }
+    .cta-btn:active { transform: scale(0.98); }
+
+    .cta-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: #1A1200;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+    }
+    .cta-blue {
+      background: linear-gradient(135deg, var(--blue) 0%, #2563EB 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+    }
+
+    .savings-tag {
+      font-size: 11px; color: var(--green); font-weight: 600;
+      margin-top: 8px; text-align: center;
+    }
+
+    /* ─── Divider ───────────────────────────────────────────────── */
+    .divider-row {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 24px;
+    }
+    .divider-row hr {
+      flex: 1; border: none; border-top: 1px solid var(--border);
+    }
+    .divider-text { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+
+    /* ─── Footer actions ────────────────────────────────────────── */
+    .footer-actions {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+
+    .text-btn {
+      background: none; border: none;
+      font-size: 13px; color: var(--text-muted);
+      cursor: pointer; text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .text-btn:hover {
+      color: var(--text-primary);
+      text-decoration-color: var(--text-dim);
+    }
+
+    .security-note {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-dim);
+    }
+    .security-note svg { flex-shrink: 0; }
+
+    /* ─── Loading overlay ────────────────────────────────────────── */
+    .loading-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(15,17,23,0.85);
+      backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+    }
+    .loading-overlay.active { display: flex; }
+
+    .spinner {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(245,158,11,0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text { font-size: 15px; color: var(--text-muted); }
+
+    /* ─── Toast ─────────────────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 14px; color: var(--text-primary);
+      box-shadow: var(--shadow-card);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+      opacity: 0; z-index: 200; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  </style>
+</head>
+<body>
+
+<div class="bg-decor"></div>
+
+<!-- Close button -->
+<button class="close-btn" onclick="handleClose()" aria-label="Close">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="crown-icon">👑</span>
+    <h1>Unlock PlexPDF VIP</h1>
+    <p>Get unlimited access to all PDF tools, offline processing, and priority support — forever.</p>
+  </div>
+
+  <!-- Feature highlights -->
+  <div class="highlights">
+    <div class="highlight-item"><div class="dot"></div>All 40+ PDF tools</div>
+    <div class="highlight-item"><div class="dot"></div>Offline — no cloud required</div>
+    <div class="highlight-item"><div class="dot"></div>Unlimited file size</div>
+    <div class="highlight-item"><div class="dot"></div>Priority support</div>
+    <div class="highlight-item"><div class="dot"></div>Free future updates</div>
+  </div>
+
+  <!-- Plans -->
+  <div class="plans-grid">
+
+    <!-- Lifetime Plan -->
+    <div class="plan-card recommended">
+      <span class="badge badge-gold">⭐ Best Value</span>
+      <div class="plan-name">Lifetime Plan</div>
+      <div class="plan-description">Pay once, use forever. No recurring charges — ever.</div>
+      <div class="price-row">
+        <span class="price-currency">$</span>
+        <span class="price-amount">49</span>
+      </div>
+      <div class="price-period">one-time payment</div>
+      <ul class="feature-list">
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>Lifetime access, no subscription</span>
+        </li>
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>All 40+ PDF tools unlocked</span>
+        </li>
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>Offline processing — 100% private</span>
+        </li>
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>Unlimited file size & batch processing</span>
+        </li>
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>Free updates for life</span>
+        </li>
+        <li>
+          <div class="check-icon check-gold">✓</div>
+          <span>Priority email support</span>
+        </li>
+      </ul>
+      <button class="cta-btn cta-gold" onclick="openCheckout('lifetime')">
+        Get Lifetime Access
+      </button>
+    </div>
+
+    <!-- Yearly Plan -->
+    <div class="plan-card">
+      <span class="badge badge-blue">🔄 Annual</span>
+      <div class="plan-name">Yearly Plan</div>
+      <div class="plan-description">Full access with yearly billing. Cancel anytime.</div>
+      <div class="price-row">
+        <span class="price-currency">$</span>
+        <span class="price-amount">19</span>
+      </div>
+      <div class="price-period">/ year &nbsp;·&nbsp; $1.58 / month</div>
+      <ul class="feature-list">
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>Annual subscription</span>
+        </li>
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>All 40+ PDF tools unlocked</span>
+        </li>
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>Offline processing — 100% private</span>
+        </li>
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>Unlimited file size & batch processing</span>
+        </li>
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>Updates included during subscription</span>
+        </li>
+        <li>
+          <div class="check-icon check-blue">✓</div>
+          <span>Email support</span>
+        </li>
+      </ul>
+      <button class="cta-btn cta-blue" onclick="openCheckout('yearly')">
+        Start Yearly Plan
+      </button>
+      <div class="savings-tag">Save 61% vs monthly</div>
+    </div>
+
+  </div><!-- /plans-grid -->
+
+  <!-- Divider -->
+  <div class="divider-row">
+    <hr /><span class="divider-text">Already have a license?</span><hr />
+  </div>
+
+  <!-- Footer actions -->
+  <div class="footer-actions">
+    <button class="text-btn" onclick="handleRestorePurchase()">Restore Purchase</button>
+    <button class="text-btn" onclick="handleClose()">Continue with Free Version</button>
+
+    <div class="security-note">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"
+              fill="rgba(156,163,175,0.5)"/>
+      </svg>
+      Payments secured by Lemon Squeezy · 30-day money-back guarantee
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Opening checkout…</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Utilities ──────────────────────────────────────────────────
+  function showToast(msg, duration = 3000) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), duration);
+  }
+
+  // ── Read URL params ─────────────────────────────────────────────
+  const params   = new URLSearchParams(window.location.search);
+  const planParam = params.get('plan');   // pre-select plan (optional)
+  const source    = params.get('source'); // analytics source
+
+  // ── Checkout URLs (Lemon Squeezy) ───────────────────────────────
+  // TODO: replace with actual Lemon Squeezy checkout URLs once IDs are configured
+  const CHECKOUT_URLS = {
+    lifetime: 'https://plexpdf.lemonsqueezy.com/checkout/buy/LIFETIME_VARIANT_ID',
+    yearly:   'https://plexpdf.lemonsqueezy.com/checkout/buy/YEARLY_VARIANT_ID',
+  };
+
+  // ── Tauri invoke helper (no external CDN needed) ────────────────
+  // Tauri 2.x injects __TAURI_INTERNALS__ directly into the page's window.
+  // We use it to invoke Rust commands without any dynamic import.
+  function tauriInvoke(cmd, args) {
+    return new Promise((resolve, reject) => {
+      if (window.__TAURI_INTERNALS__) {
+        window.__TAURI_INTERNALS__.invoke(cmd, args || {}).then(resolve).catch(reject);
+      } else {
+        reject(new Error('Not running inside Tauri'));
+      }
+    });
+  }
+  const isTauri = typeof window.__TAURI_INTERNALS__ !== 'undefined';
+
+  // ── Open checkout ───────────────────────────────────────────────
+  async function openCheckout(plan) {
+    const url = CHECKOUT_URLS[plan];
+    if (!url) { showToast('Plan not found'); return; }
+
+    if (isTauri) {
+      document.getElementById('loadingOverlay').classList.add('active');
+      try {
+        await tauriInvoke('open_checkout_url', { url, plan, source: source || 'vip-icon' });
+      } catch (err) {
+        console.warn('[Paywall] open_checkout_url failed, opening system browser:', err);
+        // Fallback: use tauri-plugin-opener via its own injected invoke
+        try {
+          await tauriInvoke('plugin:opener|open_url', { url });
+        } catch {
+          // Last resort fallback
+          window.location.href = url;
+        }
+      } finally {
+        document.getElementById('loadingOverlay').classList.remove('active');
+      }
+    } else {
+      // Browser / dev preview fallback
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  // ── Restore Purchase ────────────────────────────────────────────
+  function handleRestorePurchase() {
+    showToast('Enter your license key to restore your purchase.');
+  }
+
+  // ── Close window ────────────────────────────────────────────────
+  async function handleClose() {
+    if (isTauri) {
+      try {
+        // close_paywall_window is a dedicated Rust command that closes the "paywall" label window
+        await tauriInvoke('close_paywall_window', {});
+      } catch (err) {
+        console.warn('[Paywall] close_paywall_window failed:', err);
+      }
+    } else {
+      window.close();
+    }
+  }
+
+  // ── Auto-highlight plan from URL param ─────────────────────────
+  if (planParam === 'lifetime' || planParam === 'yearly') {
+    document.addEventListener('DOMContentLoaded', () => {
+      // auto-click the matching card's button after a short delay
+      setTimeout(() => {
+        openCheckout(planParam);
+      }, 800);
+    });
+  }
+</script>
+</body>
+</html>

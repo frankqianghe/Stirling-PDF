@@ -5,6 +5,7 @@ import { DesktopBannerInitializer } from '@app/components/DesktopBannerInitializ
 import { SaveShortcutListener } from '@app/components/SaveShortcutListener';
 import { useFirstLaunchCheck } from '@app/hooks/useFirstLaunchCheck';
 import { useBackendInitializer } from '@app/hooks/useBackendInitializer';
+import { useDeviceRegister } from '@app/hooks/useDeviceRegister';
 import { DESKTOP_DEFAULT_APP_CONFIG } from '@app/config/defaultAppConfig';
 import { connectionModeService } from '@app/services/connectionModeService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
@@ -31,6 +32,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
       setAppReady(true);
     }
   }, [setupComplete]);
+
+  // Register device with backend on every launch (after backend is ready)
+  useDeviceRegister();
 
   // Initialize backend health monitoring for self-hosted mode
   useEffect(() => {

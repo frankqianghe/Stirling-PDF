@@ -1695,6 +1695,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
+name = "hmac-sha256"
+version = "1.1.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ec9d92d097f4749b64e8cc33d924d9f40a2d4eb91402b458014b781f5733d60f"
+
+[[package]]
 name = "html5ever"
 version = "0.29.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2356,6 +2362,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "mid"
+version = "5.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cbe876f025da5d9bc4e9522bc191109af38501ede602f58871f688195cb973c2"
+dependencies = [
+ "core-foundation 0.10.1",
+ "hex",
+ "hmac-sha256",
+ "nanoid",
+ "security-framework 3.5.1",
+ "sha2",
+]
+
+[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2401,6 +2421,15 @@ dependencies = [
  "serde",
  "thiserror 2.0.18",
  "windows-sys 0.60.2",
+]
+
+[[package]]
+name = "nanoid"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3ffa00dec017b5b1a8b7cf5e2c008bfda1aa7e0697ac1508b491fdf2622fb4d8"
+dependencies = [
+ "rand 0.8.5",
 ]
 
 [[package]]
@@ -4247,6 +4276,7 @@ dependencies = [
  "core-services",
  "keyring",
  "log",
+ "mid",
  "rand 0.8.5",
  "reqwest 0.11.27",
  "serde",

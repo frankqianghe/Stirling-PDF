@@ -6,13 +6,14 @@ export class FileAnalyzer {
     SMALL: 10 * 1024 * 1024,  // 10MB
     MEDIUM: 50 * 1024 * 1024, // 50MB
     LARGE: 200 * 1024 * 1024, // 200MB
+    VERY_LARGE: 100 * 1024 * 1024, // 100MB - 触发高负载模式
   };
 
   private static readonly PAGE_THRESHOLDS = {
     FEW: 10,    // < 10 pages - immediate full processing
     MANY: 50,   // < 50 pages - priority pages
     MASSIVE: 100, // < 100 pages - progressive chunked
-    // >100 pages = metadata only
+    HIGH_LOAD: 300, // > 300 pages - 触发高负载模式
   };
 
   /**
@@ -220,7 +221,29 @@ export class FileAnalyzer {
   }
 
   /**
-   * Check if a file appears to be a valid PDF
+   * 检查是否需要启用高负载模式
+   * 用于保护系统在处理超大PDF时不被拖慢
+   */
+  static isHighLoadMode(fileSize: number, pageCount?: number): boolean {
+    const isLargeFile = fileSize >= this.SIZE_THRESHOLDS.VERY_LARGE;
+    const isManyPages = pageCount !== undefined && pageCount >= this.PAGE_THRESHOLDS.HIGH_LOAD;
+    return isLargeFile || isManyPages;
+  }
+
+  /**
+   * 获取高负载模式的处理参数
+   */
+  static getHighLoadParams() {
+    return {
+      scale: 0.15,           // 降低缩略图分辨率
+      quality: 0.6,          // 降低JPEG质量
+      batchSize: 1,          // 单页处理，避免阻塞
+      maxPdfCache: 3,        // 减少PDF缓存数量
+    };
+  }
+
+  /**
+   * 检查文件是否为有效PDF
    */
   static async isValidPDF(file: File): Promise<boolean> {
     if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
