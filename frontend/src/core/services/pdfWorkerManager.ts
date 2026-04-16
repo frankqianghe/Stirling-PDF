@@ -13,9 +13,12 @@ class PDFWorkerManager {
   private workerCount = 0;
   private maxWorkers = 10; // Limit concurrent workers
   private isInitialized = false;
+  private idleCleanupTimer: ReturnType<typeof setTimeout> | null = null;
+  private static readonly IDLE_CLEANUP_DELAY = 5 * 60 * 1000; // 5 minutes
 
   private constructor() {
     this.initializeWorker();
+    this.setupVisibilityListener();
   }
 
   static getInstance(): PDFWorkerManager {
@@ -190,6 +193,36 @@ class PDFWorkerManager {
    */
   setMaxWorkers(max: number): void {
     this.maxWorkers = Math.max(1, Math.min(max, 15)); // Between 1-15 workers for multi-file support
+  }
+
+  private setupVisibilityListener(): void {
+    if (typeof document === 'undefined') return;
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.scheduleIdleCleanup();
+      } else {
+        this.cancelIdleCleanup();
+      }
+    });
+  }
+
+  private scheduleIdleCleanup(): void {
+    if (this.idleCleanupTimer) return;
+    this.idleCleanupTimer = setTimeout(() => {
+      this.idleCleanupTimer = null;
+      if (this.activeDocuments.size > 0) {
+        console.log(`[PDFWorkerManager] Idle cleanup: destroying ${this.activeDocuments.size} documents`);
+        this.destroyAllDocuments();
+      }
+    }, PDFWorkerManager.IDLE_CLEANUP_DELAY);
+  }
+
+  private cancelIdleCleanup(): void {
+    if (this.idleCleanupTimer) {
+      clearTimeout(this.idleCleanupTimer);
+      this.idleCleanupTimer = null;
+    }
   }
 }
 

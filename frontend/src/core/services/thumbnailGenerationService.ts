@@ -36,12 +36,12 @@ interface CachedPDFDocument {
 export class ThumbnailGenerationService {
   // Session-based thumbnail cache
   private thumbnailCache = new Map<FileId | string /* FIX ME: Page ID */, CachedThumbnail>();
-  private maxCacheSizeBytes = 256 * 1024 * 1024; // 256MB cache limit
+  private maxCacheSizeBytes = 64 * 1024 * 1024; // 64MB cache limit
   private currentCacheSize = 0;
 
   // PDF document cache to reuse PDF instances and avoid creating multiple workers
   private pdfDocumentCache = new Map<FileId, CachedPDFDocument>();
-  private maxPdfCacheSize = 10; // Keep up to 10 PDF documents cached
+  private maxPdfCacheSize = 5; // Keep up to 5 PDF documents cached
 
   // 高负载模式状态
   private highLoadModeEnabled = true; // 默认启用保护
@@ -344,8 +344,45 @@ export class ThumbnailGenerationService {
   destroy(): void {
     this.clearCache();
     this.clearPDFCache();
+    this.teardownVisibilityListener();
+  }
+
+  private visibilityHandler: (() => void) | null = null;
+  private idleCleanupTimer: ReturnType<typeof setTimeout> | null = null;
+  private static readonly IDLE_CACHE_CLEANUP_DELAY = 3 * 60 * 1000; // 3 minutes
+
+  setupVisibilityListener(): void {
+    if (typeof document === 'undefined' || this.visibilityHandler) return;
+    this.visibilityHandler = () => {
+      if (document.hidden) {
+        if (!this.idleCleanupTimer) {
+          this.idleCleanupTimer = setTimeout(() => {
+            this.idleCleanupTimer = null;
+            console.log('[ThumbnailService] Idle cleanup: clearing caches');
+            this.clearCache();
+            this.clearPDFCache();
+          }, ThumbnailGenerationService.IDLE_CACHE_CLEANUP_DELAY);
+        }
+      } else if (this.idleCleanupTimer) {
+        clearTimeout(this.idleCleanupTimer);
+        this.idleCleanupTimer = null;
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
+  }
+
+  private teardownVisibilityListener(): void {
+    if (this.visibilityHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityHandler);
+      this.visibilityHandler = null;
+    }
+    if (this.idleCleanupTimer) {
+      clearTimeout(this.idleCleanupTimer);
+      this.idleCleanupTimer = null;
+    }
   }
 }
 
 // Global singleton instance
 export const thumbnailGenerationService = new ThumbnailGenerationService();
+thumbnailGenerationService.setupVisibilityListener();

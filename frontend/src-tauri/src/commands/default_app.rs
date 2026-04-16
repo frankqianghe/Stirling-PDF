@@ -106,16 +106,16 @@ fn check_default_windows() -> Result<bool, String> {
 fn set_default_windows() -> Result<String, String> {
     use std::process::Command;
 
-    // Windows 10+ approach: Open Settings app directly to default apps
-    // This is more reliable than COM APIs which require pre-registration
-    // ms-settings:defaultapps opens the default apps settings page
+    // Windows 11 21H2+ (2023-04 CU): deep-link directly to PlexPDF's file associations page,
+    // which shows the .pdf association front-and-center.
+    // On older Windows the parameter is silently ignored and the general page opens instead.
     let result = Command::new("cmd")
-        .args(["/C", "start", "ms-settings:defaultapps"])
+        .args(["/C", "start", "ms-settings:defaultapps?registeredAppMachine=PlexPDF"])
         .output()
         .map_err(|e| format!("Failed to open Windows Settings: {}", e))?;
 
     if result.status.success() {
-        add_log("Opened Windows default apps settings".to_string());
+        add_log("Opened Windows default apps settings for PlexPDF".to_string());
         Ok("opened_dialog".to_string())
     } else {
         let error = String::from_utf8_lossy(&result.stderr);
