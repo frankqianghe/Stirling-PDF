@@ -16,6 +16,7 @@ import { Tooltip } from '@app/components/shared/Tooltip';
 import { ViewerContext } from '@app/contexts/ViewerContext';
 import LocalIcon from '@app/components/shared/LocalIcon';
 import { RightRailFooterExtensions } from '@app/components/rightRail/RightRailFooterExtensions';
+import { RightRailSettingsPrefix } from '@app/components/rightRail/RightRailSettingsPrefix';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
@@ -234,6 +235,7 @@ export default function RightRail() {
           </React.Fragment>
         ))}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }} data-tour="right-rail-settings">
+          <RightRailSettingsPrefix />
           {renderWithTooltip(
             <ActionIcon
               variant="subtle"

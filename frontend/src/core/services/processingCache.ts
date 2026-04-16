@@ -6,8 +6,8 @@ export class ProcessingCache {
   
   constructor(private config: CacheConfig = {
     maxFiles: 20,
-    maxSizeBytes: 2 * 1024 * 1024 * 1024, // 2GB
-    ttlMs: 30 * 60 * 1000 // 30 minutes
+    maxSizeBytes: 512 * 1024 * 1024, // 512MB
+    ttlMs: 10 * 60 * 1000 // 10 minutes
   }) {}
 
   set(key: string, data: ProcessedFile): void {

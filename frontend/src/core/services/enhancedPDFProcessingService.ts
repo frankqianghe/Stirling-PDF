@@ -397,13 +397,19 @@ export class EnhancedPDFProcessingService {
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    const context = canvas.getContext('2d');
-    if (!context) {
-      throw new Error('Could not get canvas context');
-    }
+    try {
+      const context = canvas.getContext('2d');
+      if (!context) {
+        throw new Error('Could not get canvas context');
+      }
 
-    await page.render({ canvasContext: context, viewport }).promise;
-    return canvas.toDataURL('image/jpeg', 0.8); // Use JPEG for better compression
+      await page.render({ canvasContext: context, viewport }).promise;
+      return canvas.toDataURL('image/jpeg', 0.8); // Use JPEG for better compression
+    } finally {
+      // Release GPU-backed canvas resources immediately
+      canvas.width = 0;
+      canvas.height = 0;
+    }
   }
 
   /**

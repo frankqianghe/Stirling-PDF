@@ -8,6 +8,7 @@ import { operationRouter } from '@app/services/operationRouter';
 import { authService } from '@app/services/authService';
 import { connectionModeService } from '@app/services/connectionModeService';
 import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { deviceIdService } from '@app/services/deviceIdService';
 import i18n from '@app/i18n';
 
 const BACKEND_TOAST_COOLDOWN_MS = 4000;
@@ -50,6 +51,12 @@ export function setupApiInterceptors(client: AxiosInstance): void {
 
         // Debug logging
         console.debug(`[apiClientSetup] Request to: ${extendedConfig.url}`);
+
+        // Inject device ID header (use cached value to avoid async overhead per request)
+        const deviceId = deviceIdService.getCached();
+        if (deviceId) {
+          extendedConfig.headers['X-Device-Id'] = deviceId;
+        }
 
         // Add auth token for remote requests and enable credentials
         const isRemote = await operationRouter.isSelfHostedMode();

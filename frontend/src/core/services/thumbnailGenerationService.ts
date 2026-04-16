@@ -5,6 +5,7 @@
 import { FileId } from '@app/types/file';
 import { pdfWorkerManager } from '@app/services/pdfWorkerManager';
 import { PDFDocumentProxy } from 'pdfjs-dist';
+import { FileAnalyzer } from '@app/services/fileAnalyzer';
 
 interface ThumbnailResult {
   pageNumber: number;
@@ -35,15 +36,32 @@ interface CachedPDFDocument {
 export class ThumbnailGenerationService {
   // Session-based thumbnail cache
   private thumbnailCache = new Map<FileId | string /* FIX ME: Page ID */, CachedThumbnail>();
-  private maxCacheSizeBytes = 1024 * 1024 * 1024; // 1GB cache limit
+  private maxCacheSizeBytes = 256 * 1024 * 1024; // 256MB cache limit
   private currentCacheSize = 0;
 
   // PDF document cache to reuse PDF instances and avoid creating multiple workers
   private pdfDocumentCache = new Map<FileId, CachedPDFDocument>();
   private maxPdfCacheSize = 10; // Keep up to 10 PDF documents cached
 
+  // 高负载模式状态
+  private highLoadModeEnabled = true; // 默认启用保护
+
   constructor(private maxWorkers: number = 10) {
     // PDF rendering requires DOM access, so we use optimized main thread processing
+  }
+
+  /**
+   * 设置是否启用高负载模式保护
+   */
+  setHighLoadModeEnabled(enabled: boolean): void {
+    this.highLoadModeEnabled = enabled;
+  }
+
+  /**
+   * 获取当前高负载模式状态
+   */
+  isHighLoadModeEnabled(): boolean {
+    return this.highLoadModeEnabled;
   }
 
   /**
@@ -132,12 +150,23 @@ export class ThumbnailGenerationService {
       throw new Error('generateThumbnails: pageNumbers must not be empty');
     }
 
-    const {
-      scale = 0.2,
-      quality = 0.8
-    } = options;
+    // 检测是否需要高负载模式
+    const isHighLoad = this.highLoadModeEnabled && 
+      FileAnalyzer.isHighLoadMode(pdfArrayBuffer.byteLength, pageNumbers.length);
+    
+    const highLoadParams = isHighLoad ? FileAnalyzer.getHighLoadParams() : null;
+    
+    // 应用自适应参数
+    const scale = highLoadParams?.scale ?? options.scale ?? 0.2;
+    const quality = highLoadParams?.quality ?? options.quality ?? 0.8;
+    const batchSize = highLoadParams?.batchSize ?? 3;
+    
+    // 高负载模式下减少PDF缓存
+    if (highLoadParams?.maxPdfCache && this.maxPdfCacheSize > highLoadParams.maxPdfCache) {
+      this.maxPdfCacheSize = highLoadParams.maxPdfCache;
+    }
 
-    return await this.generateThumbnailsMainThread(fileId, pdfArrayBuffer, pageNumbers, scale, quality, onProgress);
+    return await this.generateThumbnailsMainThread(fileId, pdfArrayBuffer, pageNumbers, scale, quality, batchSize, onProgress);
   }
 
   /**
@@ -149,13 +178,13 @@ export class ThumbnailGenerationService {
     pageNumbers: number[],
     scale: number,
     quality: number,
+    batchSize: number = 3,
     onProgress?: (progress: { completed: number; total: number; thumbnails: ThumbnailResult[] }) => void
   ): Promise<ThumbnailResult[]> {
     const pdf = await this.getCachedPDFDocument(fileId, pdfArrayBuffer);
 
     const allResults: ThumbnailResult[] = [];
     let completed = 0;
-    const batchSize = 3; // Smaller batches for better UI responsiveness
 
     // Process pages in small batches
     for (let i = 0; i < pageNumbers.length; i += batchSize) {
@@ -171,15 +200,21 @@ export class ThumbnailGenerationService {
           canvas.width = viewport.width;
           canvas.height = viewport.height;
 
-          const context = canvas.getContext('2d');
-          if (!context) {
-            throw new Error('Could not get canvas context');
+          try {
+            const context = canvas.getContext('2d');
+            if (!context) {
+              throw new Error('Could not get canvas context');
+            }
+
+            await page.render({ canvasContext: context, viewport }).promise;
+            const thumbnail = canvas.toDataURL('image/jpeg', quality);
+
+            allResults.push({ pageNumber, thumbnail, success: true });
+          } finally {
+            // Release GPU-backed canvas resources immediately
+            canvas.width = 0;
+            canvas.height = 0;
           }
-
-          await page.render({ canvasContext: context, viewport }).promise;
-          const thumbnail = canvas.toDataURL('image/jpeg', quality);
-
-          allResults.push({ pageNumber, thumbnail, success: true });
 
         } catch (error) {
           console.error(`Failed to generate thumbnail for page ${pageNumber}:`, error);

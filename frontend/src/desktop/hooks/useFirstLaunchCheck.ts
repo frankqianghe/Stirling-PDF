@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { connectionModeService } from '@app/services/connectionModeService';
 import { authService } from '@app/services/authService';
+import { deviceIdService } from '@app/services/deviceIdService';
 
 /**
  * First launch check hook
@@ -16,6 +17,11 @@ export function useFirstLaunchCheck(): { isFirstLaunch: boolean; setupComplete: 
   useEffect(() => {
     const checkFirstLaunch = async () => {
       try {
+        // Kick off device ID initialisation early (non-blocking, runs in parallel)
+        deviceIdService.init().catch((e) =>
+          console.warn('[useFirstLaunchCheck] Device ID init warning:', e)
+        );
+
         const firstLaunch = await connectionModeService.isFirstLaunch();
         setIsFirstLaunch(firstLaunch);
 
