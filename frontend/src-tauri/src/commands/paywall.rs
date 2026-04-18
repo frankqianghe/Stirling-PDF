@@ -47,19 +47,23 @@ pub async fn close_paywall_window(app: AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+/// Opens a centered checkout webview.
+///
+/// The webview's navigation handler watches for the supplied `redirect_url`
+/// prefix.  When the server redirects the page to that URL after a successful
+/// payment, the navigation is cancelled, the webview window is closed and a
+/// `checkout-payment-success` event is emitted to the main window so the
+/// frontend can show a success panel.
 #[tauri::command]
 pub async fn open_checkout_webview(
     app: AppHandle,
     url: String,
     order_id: Option<String>,
+    redirect_url: String,
 ) -> Result<(), String> {
-    let toolbar_label = "checkout-toolbar";
-    let content_label = "checkout-webview";
+    let label = "checkout-webview";
 
-    if let Some(existing) = app.get_webview_window(toolbar_label) {
-        let _ = existing.close();
-    }
-    if let Some(existing) = app.get_webview_window(content_label) {
+    if let Some(existing) = app.get_webview_window(label) {
         let _ = existing.close();
     }
 
@@ -69,35 +73,51 @@ pub async fn open_checkout_webview(
         return Err("Checkout URL must be absolute http/https URL".to_string());
     };
 
-    let toolbar_asset = match &order_id {
-        Some(order) => format!("checkout-toolbar.html?order_id={}", order),
-        None => "checkout-toolbar.html".to_string(),
-    };
+    let app_for_nav = app.clone();
+    let redirect_prefix = redirect_url.clone();
+    let order_for_nav = order_id.clone();
 
-    let toolbar = WebviewWindowBuilder::new(&app, toolbar_label, WebviewUrl::App(toolbar_asset.into()))
-        .title("Checkout Controls")
-        .inner_size(1120.0, 56.0)
-        .min_inner_size(860.0, 56.0)
-        .resizable(false)
-        .decorations(false)
-        .always_on_top(true)
-        .center()
-        .build()
-        .map_err(|e| format!("Failed to open checkout toolbar: {}", e))?;
-
-    let toolbar_pos = toolbar
-        .outer_position()
-        .map_err(|e| format!("Failed to read checkout toolbar position: {}", e))?;
-
-    let content_y = toolbar_pos.y as f64 + 56.0;
-    let content_x = toolbar_pos.x as f64;
-
-    WebviewWindowBuilder::new(&app, content_label, external_url)
+    WebviewWindowBuilder::new(&app, label, external_url)
         .title("Checkout")
-        .inner_size(1120.0, 704.0)
+        .inner_size(1120.0, 760.0)
         .min_inner_size(860.0, 620.0)
         .resizable(true)
-        .position(content_x, content_y)
+        .center()
+        .on_navigation(move |next_url| {
+            let next_str = next_url.as_str();
+            if next_str.starts_with(&redirect_prefix) {
+                log::info!(
+                    "[paywall] checkout webview hit redirect URL ({}), closing and notifying main window",
+                    next_str
+                );
+
+                let app_h = app_for_nav.clone();
+                let order_h = order_for_nav.clone();
+                let url_str = next_str.to_string();
+
+                tauri::async_runtime::spawn(async move {
+                    if let Some(win) = app_h.get_webview_window("checkout-webview") {
+                        let _ = win.close();
+                    }
+                    if let Some(main) = app_h.get_webview_window("main") {
+                        let _ = main.set_focus();
+                        let _ = main.unminimize();
+                    }
+                    let _ = app_h.emit(
+                        "checkout-payment-success",
+                        CheckoutSuccessPayload {
+                            order_id: order_h,
+                            redirect_url: url_str,
+                        },
+                    );
+                });
+
+                // Cancel the navigation so the webview doesn't attempt to
+                // actually load the localhost URL (there is no server listening).
+                return false;
+            }
+            true
+        })
         .build()
         .map_err(|e| format!("Failed to open checkout webview: {}", e))?;
 
@@ -109,28 +129,11 @@ pub async fn close_checkout_webview(app: AppHandle) -> Result<(), String> {
     if let Some(win) = app.get_webview_window("checkout-webview") {
         let _ = win.close();
     }
-    if let Some(win) = app.get_webview_window("checkout-toolbar") {
-        let _ = win.close();
-    }
     Ok(())
 }
 
-#[tauri::command]
-pub async fn checkout_back_to_status(app: AppHandle, order_id: Option<String>) -> Result<(), String> {
-    if let Some(win) = app.get_webview_window("checkout-webview") {
-        let _ = win.close();
-    }
-    if let Some(win) = app.get_webview_window("checkout-toolbar") {
-        let _ = win.close();
-    }
-
-    if let Some(main) = app.get_webview_window("main") {
-        let _ = main.set_focus();
-        let _ = main.unminimize();
-    }
-
-    app.emit("checkout-back-to-status", order_id)
-        .map_err(|e| format!("Failed to emit checkout-back-to-status event: {}", e))?;
-
-    Ok(())
+#[derive(Clone, serde::Serialize)]
+struct CheckoutSuccessPayload {
+    order_id: Option<String>,
+    redirect_url: String,
 }

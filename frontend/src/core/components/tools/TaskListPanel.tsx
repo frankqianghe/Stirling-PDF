@@ -1,15 +1,16 @@
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Stack, Text, Group, Badge, ScrollArea, Box, ActionIcon, Modal, Button, Progress } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import LocalIcon from '@app/components/shared/LocalIcon';
 import { useTaskContext } from '@app/contexts/TaskContext';
 import { type TaskStatus, type ConvertTask } from '@app/services/taskService';
 
 type DisplayStatus = 'success' | 'processing' | 'failed';
 
-const STATUS_CONFIG: Record<DisplayStatus, { label: string; color: string; icon: string }> = {
-  success: { label: '转换成功', color: 'green', icon: 'check-circle-rounded' },
-  processing: { label: '处理中', color: 'blue', icon: 'progress-activity' },
-  failed: { label: '转换失败', color: 'red', icon: 'cancel-rounded' },
+const STATUS_STYLE: Record<DisplayStatus, { color: string; icon: string }> = {
+  success: { color: 'green', icon: 'check-circle-rounded' },
+  processing: { color: 'blue', icon: 'progress-activity' },
+  failed: { color: 'red', icon: 'cancel-rounded' },
 };
 
 function mapStatus(status: TaskStatus): DisplayStatus {
@@ -24,10 +25,32 @@ function getDownloadFileName(task: ConvertTask): string {
 }
 
 export default function TaskListPanel() {
+  const { t } = useTranslation();
   const { tasks, removeTask, updateTask } = useTaskContext();
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; fileName: string } | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<Record<string, number>>({});
   const downloadingRef = useRef<Set<string>>(new Set());
+
+  const statusLabels = useMemo<Record<DisplayStatus, string>>(() => ({
+    success: t('taskList.statusSuccess', 'Converted'),
+    processing: t('taskList.statusProcessing', 'Processing'),
+    failed: t('taskList.statusFailed', 'Failed'),
+  }), [t]);
+
+  useEffect(() => {
+    console.log(
+      `[TaskList] Entered panel, ${tasks.length} task(s):`,
+      tasks.map(task => ({
+        id: task.id,
+        fileName: task.fileName,
+        status: task.status,
+        toFormat: task.toFormat,
+        activeTaskId: task.activeTaskId,
+      })),
+    );
+    console.log('[TaskList] Task IDs:', tasks.map(task => task.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleConfirmDelete = () => {
     if (deleteTarget) {
@@ -143,7 +166,7 @@ export default function TaskListPanel() {
         <Stack gap={0}>
           <Group px="sm" py="xs" mb="xs">
             <LocalIcon icon="task-alt-rounded" width="1.1rem" height="1.1rem" />
-            <Text size="sm" fw={600}>任务列表</Text>
+            <Text size="sm" fw={600}>{t('taskList.title', 'Task List')}</Text>
             <Badge size="sm" variant="light" color="gray" ml="auto">
               {tasks.length}
             </Badge>
@@ -151,13 +174,14 @@ export default function TaskListPanel() {
 
           {tasks.length === 0 && (
             <Text size="sm" c="dimmed" ta="center" py="xl">
-              暂无转换任务
+              {t('taskList.empty', 'No conversion tasks')}
             </Text>
           )}
 
           {tasks.map((task) => {
             const displayStatus = mapStatus(task.status);
-            const statusCfg = STATUS_CONFIG[displayStatus];
+            const statusCfg = STATUS_STYLE[displayStatus];
+            const statusLabel = statusLabels[displayStatus];
             const progress = downloadProgress[task.id];
             const isDownloading = progress !== undefined;
 
@@ -211,7 +235,7 @@ export default function TaskListPanel() {
                         />
                       }
                     >
-                      {statusCfg.label}
+                      {statusLabel}
                     </Badge>
 
                     <ActionIcon
@@ -246,19 +270,21 @@ export default function TaskListPanel() {
       <Modal
         opened={deleteTarget !== null}
         onClose={() => setDeleteTarget(null)}
-        title="删除任务"
+        title={t('taskList.deleteTitle', 'Delete task')}
         centered
         size="sm"
       >
         <Text size="sm" mb="lg">
-          确定要删除任务 <Text span fw={600}>"{deleteTarget?.fileName}"</Text> 吗？
+          {t('taskList.deleteConfirmPrefix', 'Are you sure you want to delete the task')}{' '}
+          <Text span fw={600}>"{deleteTarget?.fileName}"</Text>
+          {t('taskList.deleteConfirmSuffix', '?')}
         </Text>
         <Group justify="flex-end" gap="sm">
           <Button variant="default" onClick={() => setDeleteTarget(null)}>
-            取消
+            {t('taskList.cancel', 'Cancel')}
           </Button>
           <Button color="red" onClick={handleConfirmDelete}>
-            删除
+            {t('taskList.delete', 'Delete')}
           </Button>
         </Group>
       </Modal>

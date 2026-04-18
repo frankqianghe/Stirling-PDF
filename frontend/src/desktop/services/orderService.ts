@@ -1,5 +1,6 @@
 import tauriHttpClient from './tauriHttpClient';
 import { DEVICE_TOKEN_KEY } from './deviceRegisterService';
+import { deviceIdService } from './deviceIdService';
 
 const ORDER_SERVER_URL = 'https://plexpdf-test.wenxstudio.ai';
 const ORDER_ID_KEY = 'plexpdf_last_order_id';
@@ -39,17 +40,24 @@ export interface OrderStatus {
 }
 
 class OrderService {
-  async createOrder(plan: OrderPlan): Promise<CreatedOrder> {
+  async createOrder(plan: OrderPlan, redirectUrl: string): Promise<CreatedOrder> {
     const token = this.getDeviceToken();
     if (!token) {
       throw new Error('device_token is missing. Please register device first.');
     }
 
+    const deviceId = deviceIdService.getCached() ?? (await deviceIdService.get());
+
     const baseUrl = ORDER_SERVER_URL.replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/order/create`;
 
-    const payload = { plan };
-    console.log('[OrderService] Creating order:', { endpoint, payload });
+    const payload = { plan, redirect_url: redirectUrl };
+    console.log('[OrderService] Creating order:', {
+      endpoint,
+      payload,
+      deviceId,
+      tokenPrefix: `${token.slice(0, 16)}...`,
+    });
 
     const response = await tauriHttpClient.post<CreateOrderResponse>(
       endpoint,
@@ -58,6 +66,7 @@ class OrderService {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
+          'X-Device-Id': deviceId,
         },
         responseType: 'json',
         timeout: 30000,
@@ -85,12 +94,15 @@ class OrderService {
       throw new Error('device_token is missing. Please register device first.');
     }
 
+    const deviceId = deviceIdService.getCached() ?? (await deviceIdService.get());
+
     const baseUrl = ORDER_SERVER_URL.replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/order/${encodeURIComponent(orderId)}`;
 
     const response = await tauriHttpClient.get<OrderStatusResponse>(endpoint, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'X-Device-Id': deviceId,
       },
       responseType: 'json',
       timeout: 30000,

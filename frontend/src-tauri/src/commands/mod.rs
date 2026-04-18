@@ -30,7 +30,6 @@ pub use auth::{
 pub use default_app::{is_default_pdf_handler, set_as_default_pdf_handler};
 pub use device::get_device_id;
 pub use paywall::{
-    checkout_back_to_status,
     close_checkout_webview,
     close_paywall_window,
     open_checkout_webview,

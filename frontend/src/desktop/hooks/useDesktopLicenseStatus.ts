@@ -58,6 +58,21 @@ export function useDesktopLicenseStatus(): DesktopLicenseInfo {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  // Listen for in-process license updates (storage events don't fire in the
+  // same window, so we use a CustomEvent to broadcast license refreshes).
+  useEffect(() => {
+    const handleUpdate = () => {
+      setPlan(deviceRegisterService.getCachedPlan());
+      try {
+        setPlanExpiresAt(localStorage.getItem(DEVICE_PLAN_EXPIRES_KEY));
+      } catch {
+        /* ignore */
+      }
+    };
+    window.addEventListener('plexpdf-license-updated', handleUpdate);
+    return () => window.removeEventListener('plexpdf-license-updated', handleUpdate);
+  }, []);
+
   // Wait for the current registration call to finish and update state
   useEffect(() => {
     let cancelled = false;

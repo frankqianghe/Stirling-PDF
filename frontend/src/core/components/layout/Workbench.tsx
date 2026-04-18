@@ -19,6 +19,7 @@ import Viewer from '@app/components/viewer/Viewer';
 import LandingPage from '@app/components/shared/LandingPage';
 import Footer from '@app/components/shared/Footer';
 import DismissAllErrorsButton from '@app/components/shared/DismissAllErrorsButton';
+import { WorkbenchCornerExtensions } from '@app/components/shared/WorkbenchCornerExtensions';
 
 // No props needed - component uses contexts directly
 export default function Workbench() {
@@ -213,6 +214,9 @@ export default function Workbench() {
 
       {/* Dismiss All Errors Button */}
       <DismissAllErrorsButton />
+
+      {/* Top-right corner extensions (desktop paywall entry, etc.) */}
+      <WorkbenchCornerExtensions />
 
       {/* Main content area */}
       <Box

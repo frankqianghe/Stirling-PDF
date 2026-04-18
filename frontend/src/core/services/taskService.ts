@@ -1,6 +1,55 @@
 const STORAGE_KEY = 'stirling-pdf-convert-tasks';
 const API_BASE = 'https://plexpdf-test.wenxstudio.ai';
 
+// Keys mirror those owned by the desktop auth services (kept as literals to
+// avoid `core -> desktop` import dependency).
+const DEVICE_TOKEN_KEY = 'plexpdf_device_token';
+const DEVICE_ID_FALLBACK_KEY = 'stirling_device_id_fallback';
+
+// Resolved once per session; Tauri IPC isn't free so we cache the result.
+let cachedDeviceId: string | null = null;
+
+async function resolveDeviceId(): Promise<string> {
+  if (cachedDeviceId) return cachedDeviceId;
+  try {
+    const { invoke } = await import('@tauri-apps/api/core');
+    const id = await invoke<string>('get_device_id');
+    if (id && id.length > 0) {
+      cachedDeviceId = id;
+      return id;
+    }
+  } catch {
+    // Not running inside Tauri (e.g. dev browser) – fall through to fallback.
+  }
+  try {
+    const fallback = localStorage.getItem(DEVICE_ID_FALLBACK_KEY);
+    if (fallback) {
+      cachedDeviceId = fallback;
+      return fallback;
+    }
+  } catch {
+    // ignore – localStorage may be unavailable
+  }
+  return '';
+}
+
+async function buildAuthHeaders(): Promise<Record<string, string>> {
+  const headers: Record<string, string> = {};
+  try {
+    const token = localStorage.getItem(DEVICE_TOKEN_KEY);
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  } catch {
+    // ignore
+  }
+  const deviceId = await resolveDeviceId();
+  if (deviceId) {
+    headers['X-Device-Id'] = deviceId;
+  }
+  return headers;
+}
+
 export type TaskStatus = 'in_progress' | 'completed' | 'failed';
 
 export interface ConvertTask {
@@ -50,8 +99,10 @@ export async function submitConvertTask(file: File, toFormat: string): Promise<C
   const formData = new FormData();
   formData.append('file', file);
 
+  const headers = await buildAuthHeaders();
   const resp = await fetch(`${API_BASE}/convert/pdf/to/${toFormat}`, {
     method: 'POST',
+    headers,
     body: formData,
   });
 
@@ -61,7 +112,7 @@ export async function submitConvertTask(file: File, toFormat: string): Promise<C
 
   const json = await resp.json();
   if (json.code !== 0) {
-    throw new Error(`API error: code ${json.code}`);
+    throw new Error(`API error: code ${json.code}${json.message ? ` (${json.message})` : ''}`);
   }
 
   const task: ConvertTask = {
@@ -74,7 +125,6 @@ export async function submitConvertTask(file: File, toFormat: string): Promise<C
     createdAt: json.data.created_at,
   };
 
-  addTask(task);
   return task;
 }
 
@@ -84,7 +134,10 @@ export interface TaskQueryResult {
 }
 
 export async function queryTaskStatus(taskId: string): Promise<TaskQueryResult> {
-  const resp = await fetch(`${API_BASE}/convert/tasks/${taskId}`);
+  const headers = await buildAuthHeaders();
+  const resp = await fetch(`${API_BASE}/convert/tasks/${taskId}`, {
+    headers,
+  });
 
   if (!resp.ok) {
     throw new Error(`Server error: ${resp.status}`);
@@ -115,8 +168,10 @@ export async function submitOCRTask(file: File): Promise<ConvertTask> {
   const formData = new FormData();
   formData.append('file', file);
 
+  const headers = await buildAuthHeaders();
   const resp = await fetch(`${API_BASE}/convert/pdf/to/docx`, {
     method: 'POST',
+    headers,
     body: formData,
   });
 
@@ -126,7 +181,7 @@ export async function submitOCRTask(file: File): Promise<ConvertTask> {
 
   const json = await resp.json();
   if (json.code !== 0) {
-    throw new Error(`API error: code ${json.code}`);
+    throw new Error(`API error: code ${json.code}${json.message ? ` (${json.message})` : ''}`);
   }
 
   const task: ConvertTask = {
@@ -141,7 +196,6 @@ export async function submitOCRTask(file: File): Promise<ConvertTask> {
     ocrPhase: 'pdf_to_docx',
   };
 
-  addTask(task);
   return task;
 }
 
@@ -149,8 +203,10 @@ export async function submitDocxToPdf(docxBlob: Blob, fileName: string): Promise
   const formData = new FormData();
   formData.append('file', new File([docxBlob], fileName));
 
+  const headers = await buildAuthHeaders();
   const resp = await fetch(`${API_BASE}/convert/docx/to/pdf`, {
     method: 'POST',
+    headers,
     body: formData,
   });
 
@@ -160,7 +216,7 @@ export async function submitDocxToPdf(docxBlob: Blob, fileName: string): Promise
 
   const json = await resp.json();
   if (json.code !== 0) {
-    throw new Error(`API error: code ${json.code}`);
+    throw new Error(`API error: code ${json.code}${json.message ? ` (${json.message})` : ''}`);
   }
 
   return json.data;

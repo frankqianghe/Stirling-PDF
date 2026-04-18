@@ -4249,6 +4249,8 @@ zoomOut = "缩小"
 
 [viewer]
 cannotPreviewFile = "无法预览文件"
+passwordProtectedTitle = "受密码保护的 PDF"
+passwordProtectedDescription = "此 PDF 已加密。请使用“移除密码”工具去除密码后再在此预览。"
 dualPageView = "双页视图"
 firstPage = "第一页"
 lastPage = "最后一页"
@@ -4951,6 +4953,7 @@ reader = "阅读器"
 settings = "设置"
 showMeAround = "带我看看"
 sign = "签名"
+tasks = "任务"
 tours = "导览"
 
 [quickAccess.helpMenu]
@@ -5623,6 +5626,18 @@ desktop = "桌面版本"
 server = "服务器版本"
 title = "版本信息"
 
+[settings.activation]
+activate = "激活"
+activated = "已激活"
+description = "请输入您购买邮件中的激活码（License Key）。"
+invalidKey = "激活码无效，请检查购买邮件中的激活码后重试。"
+navLabel = "激活"
+pasteFromClipboard = "从剪贴板粘贴"
+placeholder = "XXXX-XXXX-XXXX-XXXX"
+successMessage = "激活成功，您的 Pro 功能已在此设备上启用。"
+support = "需要帮助？请联系：support@yourpdf.com"
+title = "激活许可"
+
 [settings.hotkeys]
 capturing = "按下按键…（按 Esc 取消）"
 change = "更改快捷键"
@@ -6232,6 +6247,18 @@ title = "API 文档"
 
 [tableExtraxt]
 tags = "CSV、表格提取、提取、转换"
+
+[taskList]
+cancel = "取消"
+delete = "删除"
+deleteConfirmPrefix = "确定要删除任务"
+deleteConfirmSuffix = "吗？"
+deleteTitle = "删除任务"
+empty = "暂无转换任务"
+statusFailed = "转换失败"
+statusProcessing = "处理中"
+statusSuccess = "转换成功"
+title = "任务列表"
 
 [theme]
 toggle = "切换主题"

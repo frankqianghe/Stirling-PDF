@@ -4237,6 +4237,8 @@ zoomOut = "Zoom Out"
 
 [viewer]
 cannotPreviewFile = "Cannot Preview File"
+passwordProtectedTitle = "Password-protected PDF"
+passwordProtectedDescription = "This PDF is encrypted. Remove the password using the \"Remove Password\" tool to preview it here."
 dualPageView = "Dual Page View"
 firstPage = "First Page"
 lastPage = "Last Page"
@@ -4928,6 +4930,7 @@ reader = "Reader"
 settings = "Settings"
 showMeAround = "Show me around"
 sign = "Sign"
+tasks = "Tasks"
 tours = "Tours"
 
 [quickAccess.helpMenu]
@@ -5618,6 +5621,18 @@ title = "Keyboard Shortcuts"
 mac = "Include ⌘ (Command), ⌥ (Option), or another modifier in your shortcut."
 windows = "Include Ctrl, Alt, or another modifier in your shortcut."
 
+[settings.activation]
+activate = "Activate"
+activated = "Activated"
+description = "Please enter your License Key from your purchase email."
+invalidKey = "Invalid License Key. Please check the key from your purchase email and try again."
+navLabel = "Activation"
+pasteFromClipboard = "Paste from Clipboard"
+placeholder = "XXXX-XXXX-XXXX-XXXX"
+successMessage = "License activated successfully. Your Pro features are now available on this device."
+support = "Need help? Contact: support@yourpdf.com"
+title = "Activate License"
+
 [settings.licensingAnalytics]
 audit = "Audit"
 plan = "Plan"
@@ -6238,6 +6253,18 @@ title = "API Documentation"
 
 [tableExtraxt]
 tags = "CSV,Table Extraction,extract,convert"
+
+[taskList]
+cancel = "Cancel"
+delete = "Delete"
+deleteConfirmPrefix = "Are you sure you want to delete the task"
+deleteConfirmSuffix = "?"
+deleteTitle = "Delete task"
+empty = "No conversion tasks"
+statusFailed = "Failed"
+statusProcessing = "Processing"
+statusSuccess = "Converted"
+title = "Task List"
 
 [theme]
 toggle = "Toggle Theme"

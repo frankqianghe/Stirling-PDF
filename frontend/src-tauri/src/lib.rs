@@ -7,7 +7,6 @@ mod state;
 use commands::{
     add_opened_file,
     cleanup_backend,
-    checkout_back_to_status,
     clear_auth_token,
     clear_opened_files,
     clear_refresh_token,
@@ -183,7 +182,6 @@ pub fn run() {
       close_paywall_window,
       open_checkout_webview,
       close_checkout_webview,
-      checkout_back_to_status,
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")

@@ -377,9 +377,16 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       return;
     }
     console.log(`[PdfTextEditor] Cleaning up cached document for jobId: ${jobId}`);
-    apiClient.post(`/api/v1/convert/pdf/text-editor/clear-cache/${jobId}`).catch((error) => {
-      console.warn('[PdfTextEditor] Failed to clear cache:', error);
-    });
+    // Best-effort cleanup: backend has TTL-based expiry as a safety net, so a
+    // failed cleanup call is non-fatal. `suppressErrorToast` keeps this
+    // background request from surfacing a toast if it fails.
+    apiClient
+      .post(`/api/v1/convert/pdf/text-editor/clear-cache/${jobId}`, undefined, {
+        suppressErrorToast: true,
+      } as any)
+      .catch((error) => {
+        console.warn('[PdfTextEditor] Failed to clear cache:', error);
+      });
   }, []);
 
   useEffect(() => {
@@ -1690,26 +1697,17 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     void handleLoadFile(file);
   }, [selectedFiles, navigationState.selectedTool, handleLoadFile]);
 
-  // Auto-navigate to workbench when tool is selected
-  const hasAutoOpenedWorkbenchRef = useRef(false);
-  useEffect(() => {
-    if (navigationState.selectedTool !== 'pdfTextEditor') {
-      hasAutoOpenedWorkbenchRef.current = false;
-      return;
-    }
-
-    if (hasAutoOpenedWorkbenchRef.current) {
-      return;
-    }
-
-    hasAutoOpenedWorkbenchRef.current = true;
-    // Use timeout to ensure registration effect has run first
-    setTimeout(() => {
-      navigationActions.setWorkbench(WORKBENCH_ID);
-    }, 0);
-  }, [navigationActions, navigationState.selectedTool]);
-
-  // Register workbench view (re-runs when dependencies change)
+  // Register the custom workbench view, seed its data, and switch to it in a
+  // single effect so all three state changes land in one React commit.
+  //
+  // Why this matters: ToolWorkflowContext has a guard effect that resets the
+  // workbench back to the default when the active `custom:*` workbench has no
+  // registered view or its `data == null`. If these three updates happen in
+  // separate ticks (e.g. via `setTimeout(0)`), Chromium-based WebViews
+  // (Windows WebView2) can interleave the guard effect between "workbench
+  // switched" and "data written", kicking the user back to the viewer and
+  // showing an empty right pane. Batching avoids that intermediate state on
+  // all platforms.
   useEffect(() => {
     registerCustomWorkbenchView({
       id: WORKBENCH_VIEW_ID,
@@ -1720,7 +1718,9 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
     });
     setLeftPanelView('toolContent');
     setCustomWorkbenchViewData(WORKBENCH_VIEW_ID, latestViewDataRef.current);
+    navigationActions.setWorkbench(WORKBENCH_ID);
   }, [
+    navigationActions,
     registerCustomWorkbenchView,
     setCustomWorkbenchViewData,
     setLeftPanelView,
@@ -1734,9 +1734,15 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       const jobId = cachedJobIdRef.current;
       if (jobId) {
         console.log(`[PdfTextEditor] Cleaning up cached document on unmount: ${jobId}`);
-        apiClient.post(`/api/v1/convert/pdf/text-editor/clear-cache/${jobId}`).catch((error) => {
-          console.warn('[PdfTextEditor] Failed to clear cache on unmount:', error);
-        });
+        // Best-effort cleanup during unmount: suppress toast and tolerate
+        // failures (backend TTL expiry will reclaim the cache).
+        apiClient
+          .post(`/api/v1/convert/pdf/text-editor/clear-cache/${jobId}`, undefined, {
+            suppressErrorToast: true,
+          } as any)
+          .catch((error) => {
+            console.warn('[PdfTextEditor] Failed to clear cache on unmount:', error);
+          });
       }
       clearCustomWorkbenchViewData(WORKBENCH_VIEW_ID);
       unregisterCustomWorkbenchView(WORKBENCH_VIEW_ID);

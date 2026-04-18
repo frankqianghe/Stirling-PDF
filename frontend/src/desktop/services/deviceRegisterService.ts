@@ -6,7 +6,9 @@
  *
  * The response contains:
  *   - token       : a device-scoped JWT that identifies the device
- *   - paid_plan   : "free" | "year" | "lifetime"
+ *   - paid_plan   : "free" | "year" | "yearly" | "lifetime" | "buyout"
+ *                   ("buyout" is a server-side alias for a one-time lifetime
+ *                    purchase; both map to the internal PaidPlan `'lifetime'`)
  *   - plan_expires_at : ISO date string (for yearly plans)
  *
  * Both values are persisted in localStorage so other services (e.g.
@@ -121,14 +123,26 @@ class DeviceRegisterService {
    */
   async registerWithRetry(maxAttempts = 8, delayMs = 1000): Promise<DeviceRegistration | null> {
     for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      console.log(
+        `[DeviceRegisterService] 🔁 attempt ${attempt}/${maxAttempts}`
+      );
       const res = await this.register();
-      if (res !== null) return res;
+      if (res !== null) {
+        console.log(
+          `[DeviceRegisterService] ✅ succeeded on attempt ${attempt}/${maxAttempts}`
+        );
+        return res;
+      }
 
       if (attempt < maxAttempts) {
         console.log(
-          `[DeviceRegisterService] Retry ${attempt}/${maxAttempts} in ${delayMs}ms...`
+          `[DeviceRegisterService] ⏳ attempt ${attempt} failed, waiting ${delayMs}ms before retry...`
         );
         await new Promise((resolve) => setTimeout(resolve, delayMs));
+      } else {
+        console.error(
+          `[DeviceRegisterService] ❌ giving up after ${maxAttempts} attempts`
+        );
       }
     }
 
@@ -199,7 +213,17 @@ class DeviceRegisterService {
       responseStatusText = response.statusText;
       json = response.data;
     } catch (networkErr) {
-      console.error('[DeviceRegisterService] ❌ Network/HTTP error:', networkErr);
+      const errAny = networkErr as any;
+      console.error(
+        '[DeviceRegisterService] ❌ Network/HTTP error during /client/device/register:',
+        {
+          message: errAny?.message,
+          code: errAny?.code,
+          status: errAny?.status,
+          responseData: errAny?.response?.data,
+          raw: networkErr,
+        }
+      );
       throw networkErr;
     }
 
@@ -215,7 +239,7 @@ class DeviceRegisterService {
     const rawPlan = (json.data.paid_plan ?? '').toLowerCase();
     const paidPlan: PaidPlan =
       rawPlan === 'year' || rawPlan === 'yearly' ? 'year'
-      : rawPlan === 'lifetime' ? 'lifetime'
+      : rawPlan === 'lifetime' || rawPlan === 'buyout' ? 'lifetime'
       : 'free';
 
     const reg: DeviceRegistration = {

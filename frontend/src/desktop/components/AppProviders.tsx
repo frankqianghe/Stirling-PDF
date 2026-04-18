@@ -3,6 +3,7 @@ import { AppProviders as ProprietaryAppProviders } from "@proprietary/components
 import { DesktopConfigSync } from '@app/components/DesktopConfigSync';
 import { DesktopBannerInitializer } from '@app/components/DesktopBannerInitializer';
 import { SaveShortcutListener } from '@app/components/SaveShortcutListener';
+import { BackendLoadingOverlay } from '@app/components/BackendLoadingOverlay';
 import { useFirstLaunchCheck } from '@app/hooks/useFirstLaunchCheck';
 import { useBackendInitializer } from '@app/hooks/useBackendInitializer';
 import { useDeviceRegister } from '@app/hooks/useDeviceRegister';
@@ -101,6 +102,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
       <DesktopBannerInitializer />
       <SaveShortcutListener />
       {children}
+      {/*
+        Block the entire UI while the bundled backend is not healthy yet.
+        Mounted last so it sits at the top of the stacking context, and
+        renders nothing once the footer status dot turns green.
+      */}
+      <BackendLoadingOverlay />
     </ProprietaryAppProviders>
   );
 }

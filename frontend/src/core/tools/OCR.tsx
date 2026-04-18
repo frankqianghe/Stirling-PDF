@@ -10,6 +10,7 @@ import AdvancedOCRSettings from "@app/components/tools/ocr/AdvancedOCRSettings";
 
 import { useOCRParameters } from "@app/hooks/tools/ocr/useOCRParameters";
 import { useOCROperation } from "@app/hooks/tools/ocr/useOCROperation";
+import { loadTasks } from "@app/services/taskService";
 import { BaseToolProps, ToolComponent } from "@app/types/tool";
 import { useOCRTips } from "@app/components/tooltips/useOCRTips";
 import { useAdvancedOCRTips } from "@app/components/tooltips/useAdvancedOCRTips";
@@ -57,9 +58,16 @@ const OCR = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
   }, [hasResults]);
 
   const handleOCR = async () => {
+    // Snapshot localStorage – executeOperation swallows errors internally, so
+    // the only reliable signal of a successful submit is a new task entry.
+    const tasksBefore = loadTasks().length;
     try {
       await ocrOperation.executeOperation(ocrParams.parameters, selectedFiles);
-      setLeftPanelView('tasks');
+      if (loadTasks().length > tasksBefore) {
+        setLeftPanelView('tasks');
+      } else if (onError) {
+        onError(t("ocr.error.failed", "OCR operation failed"));
+      }
     } catch (error) {
       if (onError) {
         onError(error instanceof Error ? error.message : "OCR operation failed");

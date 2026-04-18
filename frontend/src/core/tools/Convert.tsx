@@ -9,6 +9,7 @@ import ConvertSettings from "@app/components/tools/convert/ConvertSettings";
 
 import { useConvertParameters } from "@app/hooks/tools/convert/useConvertParameters";
 import { useConvertOperation } from "@app/hooks/tools/convert/useConvertOperation";
+import { loadTasks } from "@app/services/taskService";
 import { BaseToolProps, ToolComponent } from "@app/types/tool";
 
 const Convert = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
@@ -101,10 +102,19 @@ const Convert = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
   }, [hasResults]);
 
   const handleConvert = async () => {
+    // Snapshot localStorage (the source of truth used by TaskContext) because
+    // `useTaskContext().tasks` is stale inside this async handler's closure.
+    const tasksBefore = loadTasks().length;
     try {
       await convertOperation.executeOperation(convertParams.parameters, selectedFiles);
-      // Switch to the tasks panel so user can see progress
-      setLeftPanelView('tasks');
+      // Only switch to the tasks panel if at least one task was actually submitted.
+      // executeOperation swallows errors internally (e.g. 401 from the remote API),
+      // so we check task count rather than relying on await to throw.
+      if (loadTasks().length > tasksBefore) {
+        setLeftPanelView('tasks');
+      } else if (onError) {
+        onError(t("convert.errorConversion", "An error occurred while converting the file."));
+      }
     } catch (error) {
       if (onError) {
         onError(error instanceof Error ? error.message : "Convert operation failed");

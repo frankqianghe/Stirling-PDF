@@ -196,12 +196,30 @@ class TauriHttpClient {
 
       // Make the request using Tauri's native HTTP client (standard Fetch API)
       // Enable certificate bypass for HTTPS to handle missing intermediate certs and self-signed certs
+      //
+      // WKWebView body workaround (macOS/iOS):
+      //   `new Request(url, { method: 'POST' /* no body */ })` throws
+      //   `SyntaxError: The string did not match the expected pattern.`
+      //   inside @tauri-apps/plugin-http, which constructs a Request to read
+      //   the body as ArrayBuffer. Spec says body is optional, but WebKit's
+      //   Request constructor rejects body-required methods without a body.
+      //
+      //   Workaround: always provide an (empty) body for methods that expect
+      //   one. GET/HEAD/OPTIONS must not have a body per spec, so they are
+      //   excluded. Passing body: undefined is NOT equivalent to omitting the
+      //   key on some WebKit versions either, so we explicitly omit the key
+      //   when we want no body.
+      const methodRequiresBody = method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE';
       const fetchOptions: any = {
         method,
         headers,
-        body,
         credentials,
       };
+      if (body !== undefined) {
+        fetchOptions.body = body;
+      } else if (methodRequiresBody) {
+        fetchOptions.body = '';
+      }
 
       // Always enable dangerous settings for HTTPS to allow connections to servers with:
       // - Missing intermediate certificates
