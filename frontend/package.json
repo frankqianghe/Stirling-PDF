@@ -18,7 +18,7 @@
     "@embedpdf/plugin-export": "^2.6.2",
     "@embedpdf/plugin-history": "^2.6.2",
     "@embedpdf/plugin-interaction-manager": "^2.6.2",
-    "@embedpdf/plugin-pan": "^2.6.2",
+    "@embedpdf/plugin-pan": "^2.13.0",
     "@embedpdf/plugin-print": "^2.6.2",
     "@embedpdf/plugin-redaction": "^2.6.2",
     "@embedpdf/plugin-render": "^2.6.2",
