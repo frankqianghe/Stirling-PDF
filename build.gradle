@@ -27,7 +27,7 @@ ext {
     bouncycastleVersion = "1.83"
     springSecuritySamlVersion = "7.0.2"
     openSamlVersion = "4.3.2"
-    commonmarkVersion = "0.27.1"
+    commonmarkVersion = "0.28.0"
     googleJavaFormatVersion = "1.34.1"
     logback = "1.5.28"
     junitPlatformVersion = "1.12.2"
