@@ -11,7 +11,6 @@
 
 /// Application-specific HMAC salt.
 /// Changing this value will invalidate all previously issued device IDs.
-#[allow(dead_code)]
 const DEVICE_ID_SALT: &str = "stirling-pdf-device-v1";
 
 /// Returns a stable, hardware-backed SHA-256 device identifier.
@@ -20,12 +19,11 @@ const DEVICE_ID_SALT: &str = "stirling-pdf-device-v1";
 /// On error, falls back to a warning and returns an `Err`.
 #[tauri::command]
 pub async fn get_device_id() -> Result<String, String> {
-    // TEMP: hard-code the device ID for debugging. Restore the real
-    // hardware-backed implementation below before shipping.
-    Ok("xxxxxxxx".to_string())
+    // TEMP debug override (kept commented for quick re-enable):
+    // Ok("xxxxxxxx".to_string())
 
-    // mid::get(DEVICE_ID_SALT).map_err(|e| {
-    //     log::warn!("[device] Failed to obtain device ID via mid crate: {}", e);
-    //     format!("Failed to get device ID: {}", e)
-    // })
+    mid::get(DEVICE_ID_SALT).map_err(|e| {
+        log::warn!("[device] Failed to obtain device ID via mid crate: {}", e);
+        format!("Failed to get device ID: {}", e)
+    })
 }
