@@ -34,6 +34,12 @@ use commands::{
     set_as_default_pdf_handler,
     start_backend,
     start_oauth_login,
+    task_log_append,
+    task_log_delete,
+    task_log_dir_path,
+    task_log_open,
+    task_log_path,
+    task_log_read,
 };
 use commands::connection::apply_provisioning_if_present;
 use state::connection_state::AppConnectionState;
@@ -182,6 +188,12 @@ pub fn run() {
       close_paywall_window,
       open_checkout_webview,
       close_checkout_webview,
+      task_log_append,
+      task_log_read,
+      task_log_open,
+      task_log_delete,
+      task_log_path,
+      task_log_dir_path,
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")

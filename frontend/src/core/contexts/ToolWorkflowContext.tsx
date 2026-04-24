@@ -12,6 +12,7 @@ import { ToolId, isValidToolId } from '@app/types/toolId';
 import { WorkbenchType, getDefaultWorkbench, isBaseWorkbench } from '@app/types/workbench';
 import { useNavigationUrlSync } from '@app/hooks/useUrlSync';
 import { filterToolRegistryByQuery } from '@app/utils/toolSearch';
+import { isToolPaywalled, triggerPaywall } from '@app/utils/paywallGate';
 import { useToolHistory } from '@app/hooks/tools/useUserToolActivity';
 import {
   ToolWorkflowState,
@@ -267,6 +268,14 @@ export function ToolWorkflowProvider({ children }: ToolWorkflowProviderProps) {
     const availabilityInfo = toolAvailability[toolId];
     const isExplicitlyDisabled = availabilityInfo ? availabilityInfo.available === false : false;
     if (toolId !== 'read' && toolId !== 'multiTool' && isExplicitlyDisabled) {
+      return;
+    }
+
+    // Desktop paywall: free-plan users hitting a gated tool see the
+    // checkout modal instead of opening the tool. Web/core builds use a
+    // no-op stub so this is a cheap early-out there.
+    if (isToolPaywalled(toolId)) {
+      triggerPaywall(toolId);
       return;
     }
     // If we're currently on a custom workbench (e.g., Validate Signature report),

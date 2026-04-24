@@ -4,6 +4,7 @@ import { ConvertParameters, defaultParameters } from '@app/hooks/tools/convert/u
 import { useToolOperation, ToolType, CustomProcessorResult } from '@app/hooks/tools/shared/useToolOperation';
 import { submitConvertTask } from '@app/services/taskService';
 import { useTaskContext } from '@app/contexts/TaskContext';
+import { createTaskLogger, generateLogId } from '@app/services/taskLogService';
 
 // Static configuration object (kept for automation compatibility)
 export const convertOperationConfig = {
@@ -26,10 +27,17 @@ export const useConvertOperation = () => {
     const { toExtension } = parameters;
 
     for (const file of selectedFiles) {
+      const logger = createTaskLogger(generateLogId());
+      logger.info(
+        `=== Convert session started: file="${file.name}" -> ${toExtension} ===`,
+      );
       try {
-        const task = await submitConvertTask(file, toExtension);
-        addTask(task);
+        const task = await submitConvertTask(file, toExtension, logger);
+        // Always persist the logId so the UI can locate the file later.
+        addTask({ ...task, logId: logger.id });
       } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
+        logger.error(`Submit failed: ${msg}`);
         console.warn(`Failed to submit convert task for ${file.name}:`, error);
         throw error;
       }

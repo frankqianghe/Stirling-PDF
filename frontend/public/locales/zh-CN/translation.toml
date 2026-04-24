@@ -1753,7 +1753,7 @@ checking = "正在检查后端状态..."
 offline = "后端离线"
 online = "后端在线"
 starting = "后端正在启动..."
-wait = "请等待后端完成启动后再试。"
+wait = "软件正在初始化请稍等..."
 
 [backendStartup]
 notFoundTitle = "未找到后端"
@@ -6255,10 +6255,14 @@ deleteConfirmPrefix = "确定要删除任务"
 deleteConfirmSuffix = "吗？"
 deleteTitle = "删除任务"
 empty = "暂无转换任务"
+failureTooltipTitle = "失败原因"
+openLog = "打开日志文件"
+openLogHint = "右键 → 打开日志文件查看完整详情。"
 statusFailed = "转换失败"
 statusProcessing = "处理中"
 statusSuccess = "转换成功"
 title = "任务列表"
+unknownError = "未知错误，右键打开日志文件查看详情。"
 
 [theme]
 toggle = "切换主题"

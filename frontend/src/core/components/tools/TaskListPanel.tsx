@@ -1,9 +1,26 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Stack, Text, Group, Badge, ScrollArea, Box, ActionIcon, Modal, Button, Progress } from '@mantine/core';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Stack,
+  Text,
+  Group,
+  Badge,
+  ScrollArea,
+  Box,
+  ActionIcon,
+  Modal,
+  Button,
+  Progress,
+  Tooltip,
+  Menu,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import LocalIcon from '@app/components/shared/LocalIcon';
 import { useTaskContext } from '@app/contexts/TaskContext';
 import { type TaskStatus, type ConvertTask } from '@app/services/taskService';
+import {
+  getLastErrorReason,
+  openTaskLog,
+} from '@app/services/taskLogService';
 
 type DisplayStatus = 'success' | 'processing' | 'failed';
 
@@ -24,11 +41,19 @@ function getDownloadFileName(task: ConvertTask): string {
   return `${baseName}.${task.toFormat}`;
 }
 
+interface ContextMenuState {
+  task: ConvertTask;
+  x: number;
+  y: number;
+}
+
 export default function TaskListPanel() {
   const { t } = useTranslation();
   const { tasks, removeTask, updateTask } = useTaskContext();
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; fileName: string } | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<Record<string, number>>({});
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [failureReasons, setFailureReasons] = useState<Record<string, string>>({});
   const downloadingRef = useRef<Set<string>>(new Set());
 
   const statusLabels = useMemo<Record<DisplayStatus, string>>(() => ({
@@ -37,20 +62,30 @@ export default function TaskListPanel() {
     failed: t('taskList.statusFailed', 'Failed'),
   }), [t]);
 
+  // Hydrate failure reasons for tasks that failed without a populated `failureReason`
+  // (e.g. legacy entries from before logging was introduced).
   useEffect(() => {
-    console.log(
-      `[TaskList] Entered panel, ${tasks.length} task(s):`,
-      tasks.map(task => ({
-        id: task.id,
-        fileName: task.fileName,
-        status: task.status,
-        toFormat: task.toFormat,
-        activeTaskId: task.activeTaskId,
-      })),
-    );
-    console.log('[TaskList] Task IDs:', tasks.map(task => task.id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let cancelled = false;
+    (async () => {
+      const updates: Record<string, string> = {};
+      for (const task of tasks) {
+        if (task.status !== 'failed') continue;
+        if (failureReasons[task.id] !== undefined) continue;
+        if (task.failureReason) {
+          updates[task.id] = task.failureReason;
+          continue;
+        }
+        if (task.logId) {
+          const reason = await getLastErrorReason(task.logId);
+          if (reason) updates[task.id] = reason;
+        }
+      }
+      if (!cancelled && Object.keys(updates).length > 0) {
+        setFailureReasons(prev => ({ ...prev, ...updates }));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [tasks, failureReasons]);
 
   const handleConfirmDelete = () => {
     if (deleteTarget) {
@@ -159,6 +194,33 @@ export default function TaskListPanel() {
     }
   }
 
+  function handleContextMenu(e: React.MouseEvent, task: ConvertTask) {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({ task, x: e.clientX, y: e.clientY });
+  }
+
+  async function handleOpenLog(task: ConvertTask) {
+    setContextMenu(null);
+    if (!task.logId) {
+      console.warn('[TaskList] Task has no logId, nothing to open:', task.id);
+      return;
+    }
+    try {
+      await openTaskLog(task.logId);
+    } catch (err) {
+      console.error('[TaskList] Failed to open task log:', err);
+    }
+  }
+
+  function failureLabel(task: ConvertTask): string {
+    const reason =
+      task.failureReason ||
+      failureReasons[task.id] ||
+      t('taskList.unknownError', 'Unknown error. Right-click to open log file for details.');
+    return reason;
+  }
+
   return (
     <>
       <style>{`@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}`}</style>
@@ -184,6 +246,28 @@ export default function TaskListPanel() {
             const statusLabel = statusLabels[displayStatus];
             const progress = downloadProgress[task.id];
             const isDownloading = progress !== undefined;
+            const isFailed = displayStatus === 'failed';
+
+            const badge = (
+              <Badge
+                size="sm"
+                variant="light"
+                color={statusCfg.color}
+                style={isFailed ? { cursor: 'help' } : undefined}
+                leftSection={
+                  <LocalIcon
+                    icon={statusCfg.icon}
+                    width="0.75rem"
+                    height="0.75rem"
+                    style={displayStatus === 'processing' ? {
+                      animation: 'spin 1.2s linear infinite',
+                    } : undefined}
+                  />
+                }
+              >
+                {statusLabel}
+              </Badge>
+            );
 
             return (
               <Box
@@ -197,6 +281,7 @@ export default function TaskListPanel() {
                 }}
                 className="hover:bg-[var(--bg-hover)]"
                 onClick={() => handleTaskClick(task)}
+                onContextMenu={(e) => handleContextMenu(e, task)}
               >
                 <Group justify="space-between" wrap="nowrap" gap="xs">
                   <Group
@@ -220,23 +305,28 @@ export default function TaskListPanel() {
                   </Group>
 
                   <Group gap={4} wrap="nowrap" style={{ flexShrink: 0 }}>
-                    <Badge
-                      size="sm"
-                      variant="light"
-                      color={statusCfg.color}
-                      leftSection={
-                        <LocalIcon
-                          icon={statusCfg.icon}
-                          width="0.75rem"
-                          height="0.75rem"
-                          style={displayStatus === 'processing' ? {
-                            animation: 'spin 1.2s linear infinite',
-                          } : undefined}
-                        />
-                      }
-                    >
-                      {statusLabel}
-                    </Badge>
+                    {isFailed ? (
+                      <Tooltip
+                        multiline
+                        w={280}
+                        withArrow
+                        label={
+                          <Stack gap={4}>
+                            <Text size="xs" fw={600}>
+                              {t('taskList.failureTooltipTitle', 'Failure reason')}
+                            </Text>
+                            <Text size="xs">{failureLabel(task)}</Text>
+                            <Text size="xs" c="dimmed">
+                              {t('taskList.openLogHint', 'Right-click → Open log file for full details.')}
+                            </Text>
+                          </Stack>
+                        }
+                      >
+                        {badge}
+                      </Tooltip>
+                    ) : (
+                      badge
+                    )}
 
                     <ActionIcon
                       size="sm"
@@ -288,6 +378,51 @@ export default function TaskListPanel() {
           </Button>
         </Group>
       </Modal>
+
+      {contextMenu && (
+        <Menu
+          opened
+          onClose={() => setContextMenu(null)}
+          position="bottom-start"
+          withinPortal
+          shadow="md"
+          width={200}
+        >
+          <Menu.Target>
+            {/* Invisible anchor positioned at the cursor. */}
+            <div
+              style={{
+                position: 'fixed',
+                top: contextMenu.y,
+                left: contextMenu.x,
+                width: 1,
+                height: 1,
+                pointerEvents: 'none',
+              }}
+            />
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<LocalIcon icon="article-rounded" width="1rem" height="1rem" />}
+              disabled={!contextMenu.task.logId}
+              onClick={() => handleOpenLog(contextMenu.task)}
+            >
+              {t('taskList.openLog', 'Open log file')}
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+              leftSection={<LocalIcon icon="delete-rounded" width="1rem" height="1rem" />}
+              color="red"
+              onClick={() => {
+                setDeleteTarget({ id: contextMenu.task.id, fileName: contextMenu.task.fileName });
+                setContextMenu(null);
+              }}
+            >
+              {t('taskList.delete', 'Delete')}
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      )}
     </>
   );
 }

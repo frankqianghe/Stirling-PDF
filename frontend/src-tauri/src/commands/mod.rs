@@ -5,6 +5,7 @@ pub mod auth;
 pub mod default_app;
 pub mod device;
 pub mod paywall;
+pub mod task_log;
 
 pub use backend::{cleanup_backend, get_backend_port, start_backend};
 pub use files::{add_opened_file, clear_opened_files, get_opened_files, pop_opened_files};
@@ -34,4 +35,12 @@ pub use paywall::{
     close_paywall_window,
     open_checkout_webview,
     open_paywall_window,
+};
+pub use task_log::{
+    task_log_append,
+    task_log_delete,
+    task_log_dir_path,
+    task_log_open,
+    task_log_path,
+    task_log_read,
 };

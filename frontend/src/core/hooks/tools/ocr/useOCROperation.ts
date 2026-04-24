@@ -4,6 +4,7 @@ import { OCRParameters, defaultParameters } from '@app/hooks/tools/ocr/useOCRPar
 import { useToolOperation, ToolType, CustomProcessorResult } from '@app/hooks/tools/shared/useToolOperation';
 import { submitOCRTask } from '@app/services/taskService';
 import { useTaskContext } from '@app/contexts/TaskContext';
+import { createTaskLogger, generateLogId } from '@app/services/taskLogService';
 
 // --- Legacy helpers preserved for future use / automation ---
 
@@ -109,10 +110,14 @@ export const useOCROperation = () => {
     selectedFiles: File[]
   ): Promise<CustomProcessorResult> => {
     for (const file of selectedFiles) {
+      const logger = createTaskLogger(generateLogId());
+      logger.info(`=== OCR session started: file="${file.name}" ===`);
       try {
-        const task = await submitOCRTask(file);
-        addTask(task);
+        const task = await submitOCRTask(file, logger);
+        addTask({ ...task, logId: logger.id });
       } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
+        logger.error(`Submit failed: ${msg}`);
         console.warn(`Failed to submit OCR task for ${file.name}:`, error);
         throw error;
       }

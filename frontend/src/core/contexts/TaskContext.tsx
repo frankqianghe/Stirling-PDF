@@ -6,6 +6,12 @@ import {
   queryTaskStatus,
   submitDocxToPdf,
 } from '@app/services/taskService';
+import {
+  createTaskLogger,
+  deleteTaskLog,
+  getLastErrorReason,
+  type TaskLogger,
+} from '@app/services/taskLogService';
 
 const POLL_INTERVAL = 5000;
 const POLL_INTERVAL_BACKGROUND = 30000;
@@ -71,6 +77,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
     let changed = false;
     for (const task of pending) {
+      const logger: TaskLogger | undefined = task.logId ? createTaskLogger(task.logId) : undefined;
       try {
         if (transitioningRef.current.has(task.id)) continue;
 
@@ -78,10 +85,16 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         const attempts = pollAttemptsRef.current.get(task.id) ?? 0;
         const taskAge = Date.now() - new Date(task.createdAt).getTime();
         if (attempts >= MAX_POLL_ATTEMPTS_PER_TASK || taskAge > STALE_TASK_AGE_MS) {
-          console.warn(`[TaskContext] Task ${task.id} exceeded poll limit (${attempts} attempts, ${Math.round(taskAge / 1000)}s old), marking as failed`);
+          const reason = `Exceeded poll limit (${attempts} attempts, ${Math.round(taskAge / 1000)}s old)`;
+          console.warn(`[TaskContext] Task ${task.id} ${reason}, marking as failed`);
+          logger?.error(`Polling timeout: ${reason}`);
           const idx = current.findIndex(t => t.id === task.id);
           if (idx !== -1) {
-            current[idx] = { ...current[idx], status: 'failed' };
+            current[idx] = {
+              ...current[idx],
+              status: 'failed',
+              failureReason: current[idx].failureReason || 'Polling timeout',
+            };
             changed = true;
           }
           pollAttemptsRef.current.delete(task.id);
@@ -90,7 +103,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         pollAttemptsRef.current.set(task.id, attempts + 1);
 
         const pollId = task.activeTaskId || task.id;
-        const result = await queryTaskStatus(pollId);
+        const result = await queryTaskStatus(pollId, logger);
         const idx = current.findIndex(t => t.id === task.id);
         if (idx === -1) continue;
 
@@ -100,12 +113,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
           task.ocrPhase === 'pdf_to_docx'
         ) {
           transitioningRef.current.add(task.id);
+          logger?.info(`Phase 1 completed; downloading DOCX from ${result.outputUrl}`);
           try {
             const docxResp = await fetch(result.outputUrl!);
             if (!docxResp.ok) throw new Error(`Download failed: ${docxResp.status}`);
             const docxBlob = await docxResp.blob();
+            logger?.info(`DOCX downloaded (${docxBlob.size}B); starting phase 2`);
             const docxFileName = task.fileName.replace(/\.pdf$/i, '.docx');
-            const phase2Data = await submitDocxToPdf(docxBlob, docxFileName);
+            const phase2Data = await submitDocxToPdf(docxBlob, docxFileName, logger);
             current[idx] = {
               ...current[idx],
               ocrPhase: 'docx_to_pdf',
@@ -116,24 +131,46 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             changed = true;
             pollAttemptsRef.current.set(task.id, 0);
           } catch (err) {
+            const msg = err instanceof Error ? err.message : String(err);
             console.error('[TaskContext] OCR phase transition failed:', err);
-            current[idx] = { ...current[idx], status: 'failed' };
+            logger?.error(`Phase transition failed: ${msg}`);
+            current[idx] = {
+              ...current[idx],
+              status: 'failed',
+              failureReason: `Phase transition failed: ${msg}`,
+            };
             changed = true;
             pollAttemptsRef.current.delete(task.id);
           } finally {
             transitioningRef.current.delete(task.id);
           }
-        } else if (result.status === 'completed' || result.status === 'failed') {
+        } else if (result.status === 'completed') {
+          logger?.info(`✅ Task completed. output_url=${result.outputUrl ?? '(none)'}`);
           current[idx] = {
             ...current[idx],
-            status: result.status,
+            status: 'completed',
             outputUrl: result.outputUrl,
           };
           changed = true;
           pollAttemptsRef.current.delete(task.id);
+        } else if (result.status === 'failed') {
+          const reason = result.message || 'Server reported task failure';
+          logger?.error(`❌ Task failed: ${reason}`);
+          // Pull the most recent error from the log for tooltip display.
+          const detail = logger ? await getLastErrorReason(logger.id) : '';
+          current[idx] = {
+            ...current[idx],
+            status: 'failed',
+            outputUrl: result.outputUrl,
+            failureReason: detail || reason,
+          };
+          changed = true;
+          pollAttemptsRef.current.delete(task.id);
         }
-      } catch {
+      } catch (err) {
         // Count failed network requests toward the limit too
+        const msg = err instanceof Error ? err.message : String(err);
+        logger?.warn(`Poll iteration error: ${msg}`);
         const attempts = pollAttemptsRef.current.get(task.id) ?? 0;
         pollAttemptsRef.current.set(task.id, attempts + 1);
       }
@@ -182,6 +219,11 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
   const removeTask = useCallback((id: string) => {
     setTasks(prev => {
+      const target = prev.find(t => t.id === id);
+      if (target?.logId) {
+        // Fire-and-forget; we don't want to block UI on filesystem errors.
+        void deleteTaskLog(target.logId);
+      }
       const next = prev.filter(t => t.id !== id);
       saveTasks(next);
       const stillActive = next.some(t => t.status === 'in_progress');
