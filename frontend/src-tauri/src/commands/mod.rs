@@ -37,6 +37,10 @@ pub use paywall::{
     open_paywall_window,
 };
 pub use task_log::{
+    daily_log_append,
+    daily_log_open,
+    daily_log_path_cmd,
+    open_app_log_dir,
     task_log_append,
     task_log_delete,
     task_log_dir_path,

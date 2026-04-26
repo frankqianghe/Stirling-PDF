@@ -15,6 +15,7 @@ import { orderService } from '@app/services/orderService';
 import { deviceRegisterService } from '@app/services/deviceRegisterService';
 import { PaymentSuccessPanel } from './PaymentSuccessPanel';
 import { useDesktopLicenseStatus } from '@app/hooks/useDesktopLicenseStatus';
+import { trackEvent } from '@app/services/eventReportService';
 
 /**
  * Fixed localhost URL used as the redirect target for the checkout flow.
@@ -93,6 +94,35 @@ export function DesktopPaywallModal({
     };
   }, []);
 
+  // Listen for the checkout webview's page-load completion (emitted
+  // by the Rust `open_checkout_webview` command's `on_page_load`
+  // hook) and report a `lemonsqueezy_load_finished` analytics event
+  // each time. The event fires only on `PageLoadEvent::Finished`, and
+  // the success-redirect URL is filtered out on the Rust side, so
+  // we don't need to deduplicate here. We do, however, scope the
+  // listener to lemonsqueezy hosts to defend against any other host
+  // that might somehow get redirected through this webview.
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    listen<{ url?: string }>('checkout-page-loaded', (event) => {
+      const url = event.payload?.url ?? '';
+      console.log('[Paywall] 📄 checkout-page-loaded:', url);
+      try {
+        const host = new URL(url).hostname.toLowerCase();
+        if (host.includes('lemonsqueezy')) {
+          trackEvent('lemonsqueezy_load_finished', url);
+        }
+      } catch {
+        // Invalid URL — skip telemetry rather than guessing.
+      }
+    }).then((fn) => {
+      unlisten = fn;
+    });
+    return () => {
+      if (unlisten) unlisten();
+    };
+  }, []);
+
   useEffect(() => {
     if (!opened) {
       setView('plans');
@@ -108,6 +138,14 @@ export function DesktopPaywallModal({
         tokenPresent: !!cachedToken,
         tokenPrefix: cachedToken ? `${cachedToken.slice(0, 16)}...` : null,
       });
+
+      // Telemetry: Buy Now click attribution. Spec key for the
+      // lifetime plan is `checkout_order_lifttime` (sic — the spec
+      // uses double `t`; preserved verbatim for server-side parity).
+      trackEvent(
+        plan === 'yearly' ? 'checkout_order_year' : 'checkout_order_lifttime',
+        source,
+      );
 
       const createPlan = plan === 'yearly' ? 'year' : 'buyout';
 

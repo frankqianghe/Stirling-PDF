@@ -13,6 +13,9 @@ use commands::{
     clear_user_info,
     close_checkout_webview,
     close_paywall_window,
+    daily_log_append,
+    daily_log_open,
+    daily_log_path_cmd,
     is_default_pdf_handler,
     get_auth_token,
     get_backend_port,
@@ -24,6 +27,7 @@ use commands::{
     get_user_info,
     is_first_launch,
     login,
+    open_app_log_dir,
     open_checkout_webview,
     open_paywall_window,
     reset_setup_completion,
@@ -194,6 +198,10 @@ pub fn run() {
       task_log_delete,
       task_log_path,
       task_log_dir_path,
+      open_app_log_dir,
+      daily_log_append,
+      daily_log_open,
+      daily_log_path_cmd,
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application")

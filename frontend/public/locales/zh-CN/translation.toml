@@ -1755,6 +1755,17 @@ online = "后端在线"
 starting = "后端正在启动..."
 wait = "软件正在初始化请稍等..."
 
+[deviceRegister]
+loading = "正在注册设备，请稍等"
+
+[paymentSuccess]
+closeAriaLabel = "关闭"
+title = "支付成功通知"
+description = "对应在客户端内完成支付后的成功反馈。当前客户端已直接激活，激活码副本已发送到您的邮箱备份。"
+badge = "支付成功"
+heading = "Pro 功能已为您解锁"
+detail = "本设备已成功激活，激活码副本已发送至您的邮箱备份。"
+
 [backendStartup]
 notFoundTitle = "未找到后端"
 retry = "重试"
@@ -5633,10 +5644,27 @@ description = "请输入您购买邮件中的激活码（License Key）。"
 invalidKey = "激活码无效，请检查购买邮件中的激活码后重试。"
 navLabel = "激活"
 pasteFromClipboard = "从剪贴板粘贴"
-placeholder = "XXXX-XXXX-XXXX-XXXX"
+placeholder = "请输入激活码"
 successMessage = "激活成功，您的 Pro 功能已在此设备上启用。"
 support = "需要帮助？请联系：support@yourpdf.com"
 title = "激活许可"
+
+[settings.about]
+navLabel = "关于"
+title = "关于"
+description = "查看版本号、检查更新与查看日志。"
+version = "版本号"
+versionHint = "当前桌面端应用的版本号。"
+checkForUpdates = "检查更新"
+checkForUpdatesHint = "对比当前版本与 GitHub 上的最新发行版。"
+checkNow = "立即检查"
+checkFailed = "检查更新失败：{{message}}"
+upToDate = "当前已是最新版本（{{latest}}）。"
+updateAvailable = "发现新版本：{{latest}}"
+download = "下载"
+viewLogs = "查看日志"
+viewLogsHint = "用默认文本编辑器打开今天的运行日志文件。"
+openLogFolder = "打开今日日志"
 
 [settings.hotkeys]
 capturing = "按下按键…（按 Esc 取消）"
@@ -6274,6 +6302,7 @@ placeholder = "选择一个工具以开始"
 premiumFeature = "高级功能："
 
 [toolPanel.fullscreen]
+backendNotReady = "后端正在启动，请稍候："
 comingSoon = "即将推出："
 favorite = "添加到收藏"
 favorites = "收藏"

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Box, Stack, Text, UnstyledButton, useComputedColorScheme } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 interface PaymentSuccessPanelProps {
   onClose: () => void;
 }
 
 export function PaymentSuccessPanel({ onClose }: PaymentSuccessPanelProps) {
+  const { t } = useTranslation();
   const colorScheme = useComputedColorScheme('light');
   const isDark = colorScheme === 'dark';
 
@@ -29,7 +31,7 @@ export function PaymentSuccessPanel({ onClose }: PaymentSuccessPanelProps) {
     <Box style={{ position: 'relative' }} pt={36} pb={32} px={36}>
       <UnstyledButton
         onClick={onClose}
-        aria-label="Close"
+        aria-label={t('paymentSuccess.closeAriaLabel', 'Close')}
         style={{
           position: 'absolute',
           top: 16,
@@ -62,12 +64,13 @@ export function PaymentSuccessPanel({ onClose }: PaymentSuccessPanelProps) {
             color: 'var(--mantine-color-text)',
           }}
         >
-          Client Payment Success Notification
+          {t('paymentSuccess.title', 'Client Payment Success Notification')}
         </Text>
         <Text size="sm" c="dimmed" style={{ lineHeight: 1.55 }}>
-          Corresponds to the success feedback after completing payment within the client.
-          The current client is activated directly, and a notification is shown that a License Key
-          backup has been received in the email.
+          {t(
+            'paymentSuccess.description',
+            'Corresponds to the success feedback after completing payment within the client. The current client is activated directly, and a notification is shown that a License Key backup has been received in the email.'
+          )}
         </Text>
       </Stack>
 
@@ -92,7 +95,7 @@ export function PaymentSuccessPanel({ onClose }: PaymentSuccessPanelProps) {
             marginBottom: 18,
           }}
         >
-          Payment Successful
+          {t('paymentSuccess.badge', 'Payment Successful')}
         </Box>
 
         <Text
@@ -105,11 +108,13 @@ export function PaymentSuccessPanel({ onClose }: PaymentSuccessPanelProps) {
             marginBottom: 8,
           }}
         >
-          Your Pro features are now unlocked
+          {t('paymentSuccess.heading', 'Your Pro features are now unlocked')}
         </Text>
         <Text size="sm" c="dimmed" style={{ lineHeight: 1.55 }}>
-          This device has been activated successfully. Your License Key has also been sent to your
-          email as a backup.
+          {t(
+            'paymentSuccess.detail',
+            'This device has been activated successfully. Your License Key has also been sent to your email as a backup.'
+          )}
         </Text>
       </Box>
     </Box>

@@ -1,4 +1,12 @@
 import { type TaskLogger } from '@app/services/taskLogService';
+import {
+  describeHeaders,
+  describeRequestBody,
+  describeResponseBody,
+  describeResponseHeaders,
+  maybeParseJson,
+} from '@app/services/httpLogFormat';
+import { SKIP_FETCH_LOG_KEY } from '@app/services/fetchLogger';
 
 const STORAGE_KEY = 'stirling-pdf-convert-tasks';
 const API_BASE = 'https://plexpdf-test.wenxstudio.ai';
@@ -7,11 +15,6 @@ const API_BASE = 'https://plexpdf-test.wenxstudio.ai';
 // avoid `core -> desktop` import dependency).
 const DEVICE_TOKEN_KEY = 'plexpdf_device_token';
 const DEVICE_ID_FALLBACK_KEY = 'stirling_device_id_fallback';
-
-// Hard cap on logged body sizes – prevents multi-MB blobs from flooding logs
-// while still being big enough that virtually every JSON / error response is
-// captured in full.
-const MAX_BODY_LOG_BYTES = 16 * 1024;
 
 // Resolved once per session; Tauri IPC isn't free so we cache the result.
 let cachedDeviceId: string | null = null;
@@ -127,101 +130,15 @@ interface LoggedFetchResult {
   durationMs: number;
 }
 
-function describeFormData(form: FormData): string[] {
-  const lines: string[] = [];
-  for (const [key, value] of form.entries()) {
-    if (value instanceof File) {
-      lines.push(
-        `    ${key} = <File name="${value.name}" size=${value.size}B type="${value.type || 'application/octet-stream'}" lastModified=${value.lastModified}>`,
-      );
-    } else if (value instanceof Blob) {
-      lines.push(`    ${key} = <Blob size=${value.size}B type="${value.type || 'application/octet-stream'}">`);
-    } else {
-      lines.push(`    ${key} = ${JSON.stringify(value)}`);
-    }
-  }
-  return lines;
-}
-
-function describeRequestBody(body: LoggedFetchInit['body']): string[] {
-  if (body == null) return ['  Body: <none>'];
-  if (body instanceof FormData) {
-    const lines = ['  Body (multipart/form-data):'];
-    const fields = describeFormData(body);
-    if (fields.length === 0) lines.push('    <empty>');
-    else lines.push(...fields);
-    return lines;
-  }
-  if (body instanceof Blob) {
-    return [`  Body: <Blob size=${body.size}B type="${body.type || 'application/octet-stream'}">`];
-  }
-  if (typeof body === 'string') {
-    const truncated = body.length > MAX_BODY_LOG_BYTES;
-    const text = truncated ? body.slice(0, MAX_BODY_LOG_BYTES) : body;
-    return [
-      `  Body (string, ${body.length}B${truncated ? ', TRUNCATED' : ''}):`,
-      indent(text, '    '),
-    ];
-  }
-  return [`  Body: <unknown type ${Object.prototype.toString.call(body)}>`];
-}
-
-function describeHeaders(headers: Record<string, string>, prefix = '  '): string[] {
-  const keys = Object.keys(headers);
-  if (keys.length === 0) return [`${prefix}Headers: <none>`];
-  const lines = [`${prefix}Headers:`];
-  for (const k of keys) {
-    lines.push(`${prefix}  ${k}: ${headers[k]}`);
-  }
-  return lines;
-}
-
-function describeResponseHeaders(resp: Response): string[] {
-  const entries: [string, string][] = [];
-  resp.headers.forEach((value, key) => entries.push([key, value]));
-  if (entries.length === 0) return ['  Response headers: <none>'];
-  const lines = ['  Response headers:'];
-  for (const [k, v] of entries) {
-    lines.push(`    ${k}: ${v}`);
-  }
-  return lines;
-}
-
-function describeResponseBody(bodyText: string, json: unknown): string[] {
-  if (!bodyText) return ['  Response body: <empty>'];
-  const truncated = bodyText.length > MAX_BODY_LOG_BYTES;
-  const display = truncated ? bodyText.slice(0, MAX_BODY_LOG_BYTES) : bodyText;
-  const lines: string[] = [];
-  if (json !== undefined) {
-    let pretty: string;
-    try {
-      pretty = JSON.stringify(json, null, 2);
-    } catch {
-      pretty = display;
-    }
-    const prettyTruncated = pretty.length > MAX_BODY_LOG_BYTES;
-    const prettyDisplay = prettyTruncated ? pretty.slice(0, MAX_BODY_LOG_BYTES) : pretty;
-    lines.push(`  Response body (json, ${bodyText.length}B${prettyTruncated ? ', TRUNCATED' : ''}):`);
-    lines.push(indent(prettyDisplay, '    '));
-  } else {
-    lines.push(`  Response body (${bodyText.length}B${truncated ? ', TRUNCATED' : ''}):`);
-    lines.push(indent(display, '    '));
-  }
-  return lines;
-}
-
-function indent(text: string, prefix: string): string {
-  return text
-    .split('\n')
-    .map(line => prefix + line)
-    .join('\n');
-}
-
 /**
  * fetch() wrapper that captures the full request/response transcript into
  * the supplied logger. Returns the response together with the already-read
  * body text (and parsed JSON when applicable) so callers don't accidentally
  * try to read the stream twice.
+ *
+ * The `[SKIP_FETCH_LOG_KEY]: true` flag tells the global fetch interceptor
+ * (installed at app startup) NOT to also log this request to the daily log
+ * file — these per-task logs already capture the full transcript.
  */
 async function loggedFetch(
   url: string,
@@ -248,7 +165,10 @@ async function loggedFetch(
       method,
       headers,
       body: init.body ?? undefined,
-    });
+      // Custom flag — native fetch ignores unknown init properties, but
+      // our global interceptor reads it to skip duplicate daily logging.
+      [SKIP_FETCH_LOG_KEY]: true,
+    } as RequestInit);
   } catch (err) {
     const durationMs = Math.round(performance.now() - startedAt);
     const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
@@ -268,24 +188,7 @@ async function loggedFetch(
   }
 
   const contentType = resp.headers.get('content-type') || '';
-  let json: unknown;
-  if (bodyText && contentType.toLowerCase().includes('application/json')) {
-    try {
-      json = JSON.parse(bodyText);
-    } catch {
-      // not JSON despite header; keep raw text
-    }
-  } else if (bodyText) {
-    // Some endpoints return JSON without correct Content-Type — try anyway.
-    const trimmed = bodyText.trimStart();
-    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-      try {
-        json = JSON.parse(bodyText);
-      } catch {
-        // genuinely not JSON
-      }
-    }
-  }
+  const json = maybeParseJson(bodyText, contentType);
 
   if (logger) {
     const lines: string[] = [];

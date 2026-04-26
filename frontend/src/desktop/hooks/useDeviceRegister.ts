@@ -14,6 +14,7 @@ import {
   DeviceRegistration,
 } from '../services/deviceRegisterService';
 import { adService } from '../services/adService';
+import { trackEvent } from '../services/eventReportService';
 
 export interface UseDeviceRegisterResult {
   registration: DeviceRegistration | null;
@@ -55,6 +56,8 @@ export function useDeviceRegister(): UseDeviceRegisterResult {
           console.log(
             `[useDeviceRegister] 📣 ad_url is non-empty, opening paywall: ${ad.adUrl}`
           );
+          // Telemetry: free user auto-popup (post /client/ad, non-empty url)
+          trackEvent('checkout_popup_show', ad.adId);
           window.dispatchEvent(
             new CustomEvent('plexpdf-open-paywall', {
               detail: { source: 'ad', adId: ad.adId, adUrl: ad.adUrl },

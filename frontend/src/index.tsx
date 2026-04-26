@@ -8,7 +8,19 @@ import { ColorSchemeScript } from '@mantine/core';
 import { BrowserRouter } from 'react-router-dom';
 import App from '@app/App';
 import '@app/i18n'; // Initialize i18next
+import { installFetchLogger } from '@app/services/fetchLogger';
 import posthog from 'posthog-js';
+
+// Install the global fetch interceptor before any code starts making
+// requests. Convert/OCR fetches opt out via a private init flag — see
+// `@app/services/fetchLogger.ts` for the contract. Belt-and-braces: any
+// failure to install must never prevent the app from booting.
+try {
+  installFetchLogger();
+} catch (err) {
+  console.error('[bootstrap] Failed to install fetch logger:', err);
+}
+
 import { PostHogProvider } from 'posthog-js/react';
 import { BASE_PATH } from '@app/constants/app';
 

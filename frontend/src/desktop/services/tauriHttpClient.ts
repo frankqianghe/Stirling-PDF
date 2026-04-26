@@ -1,8 +1,20 @@
 import { fetch } from '@tauri-apps/plugin-http';
+import {
+  logHttpRequest,
+  logHttpResponse,
+  logHttpFailure,
+} from '@app/services/fetchLogger';
 
 /**
  * Tauri HTTP Client - wrapper around Tauri's native HTTP client
  * Provides axios-compatible API while bypassing CORS restrictions
+ *
+ * NOTE: This client bypasses `window.fetch`, so the global fetch
+ * interceptor in `core/services/fetchLogger.ts` cannot see its traffic.
+ * We therefore call `logHttpRequest` / `logHttpResponse` / `logHttpFailure`
+ * directly here so that order/create, license activation, device
+ * register, etc. still land in the daily log alongside requests made by
+ * `window.fetch`.
  */
 
 export interface TauriHttpResponse<T = any> {
@@ -232,7 +244,40 @@ class TauriHttpClient {
         };
       }
 
-      const response = await fetch(url, fetchOptions);
+      // Daily-log request snapshot. The helper itself enforces the
+      // host allow-list, so we can call it unconditionally.
+      logHttpRequest({ method, url, headers, body });
+
+      const startedAt = performance.now();
+      let response: Response;
+      try {
+        response = await fetch(url, fetchOptions);
+      } catch (networkErr) {
+        const durationMs = Math.round(performance.now() - startedAt);
+        logHttpFailure({ method, url, durationMs, error: networkErr });
+        throw networkErr;
+      }
+      const durationMs = Math.round(performance.now() - startedAt);
+
+      // Clone BEFORE downstream code consumes the body via .json()/.text()/etc.
+      // The clone is drained (bounded, in background) inside logHttpResponse.
+      try {
+        const responseClone = response.clone();
+        logHttpResponse({
+          method,
+          url,
+          status: response.status,
+          statusText: response.statusText || '',
+          durationMs,
+          responseClone,
+        });
+      } catch (logErr) {
+        try {
+          console.warn('[TauriHttpClient] Failed to schedule response log:', logErr);
+        } catch {
+          /* swallow */
+        }
+      }
 
       // Parse response based on responseType
       let data: T;

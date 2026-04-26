@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { UnstyledButton, Box, Text } from '@mantine/core';
 import { useDesktopLicenseStatus } from '@app/hooks/useDesktopLicenseStatus';
 import { DesktopPaywallModal } from './rightRail/DesktopPaywallModal';
+import { trackEvent } from '@app/services/eventReportService';
 
 /**
  * Paywall entry pill rendered inline by its parent container.
@@ -22,6 +23,8 @@ export function PaywallTopEntry() {
   const [paywallOpen, setPaywallOpen] = useState(false);
 
   const handleClick = useCallback(() => {
+    // Telemetry: free user actively clicked the corner Lifetime pill.
+    trackEvent('checkout_click_show');
     setPaywallOpen(true);
   }, []);
 

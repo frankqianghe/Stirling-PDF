@@ -14,6 +14,7 @@
 
 import { type ToolId } from '@app/types/toolId';
 import { deviceRegisterService } from '../services/deviceRegisterService';
+import { trackEvent } from '../services/eventReportService';
 
 /**
  * Tools that require a paid plan on desktop. Free users clicking any of
@@ -44,6 +45,10 @@ export function isToolPaywalled(toolId: ToolId): boolean {
 
 export function triggerPaywall(toolId: ToolId): void {
   try {
+    // Telemetry: free user clicked a gated function → paywall shown.
+    // The `value` is the tool id so the server can attribute popups
+    // per tool (e.g. how often Compress vs OCR triggers the gate).
+    trackEvent('checkout_function_show', toolId);
     window.dispatchEvent(
       new CustomEvent('plexpdf-open-paywall', {
         detail: { source: 'tool-gate', toolId },

@@ -3,11 +3,17 @@ import { useToolRegistry } from "@app/contexts/ToolRegistryContext";
 import { usePreferences } from '@app/contexts/PreferencesContext';
 import { getAllEndpoints, type ToolRegistryEntry, type ToolRegistry } from "@app/data/toolsTaxonomy";
 import { useMultipleEndpointsEnabled } from "@app/hooks/useEndpointConfig";
+import { useBackendHealth } from '@app/hooks/useBackendHealth';
 import { FileId } from '@app/types/file';
 import { ToolId } from "@app/types/toolId";
 import type { EndpointDisableReason } from '@app/types/endpointAvailability';
+import { BACKEND_OPTIONAL_TOOL_IDS } from '@app/utils/backendOptionalTools';
 
-export type ToolDisableCause = 'disabledByAdmin' | 'missingDependency' | 'unknown';
+export type ToolDisableCause =
+  | 'disabledByAdmin'
+  | 'missingDependency'
+  | 'backendNotReady'
+  | 'unknown';
 
 export interface ToolAvailabilityInfo {
   available: boolean;
@@ -35,6 +41,7 @@ export const useToolManagement = (): ToolManagementResult => {
 
   const allEndpoints = useMemo(() => getAllEndpoints(baseRegistry), [baseRegistry]);
   const { endpointStatus, endpointDetails, loading: endpointsLoading } = useMultipleEndpointsEnabled(allEndpoints);
+  const { isHealthy: backendHealthy } = useBackendHealth();
 
   const isToolAvailable = useCallback((toolKey: string): boolean => {
     // Keep tools enabled during loading (optimistic UX)
@@ -46,10 +53,18 @@ export const useToolManagement = (): ToolManagementResult => {
     // Tools without endpoints are always available
     if (endpoints.length === 0) return true;
 
+    // Backend (bundled JRE) gating: while the local backend is still
+    // booting we disable JRE-dependent tools at the tile level. Tools
+    // that go to the remote PlexPDF cloud (convert, ocr — see
+    // `BACKEND_OPTIONAL_TOOL_IDS`) bypass this check and stay clickable.
+    if (!backendHealthy && !BACKEND_OPTIONAL_TOOL_IDS.has(toolKey as ToolId)) {
+      return false;
+    }
+
     // Check if at least one endpoint is enabled
     // If endpoint is not in status map, assume enabled (optimistic fallback)
     return endpoints.some((endpoint: string) => endpointStatus[endpoint] !== false);
-  }, [endpointsLoading, endpointStatus, baseRegistry]);
+  }, [endpointsLoading, endpointStatus, baseRegistry, backendHealthy]);
 
   const deriveToolDisableReason = useCallback((toolKey: ToolId): ToolDisableCause => {
     const tool = baseRegistry[toolKey];
@@ -57,6 +72,18 @@ export const useToolManagement = (): ToolManagementResult => {
       return 'unknown';
     }
     const endpoints = tool.endpoints || [];
+
+    // Backend-not-ready takes precedence: if the JRE isn't up yet and
+    // this tool depends on it, we want the user to see "Backend
+    // starting up..." rather than a misleading "disabled by admin".
+    if (
+      !backendHealthy &&
+      endpoints.length > 0 &&
+      !BACKEND_OPTIONAL_TOOL_IDS.has(toolKey)
+    ) {
+      return 'backendNotReady';
+    }
+
     const disabledReasons: EndpointDisableReason[] = endpoints
       .filter(endpoint => endpointStatus[endpoint] === false)
       .map(endpoint => endpointDetails[endpoint]?.reason ?? 'CONFIG');
@@ -71,7 +98,7 @@ export const useToolManagement = (): ToolManagementResult => {
       return 'unknown';
     }
     return 'unknown';
-  }, [baseRegistry, endpointDetails, endpointStatus]);
+  }, [baseRegistry, endpointDetails, endpointStatus, backendHealthy]);
 
   const toolAvailability = useMemo(() => {
     if (endpointsLoading) {
@@ -94,11 +121,19 @@ export const useToolManagement = (): ToolManagementResult => {
       if (!baseTool) return;
       const availabilityInfo = toolAvailability[toolKey];
       const isAvailable = availabilityInfo ? availabilityInfo.available !== false : true;
+      // Backend-not-ready is transient — show the tool greyed out so the
+      // user sees it light up when the JRE finishes booting, instead of
+      // having tools pop in/out of the picker.
+      const isTransientUnavailable = availabilityInfo?.reason === 'backendNotReady';
 
       // Check if tool is "coming soon" (has no component and no link)
       const isComingSoon = !baseTool.component && !baseTool.link && toolKey !== 'read' && toolKey !== 'multiTool';
 
-      if (preferences.hideUnavailableTools && (!isAvailable || isComingSoon)) {
+      if (
+        preferences.hideUnavailableTools &&
+        !isTransientUnavailable &&
+        (!isAvailable || isComingSoon)
+      ) {
         return;
       }
       availableToolRegistry[toolKey] = {

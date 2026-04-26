@@ -4,6 +4,7 @@ export const VALID_NAV_KEYS = [
   ...CORE_NAV_KEYS,
   'connectionMode',
   'activation',
+  'about',
 ] as const;
 
 export type NavKey = typeof VALID_NAV_KEYS[number];

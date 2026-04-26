@@ -2,7 +2,7 @@
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "PlexPDF",
     "mainBinaryName": "plex-pdf",
-    "version": "2.5.7",
+    "version": "2.5.8",
     "identifier": "plex.pdf.dev",
     "build": {
         "frontendDist": "../dist",

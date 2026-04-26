@@ -1,7 +1,10 @@
+import { useContext } from 'react';
 import { Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Tooltip } from '@app/components/shared/Tooltip';
 import { useBackendHealth } from '@app/hooks/useBackendHealth';
+import { ToolWorkflowContext } from '@app/contexts/ToolWorkflowContext';
+import { isBackendOptionalTool } from '@app/utils/backendOptionalTools';
 
 export interface OperationButtonProps {
   onClick?: () => void;
@@ -34,7 +37,13 @@ const OperationButton = ({
 }: OperationButtonProps) => {
   const { t } = useTranslation();
   const { isHealthy, message: backendMessage } = useBackendHealth();
-  const blockedByBackend = !isHealthy;
+  // Optional context read — `OperationButton` is sometimes rendered
+  // outside any tool flow (e.g. in tests), so we don't use the throwing
+  // `useToolWorkflow()` hook here.
+  const workflow = useContext(ToolWorkflowContext);
+  const selectedToolKey = workflow?.selectedToolKey ?? null;
+  const bypassBackendHealth = isBackendOptionalTool(selectedToolKey);
+  const blockedByBackend = !isHealthy && !bypassBackendHealth;
   const combinedDisabled = disabled || blockedByBackend;
   const tooltipLabel = blockedByBackend
     ? (backendMessage ?? t('backendHealth.checking', 'Checking backend status...'))

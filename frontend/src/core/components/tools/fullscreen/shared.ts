@@ -24,7 +24,14 @@ export const getIconStyle = (): Record<string, string> => {
   return {};
 };
 
-export type ToolDisabledReason = 'comingSoon' | 'disabledByAdmin' | 'missingDependency' | 'unknownUnavailable' | 'requiresPremium' | null;
+export type ToolDisabledReason =
+  | 'comingSoon'
+  | 'disabledByAdmin'
+  | 'missingDependency'
+  | 'unknownUnavailable'
+  | 'requiresPremium'
+  | 'backendNotReady'
+  | null;
 
 export const getToolDisabledReason = (
   id: string,
@@ -43,6 +50,9 @@ export const getToolDisabledReason = (
 
   const availabilityInfo = toolAvailability?.[id as ToolId];
   if (availabilityInfo && availabilityInfo.available === false) {
+    if (availabilityInfo.reason === 'backendNotReady') {
+      return 'backendNotReady';
+    }
     if (availabilityInfo.reason === 'missingDependency') {
       return 'missingDependency';
     }
@@ -62,6 +72,12 @@ export const getDisabledLabel = (
     return {
       key: 'toolPanel.premiumFeature',
       fallback: 'Premium feature:'
+    };
+  }
+  if (disabledReason === 'backendNotReady') {
+    return {
+      key: 'toolPanel.fullscreen.backendNotReady',
+      fallback: 'Backend starting up — available shortly:'
     };
   }
   if (disabledReason === 'missingDependency') {

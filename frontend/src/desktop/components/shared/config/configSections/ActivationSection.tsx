@@ -19,23 +19,6 @@ type ActivationResult =
   | { kind: 'error'; message: string };
 
 /**
- * Normalize raw user input to the canonical XXXX-XXXX-XXXX-XXXX form.
- *
- * - Strips anything that isn't [0-9A-Z] (so dashes, spaces and stray
- *   punctuation don't throw off the grouping).
- * - Uppercases alpha chars to match the placeholder style.
- * - Re-inserts a dash after every 4 chars, up to 4 groups (16 chars).
- */
-function formatLicenseKey(raw: string): string {
-  const cleaned = raw.replace(/[^0-9a-zA-Z]/g, '').toUpperCase().slice(0, 16);
-  const groups: string[] = [];
-  for (let i = 0; i < cleaned.length; i += 4) {
-    groups.push(cleaned.slice(i, i + 4));
-  }
-  return groups.join('-');
-}
-
-/**
  * Desktop-only "Activation" settings pane. Mirrors the manual activation
  * flow described in the product spec: paste a License Key received via
  * purchase email, click Activate, and (on success) have the device's paid
@@ -90,7 +73,9 @@ const ActivationSection: React.FC = () => {
       ) {
         const text = await navigator.clipboard.readText();
         if (text) {
-          setLicenseKey(formatLicenseKey(text));
+          // Per product spec: do not normalise / format / truncate the
+          // clipboard contents — submit whatever the user pasted as-is.
+          setLicenseKey(text);
           if (result.kind !== 'idle') {
             setResult({ kind: 'idle' });
           }
@@ -148,14 +133,16 @@ const ActivationSection: React.FC = () => {
       <TextInput
         value={licenseKey}
         onChange={(event) => {
-          setLicenseKey(formatLicenseKey(event.currentTarget.value));
+          // Per product spec: ship raw user input straight to the
+          // server — no length cap, no uppercasing, no dash grouping.
+          setLicenseKey(event.currentTarget.value);
           if (result.kind !== 'idle') {
             setResult({ kind: 'idle' });
           }
         }}
         placeholder={t(
           'settings.activation.placeholder',
-          'XXXX-XXXX-XXXX-XXXX'
+          '请输入激活码'
         )}
         size="md"
         radius="md"

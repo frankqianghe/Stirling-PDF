@@ -48,10 +48,14 @@ export interface ActivateResult {
 
 class LicenseActivationService {
   async activate(planKey: string): Promise<ActivateResult> {
-    const key = planKey.trim();
-    if (!key) {
+    // Per product spec: ship the user's input verbatim — no trim, no
+    // case folding, no truncation.  We still short-circuit on a
+    // whitespace-only key to avoid a guaranteed-failure round-trip,
+    // but we do NOT mutate `planKey` itself before sending it.
+    if (!planKey || !planKey.trim()) {
       return { ok: false, errorMessage: 'License key is empty.' };
     }
+    const key = planKey;
 
     const token = this.getDeviceToken();
     if (!token) {

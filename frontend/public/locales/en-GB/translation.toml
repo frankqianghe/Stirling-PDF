@@ -1743,6 +1743,17 @@ online = "Backend Online"
 starting = "Backend starting up..."
 wait = "Please wait for the backend to finish launching and try again."
 
+[deviceRegister]
+loading = "Registering device, please wait"
+
+[paymentSuccess]
+closeAriaLabel = "Close"
+title = "Client Payment Success Notification"
+description = "Corresponds to the success feedback after completing payment within the client. The current client is activated directly, and a notification is shown that a License Key backup has been received in the email."
+badge = "Payment Successful"
+heading = "Your Pro features are now unlocked"
+detail = "This device has been activated successfully. Your License Key has also been sent to your email as a backup."
+
 [backendStartup]
 notFoundTitle = "Backend not found"
 retry = "Retry"
@@ -5628,10 +5639,27 @@ description = "Please enter your License Key from your purchase email."
 invalidKey = "Invalid License Key. Please check the key from your purchase email and try again."
 navLabel = "Activation"
 pasteFromClipboard = "Paste from Clipboard"
-placeholder = "XXXX-XXXX-XXXX-XXXX"
+placeholder = "Enter your license key"
 successMessage = "License activated successfully. Your Pro features are now available on this device."
 support = "Need help? Contact: support@yourpdf.com"
 title = "Activate License"
+
+[settings.about]
+navLabel = "About"
+title = "About"
+description = "Version, updates and diagnostic logs for this app."
+version = "Version"
+versionHint = "The currently installed desktop app version."
+checkForUpdates = "Check for Updates"
+checkForUpdatesHint = "Compare your version against the latest GitHub release."
+checkNow = "Check Now"
+checkFailed = "Failed to check for updates: {{message}}"
+upToDate = "You are on the latest version ({{latest}})."
+updateAvailable = "A new version is available: {{latest}}"
+download = "Download"
+viewLogs = "View Logs"
+viewLogsHint = "Open today's diagnostic log file in your default text editor."
+openLogFolder = "Open Today's Log"
 
 [settings.licensingAnalytics]
 audit = "Audit"
@@ -6280,6 +6308,7 @@ placeholder = "Choose a tool to get started"
 premiumFeature = "Premium feature:"
 
 [toolPanel.fullscreen]
+backendNotReady = "Backend starting up — available shortly:"
 comingSoon = "Coming soon:"
 favorite = "Add to favourites"
 favorites = "Favourites"
