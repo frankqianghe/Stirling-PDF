@@ -12,15 +12,16 @@ on:
           - "true"
           - "false"
       platform:
-        description: "Platform to build (windows, macos, linux, or all)"
+        # NOTE: macOS and Linux builds were intentionally dropped — the
+        # product is Windows-only.  Choice list is reduced to a single
+        # `windows` entry; the matrix step below also hard-codes Windows
+        # for non-dispatch triggers (push to main / V2-master, releases).
+        description: "Platform to build (Windows-only — macOS / Linux are no longer built)"
         required: true
-        default: "all"
+        default: "windows"
         type: choice
         options:
-          - all
           - windows
-          - macos
-          - linux
   push:
     branches: [main, V2-master]
   release:
@@ -70,26 +71,11 @@ jobs:
 
       - name: Determine build matrix
         id: set-matrix
+        # Windows-only: macOS (Apple Silicon + Intel) and Linux entries
+        # were intentionally removed.  Every trigger resolves to a
+        # single-entry Windows matrix.
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            case "${{ github.event.inputs.platform }}" in
-              "windows")
-                echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"}]}' >> $GITHUB_OUTPUT
-                ;;
-              "macos")
-                echo 'matrix={"include":[{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"}]}' >> $GITHUB_OUTPUT
-                ;;
-              "linux")
-                echo 'matrix={"include":[{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
-                ;;
-              *)
-                echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
-                ;;
-            esac
-          else
-            # For push/release events, build all platforms
-            echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"},{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"},{"platform":"macos-15-intel","args":"--target x86_64-apple-darwin","name":"macos-x86_64"},{"platform":"ubuntu-22.04","args":"","name":"linux-x86_64"}]}' >> $GITHUB_OUTPUT
-          fi
+          echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"}]}' >> $GITHUB_OUTPUT
 
   build-jars:
     needs: determine-matrix

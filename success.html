@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plex PDF · Payment Successful</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --emphasis: #0f172a;
+      --gradient: linear-gradient(135deg, #8B5CF6 0%, #C026D3 100%);
+      --gradient-soft: linear-gradient(180deg, #FAF5FF 0%, #FFFFFF 60%);
+      --shadow: 0 18px 40px -18px rgba(168, 85, 247, 0.45);
+      --shadow-btn: 0 14px 32px -8px rgba(168, 85, 247, 0.55);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--gradient-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 720px;
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 28px;
+      padding: 64px 56px 56px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .check-circle {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 28px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 36px -12px rgba(168, 85, 247, 0.55);
+    }
+    .check-circle svg {
+      width: 44px;
+      height: 44px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 4.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .body {
+      margin: 36px auto 0;
+      max-width: 560px;
+      text-align: left;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .body p { margin: 0; }
+    .body p + p { margin-top: 6px; }
+    .body strong {
+      color: var(--emphasis);
+      font-weight: 700;
+    }
+
+    .cta-wrap {
+      margin: 40px auto 0;
+      max-width: 480px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 16px;
+      background: var(--gradient);
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-download:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 40px -10px rgba(168, 85, 247, 0.65);
+    }
+    .btn-download:active {
+      transform: translateY(0);
+      opacity: 0.96;
+    }
+
+    @media (max-width: 560px) {
+      .card { padding: 48px 24px 36px; border-radius: 22px; }
+      .check-circle { width: 84px; height: 84px; margin-bottom: 22px; }
+      .check-circle svg { width: 38px; height: 38px; }
+      h1 { font-size: 24px; }
+      .body { font-size: 16px; margin-top: 28px; }
+      .cta-wrap { margin-top: 32px; }
+      .btn-download { padding: 16px 20px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="check-circle" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <polyline points="5 12.5 10 17.5 19 7.5" />
+      </svg>
+    </div>
+
+    <h1>Payment Successful</h1>
+
+    <div class="body">
+      <p>Thank you for your purchase.</p>
+      <p>Your license key has been sent to your email.</p>
+      <p>
+        Download the app and go to
+        <strong>Settings &gt; Activate</strong>
+        to unlock premium features.
+      </p>
+    </div>
+
+    <div class="cta-wrap">
+      <a
+        id="downloadBtn"
+        class="btn-download"
+        href="#"
+        rel="noopener"
+      >
+        Download for Windows
+      </a>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      // Default Windows installer download URL. Override at deploy time
+      // by setting `window.__PLEXPDF_WINDOWS_URL__` before this script
+      // runs, or by replacing the href attribute server-side.
+      var DEFAULT_DOWNLOAD_URL =
+        'https://plexpdf-test.wenxstudio.ai/download/windows';
+      var url =
+        (typeof window !== 'undefined' && window.__PLEXPDF_WINDOWS_URL__) ||
+        DEFAULT_DOWNLOAD_URL;
+      var btn = document.getElementById('downloadBtn');
+      if (btn) {
+        btn.setAttribute('href', url);
+      }
+    })();
+  </script>
+</body>
+</html>

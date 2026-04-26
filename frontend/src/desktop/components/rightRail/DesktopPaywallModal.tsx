@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Modal,
   Stack,
@@ -6,11 +6,15 @@ import {
   Text,
   UnstyledButton,
   Box,
+  Button,
+  Loader,
   useComputedColorScheme,
 } from '@mantine/core';
 import CheckIcon from '@mui/icons-material/Check';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
+import { useTranslation } from 'react-i18next';
 import { orderService } from '@app/services/orderService';
 import { deviceRegisterService } from '@app/services/deviceRegisterService';
 import { PaymentSuccessPanel } from './PaymentSuccessPanel';
@@ -46,7 +50,27 @@ interface DesktopPaywallModalProps {
   source?: string;
 }
 
-type PaywallView = 'plans' | 'success';
+type PaywallView = 'plans' | 'waiting' | 'success';
+
+/**
+ * Polling cadence for the post-Buy-Now waiting view.
+ *
+ * We hand the actual checkout off to the user's *default browser* (rather
+ * than embedding it in a WebView2 window) — Cloudflare's bot detection on
+ * the Lemon Squeezy hosted page reliably flags the embedded WebView2 in
+ * some Windows configurations and serves a JS challenge that never
+ * renders, leaving the user staring at a blank page.  The system browser
+ * already has the user's TLS / cookie footprint, so it sails right
+ * through.
+ *
+ * Trade-off: we no longer get the redirect-URL navigation interception
+ * that used to instantly tell us payment succeeded.  Instead, while the
+ * waiting view is mounted we re-poll `/client/device/register` every
+ * `POLL_INTERVAL_MS` for at most `POLL_MAX_DURATION_MS`.  When the server
+ * starts returning a non-`free` `paid_plan`, we know payment landed.
+ */
+const POLL_INTERVAL_MS = 5_000;
+const POLL_MAX_DURATION_MS = 15 * 60 * 1000;
 
 type MembershipView = 'free' | 'year' | 'lifetime';
 
@@ -60,7 +84,12 @@ export function DesktopPaywallModal({
   onClose,
   source = 'unknown',
 }: DesktopPaywallModalProps) {
+  const { t } = useTranslation();
   const [view, setView] = useState<PaywallView>('plans');
+  const [pendingCheckoutUrl, setPendingCheckoutUrl] = useState<string | null>(null);
+  const [waitingError, setWaitingError] = useState<string | null>(null);
+  const [openingBrowser, setOpeningBrowser] = useState(false);
+  const [manualChecking, setManualChecking] = useState(false);
   const { plan, planExpiresAt } = useDesktopLicenseStatus();
   const colorScheme = useComputedColorScheme('light');
   const isDark = colorScheme === 'dark';
@@ -126,8 +155,84 @@ export function DesktopPaywallModal({
   useEffect(() => {
     if (!opened) {
       setView('plans');
+      setPendingCheckoutUrl(null);
+      setWaitingError(null);
+      setOpeningBrowser(false);
+      setManualChecking(false);
     }
   }, [opened]);
+
+  // Helper: open the order's hosted checkout URL in the user's default
+  // browser via the Tauri opener plugin.  We lean on the system browser
+  // rather than the embedded WebView2 so we don't have to fight
+  // Cloudflare's bot detection on the Lemon Squeezy domain.
+  const openCheckoutInBrowser = useCallback(async (url: string) => {
+    setOpeningBrowser(true);
+    setWaitingError(null);
+    try {
+      await invoke('plugin:opener|open_url', { url });
+    } catch (err) {
+      console.error('[Paywall] failed to open checkout URL in browser:', err);
+      const message =
+        err instanceof Error
+          ? err.message
+          : typeof err === 'string'
+            ? err
+            : 'Failed to open browser';
+      setWaitingError(message);
+    } finally {
+      setOpeningBrowser(false);
+    }
+  }, []);
+
+  // Auto-poll license status while we're sitting on the waiting view.
+  // Stops on success, on unmount, on view change, or after 15 minutes
+  // (a generous bound for hosted-checkout drop-off; user can manually
+  // re-open the modal if they take longer).
+  const pollStartedAtRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (view !== 'waiting') {
+      pollStartedAtRef.current = null;
+      return;
+    }
+    if (pollStartedAtRef.current === null) {
+      pollStartedAtRef.current = Date.now();
+    }
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const tick = async () => {
+      if (cancelled) return;
+      try {
+        const reg = await deviceRegisterService.register();
+        if (cancelled) return;
+        if (reg && reg.paidPlan && reg.paidPlan !== 'free') {
+          console.log('[Paywall] 🎉 license polling detected paid plan:', reg.paidPlan);
+          window.dispatchEvent(new Event('plexpdf-license-updated'));
+          setView('success');
+          return;
+        }
+      } catch (err) {
+        // Swallow — registration endpoint can be flaky and we just retry.
+        console.warn('[Paywall] license poll attempt failed (will retry):', err);
+      }
+
+      if (cancelled) return;
+      const elapsed = Date.now() - (pollStartedAtRef.current ?? Date.now());
+      if (elapsed >= POLL_MAX_DURATION_MS) {
+        console.log('[Paywall] license polling window elapsed — stopping');
+        return;
+      }
+      timer = setTimeout(tick, POLL_INTERVAL_MS);
+    };
+
+    timer = setTimeout(tick, POLL_INTERVAL_MS);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [view]);
 
   const openCheckout = useCallback(
     async (plan: 'lifetime' | 'yearly') => {
@@ -190,11 +295,14 @@ export function DesktopPaywallModal({
           source,
         });
 
-        await invoke('open_checkout_webview', {
-          url: order.checkoutUrl,
-          orderId: order.orderId,
-          redirectUrl: CHECKOUT_REDIRECT_URL,
-        });
+        // Switch to the waiting view *before* asking the OS to open the
+        // browser — that way the user sees a coherent "we're handing
+        // off to your browser" panel even on slow opens, instead of
+        // staring at the plan selector.
+        setPendingCheckoutUrl(order.checkoutUrl);
+        setWaitingError(null);
+        setView('waiting');
+        await openCheckoutInBrowser(order.checkoutUrl);
       } catch (err) {
         const errAny = err as any;
         console.error('[Paywall] create order / open checkout failed:', {
@@ -206,12 +314,48 @@ export function DesktopPaywallModal({
         });
       }
     },
-    [source]
+    [source, openCheckoutInBrowser]
   );
 
   const handleDone = useCallback(() => {
     onClose();
   }, [onClose]);
+
+  // "I've Paid · Check Status" handler in the waiting view.  Forces a
+  // fresh /client/device/register call, dispatches a license-updated
+  // event so the rest of the UI re-renders, and either flips us to the
+  // success view (if paid) or surfaces a "not detected yet" hint.
+  const handleManualCheck = useCallback(async () => {
+    if (manualChecking) return;
+    setManualChecking(true);
+    setWaitingError(null);
+    try {
+      const reg = await deviceRegisterService.register();
+      if (reg && reg.paidPlan && reg.paidPlan !== 'free') {
+        window.dispatchEvent(new Event('plexpdf-license-updated'));
+        setView('success');
+        return;
+      }
+      setWaitingError(t('paywall.waiting.notDetectedYet', 'Payment not detected yet. Please complete payment in your browser, then try again.'));
+    } catch (err) {
+      console.error('[Paywall] manual license check failed:', err);
+      const message =
+        err instanceof Error
+          ? err.message
+          : typeof err === 'string'
+            ? err
+            : 'License check failed';
+      setWaitingError(message);
+    } finally {
+      setManualChecking(false);
+    }
+  }, [manualChecking, t]);
+
+  const handleBackToPlans = useCallback(() => {
+    setView('plans');
+    setPendingCheckoutUrl(null);
+    setWaitingError(null);
+  }, []);
 
   const membershipView: MembershipView =
     plan === 'lifetime' ? 'lifetime' : plan === 'year' ? 'year' : 'free';
@@ -256,6 +400,22 @@ export function DesktopPaywallModal({
     >
       {view === 'success' ? (
         <PaymentSuccessPanel onClose={handleDone} />
+      ) : view === 'waiting' ? (
+        <PaywallWaitingPanel
+          isDark={isDark}
+          checkoutUrl={pendingCheckoutUrl}
+          openingBrowser={openingBrowser}
+          manualChecking={manualChecking}
+          waitingError={waitingError}
+          onClose={onClose}
+          onReopenBrowser={() =>
+            pendingCheckoutUrl && openCheckoutInBrowser(pendingCheckoutUrl)
+          }
+          onManualCheck={handleManualCheck}
+          onBack={handleBackToPlans}
+          closeBtnBg={closeBtnBg}
+          closeBtnBorder={closeBtnBorder}
+        />
       ) : (
         <Stack gap={0}>
           <Stack align="center" pt={36} pb={28} px={32} gap={10}>
@@ -611,6 +771,212 @@ function PlanCard({
       <Text size="xs" c="dimmed" ta="center" mt={12} lh={1.4}>
         {footerNote}
       </Text>
+    </Box>
+  );
+}
+
+interface PaywallWaitingPanelProps {
+  isDark: boolean;
+  checkoutUrl: string | null;
+  openingBrowser: boolean;
+  manualChecking: boolean;
+  waitingError: string | null;
+  onClose: () => void;
+  onReopenBrowser: () => void;
+  onManualCheck: () => void;
+  onBack: () => void;
+  closeBtnBg: string;
+  closeBtnBorder: string;
+}
+
+/**
+ * "Payment in progress" panel shown after Buy Now is clicked.
+ *
+ * The flow is intentionally browser-first: we hand the actual checkout
+ * page off to the user's default browser (which sails through Lemon
+ * Squeezy + Cloudflare bot detection), and use this panel to:
+ *   - explain what's happening
+ *   - show the URL with a copy/retry escape hatch in case the
+ *     `opener` plugin failed to launch a browser
+ *   - drive a manual "I've Paid · Check Status" button
+ *   - host the auto-poll loop (hooked up by the parent via
+ *     `setView('waiting')`) that flips us straight to the success
+ *     view as soon as the server reports a non-free `paid_plan`.
+ */
+function PaywallWaitingPanel({
+  isDark,
+  checkoutUrl,
+  openingBrowser,
+  manualChecking,
+  waitingError,
+  onClose,
+  onReopenBrowser,
+  onManualCheck,
+  onBack,
+  closeBtnBg,
+  closeBtnBorder,
+}: PaywallWaitingPanelProps) {
+  const { t } = useTranslation();
+
+  const accentGradient = 'linear-gradient(135deg, #8B5CF6 0%, #C026D3 100%)';
+  const accentShadow = '0 12px 28px -10px rgba(139, 92, 246, 0.55)';
+  const cardBorder = isDark
+    ? '1px solid rgba(255,255,255,0.08)'
+    : '1px solid rgba(15,23,42,0.08)';
+  const cardBg = isDark ? 'rgba(255,255,255,0.04)' : '#F9FAFB';
+
+  return (
+    <Box style={{ position: 'relative' }} pt={40} pb={32} px={36}>
+      <UnstyledButton
+        onClick={onClose}
+        aria-label={t('paymentSuccess.closeAriaLabel', 'Close')}
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          background: closeBtnBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'var(--mantine-color-dimmed)',
+          fontSize: 18,
+          lineHeight: 1,
+          cursor: 'pointer',
+          zIndex: 10,
+          border: closeBtnBorder,
+          transition: 'background 0.15s',
+        }}
+      >
+        ×
+      </UnstyledButton>
+
+      <Stack align="center" gap={14} mb={22}>
+        <Box
+          style={{
+            width: 64,
+            height: 64,
+            borderRadius: '50%',
+            background: accentGradient,
+            boxShadow: accentShadow,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FFFFFF',
+          }}
+        >
+          <OpenInNewIcon style={{ fontSize: 30 }} />
+        </Box>
+        <Text fw={800} size="xl" ta="center" style={{ letterSpacing: '-0.3px' }}>
+          {t('paywall.waiting.title', 'Complete payment in your browser')}
+        </Text>
+        <Text size="sm" c="dimmed" ta="center" maw={520} style={{ lineHeight: 1.55 }}>
+          {t(
+            'paywall.waiting.description',
+            "We've opened the secure checkout page in your default browser. Once you complete the payment we'll automatically activate this device — no need to copy any license key.",
+          )}
+        </Text>
+      </Stack>
+
+      {openingBrowser && (
+        <Group gap={10} justify="center" mb={14}>
+          <Loader size="xs" />
+          <Text size="sm" c="dimmed">
+            {t('paywall.waiting.opening', 'Opening secure checkout in your browser…')}
+          </Text>
+        </Group>
+      )}
+
+      {checkoutUrl && (
+        <Box
+          style={{
+            background: cardBg,
+            border: cardBorder,
+            borderRadius: 12,
+            padding: '12px 14px',
+            marginBottom: 14,
+            wordBreak: 'break-all',
+          }}
+        >
+          <Text size="xs" c="dimmed" mb={4}>
+            {t(
+              'paywall.waiting.errorOpenBrowser',
+              "Couldn't open your browser. Please copy the link manually:",
+            )}
+          </Text>
+          <Text size="xs" style={{ fontFamily: 'monospace', lineHeight: 1.5 }}>
+            {checkoutUrl}
+          </Text>
+        </Box>
+      )}
+
+      {waitingError && (
+        <Box
+          style={{
+            background: 'rgba(239, 68, 68, 0.08)',
+            border: '1px solid rgba(239, 68, 68, 0.25)',
+            borderRadius: 10,
+            padding: '10px 14px',
+            marginBottom: 14,
+          }}
+        >
+          <Text size="xs" c="red.7" style={{ lineHeight: 1.5 }}>
+            {waitingError}
+          </Text>
+        </Box>
+      )}
+
+      <Text size="xs" c="dimmed" ta="center" mb={18} style={{ lineHeight: 1.5 }}>
+        {t(
+          'paywall.waiting.hint',
+          "If the payment page didn't open, click the button below to retry.",
+        )}
+      </Text>
+
+      <Stack gap={10} mb={10}>
+        <Button
+          fullWidth
+          size="md"
+          radius="md"
+          variant="light"
+          leftSection={<OpenInNewIcon style={{ fontSize: 16 }} />}
+          loading={openingBrowser}
+          onClick={onReopenBrowser}
+          disabled={!checkoutUrl}
+        >
+          {t('paywall.waiting.openInBrowser', 'Open Payment Page Again')}
+        </Button>
+        <Button
+          fullWidth
+          size="md"
+          radius="md"
+          loading={manualChecking}
+          onClick={onManualCheck}
+          styles={{
+            root: {
+              background: accentGradient,
+              boxShadow: accentShadow,
+              color: '#FFFFFF',
+            },
+          }}
+        >
+          {manualChecking
+            ? t('paywall.waiting.checking', 'Checking…')
+            : t('paywall.waiting.checkNow', "I've Paid · Check Status")}
+        </Button>
+        <Button
+          fullWidth
+          size="sm"
+          radius="md"
+          variant="subtle"
+          color="gray"
+          onClick={onBack}
+        >
+          {t('paywall.waiting.back', 'Back')}
+        </Button>
+      </Stack>
     </Box>
   );
 }

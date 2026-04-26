@@ -147,7 +147,26 @@ const AboutSection: React.FC = () => {
       // Opens today's daily log file in the OS default text editor.
       // Convert/OCR per-task logs are still reachable via the right-click
       // "Open log file" menu in the task list.
-      await openTodayLog();
+      //
+      // We race the IPC against an 8s timeout so that on Windows — where
+      // the underlying ShellExecuteEx call can occasionally hang waiting
+      // on a system-level "Open with" picker — the button never gets
+      // stuck loading forever.  If we hit the timeout we surface a
+      // user-actionable message rather than silently giving up.
+      await Promise.race([
+        openTodayLog(),
+        new Promise<never>((_, reject) =>
+          setTimeout(
+            () =>
+              reject(
+                new Error(
+                  'Opening the log file timed out. Please open the log folder manually.',
+                ),
+              ),
+            8000,
+          ),
+        ),
+      ]);
     } catch (err) {
       console.error('[AboutSection] Failed to open today log:', err);
       const message =

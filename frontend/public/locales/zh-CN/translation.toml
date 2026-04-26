@@ -1766,6 +1766,18 @@ badge = "支付成功"
 heading = "Pro 功能已为您解锁"
 detail = "本设备已成功激活，激活码副本已发送至您的邮箱备份。"
 
+[paywall.waiting]
+title = "请在浏览器中完成支付"
+description = "我们已在您的默认浏览器中打开了安全支付页面。完成支付后，本设备将自动激活，无需手动输入激活码。"
+hint = "如果支付页面没有自动打开，请点击下方按钮重新打开。"
+openInBrowser = "再次打开支付页面"
+checkNow = "我已完成支付 · 查询状态"
+checking = "正在查询…"
+back = "返回"
+opening = "正在浏览器中打开安全支付页…"
+errorOpenBrowser = "无法打开浏览器，请手动复制以下链接："
+notDetectedYet = "尚未检测到支付，请完成浏览器中的支付后再试。"
+
 [backendStartup]
 notFoundTitle = "未找到后端"
 retry = "重试"

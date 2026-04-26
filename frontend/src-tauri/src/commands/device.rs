@@ -22,7 +22,7 @@ const DEVICE_ID_SALT: &str = "stirling-pdf-device-v1";
 pub async fn get_device_id() -> Result<String, String> {
     // TEMP debug override — flip back to the real implementation below
     // before shipping a release build.
-    //Ok("xxxxxxxx2".to_string())
+    //Ok("xxxxxxxx4".to_string())
 
     
     mid::get(DEVICE_ID_SALT).map_err(|e| {

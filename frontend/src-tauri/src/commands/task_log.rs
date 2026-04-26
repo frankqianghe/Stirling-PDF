@@ -106,9 +106,7 @@ pub async fn task_log_open(app: AppHandle, id: String) -> Result<(), String> {
             .map_err(|e| format!("Failed to create empty log file: {}", e))?;
     }
     let path_str = path.to_string_lossy().to_string();
-    tauri_plugin_opener::open_path(&path_str, None::<&str>)
-        .map_err(|e| format!("Failed to open log file: {}", e))?;
-    Ok(())
+    open_text_file(&path_str)
 }
 
 /// Reveal the application log directory (the parent of `task_logs`) in the
@@ -216,7 +214,49 @@ pub async fn daily_log_open(app: AppHandle, date: String) -> Result<(), String> 
         })?;
     }
     let path_str = path.to_string_lossy().to_string();
-    tauri_plugin_opener::open_path(&path_str, None::<&str>)
-        .map_err(|e| format!("Failed to open daily log: {}", e))?;
-    Ok(())
+    open_text_file(&path_str)
+}
+
+/// Open a `.log` (or otherwise-plain-text) file in a sensible editor.
+///
+/// On Windows, `.log` files frequently have NO registered file association
+/// in fresh user profiles — `tauri_plugin_opener::open_path(.., None)` then
+/// falls through to `ShellExecuteEx` which can either hang waiting on the
+/// "Open with" picker or silently fail.  Either way the JS `await invoke`
+/// promise never resolves and the "View Logs" button spins forever.
+///
+/// The fix is to invoke `notepad.exe` explicitly on Windows — it is always
+/// available, opens immediately, and doesn't depend on user file-type
+/// configuration.  On macOS / Linux the default-app path is fine and we
+/// keep the previous behaviour.  We also fall back to opening the parent
+/// directory if the explicit launch fails, so the user always gets *some*
+/// way to access the log.
+fn open_text_file(path_str: &str) -> Result<(), String> {
+    #[cfg(windows)]
+    {
+        if let Err(e) =
+            tauri_plugin_opener::open_path(path_str, Some("notepad.exe"))
+        {
+            add_log(format!(
+                "⚠️ open_text_file: notepad launch failed for {}: {}",
+                path_str, e
+            ));
+            // Fallback: reveal parent directory so the user can at least
+            // get to the file via Explorer.
+            if let Some(parent) = std::path::Path::new(path_str).parent() {
+                let parent_str = parent.to_string_lossy().to_string();
+                tauri_plugin_opener::open_path(&parent_str, None::<&str>).map_err(
+                    |e2| format!("Failed to open log file or its directory: {}", e2),
+                )?;
+                return Ok(());
+            }
+            return Err(format!("Failed to open log file with notepad: {}", e));
+        }
+        Ok(())
+    }
+    #[cfg(not(windows))]
+    {
+        tauri_plugin_opener::open_path(path_str, None::<&str>)
+            .map_err(|e| format!("Failed to open log file: {}", e))
+    }
 }

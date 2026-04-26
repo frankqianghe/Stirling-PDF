@@ -1754,6 +1754,18 @@ badge = "Payment Successful"
 heading = "Your Pro features are now unlocked"
 detail = "This device has been activated successfully. Your License Key has also been sent to your email as a backup."
 
+[paywall.waiting]
+title = "Complete payment in your browser"
+description = "We've opened the secure checkout page in your default browser. Once you complete the payment we'll automatically activate this device — no need to copy any license key."
+hint = "If the payment page didn't open, click the button below to retry."
+openInBrowser = "Open Payment Page Again"
+checkNow = "I've Paid · Check Status"
+checking = "Checking…"
+back = "Back"
+opening = "Opening secure checkout in your browser…"
+errorOpenBrowser = "Couldn't open your browser. Please copy the link manually:"
+notDetectedYet = "Payment not detected yet. Please complete payment in your browser, then try again."
+
 [backendStartup]
 notFoundTitle = "Backend not found"
 retry = "Retry"

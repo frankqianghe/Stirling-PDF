@@ -1,5 +1,49 @@
-use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder, WindowEvent};
+use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 use tauri::webview::PageLoadEvent;
+
+/// Injected into every page loaded inside the checkout webview.
+///
+/// Lemon Squeezy (and many other hosted checkout providers) registers
+/// `beforeunload` listeners.  On Windows + WebView2 those listeners cause the
+/// native title-bar X button to visibly hang: WM_CLOSE fires, but the runtime
+/// sits forever waiting for the JS confirm dialog the user can never see /
+/// answer.  We pre-empt this by neutralising both `window.onbeforeunload`
+/// assignments AND `addEventListener('beforeunload', ...)` registrations
+/// before the host page's scripts run.  Same trick for `unload`, just to be
+/// thorough.
+///
+/// Important: we deliberately do NOT add a Rust-side `on_window_event` /
+/// `prevent_close()` handler — combining `prevent_close()` and `destroy()`
+/// in the same closure on Windows leaves the runtime in a state where
+/// subsequent CloseRequested events on the *main* window are silently
+/// dropped, which is exactly the regression users reported.
+const CHECKOUT_BEFOREUNLOAD_SUPPRESS_SCRIPT: &str = r#"
+(function () {
+  try {
+    var SUPPRESSED = { beforeunload: true, unload: true };
+    Object.defineProperty(window, 'onbeforeunload', {
+      configurable: true,
+      get: function () { return null; },
+      set: function () { /* swallow */ }
+    });
+    Object.defineProperty(window, 'onunload', {
+      configurable: true,
+      get: function () { return null; },
+      set: function () { /* swallow */ }
+    });
+    var origAdd = window.addEventListener;
+    window.addEventListener = function (type, listener, options) {
+      if (type && SUPPRESSED[String(type).toLowerCase()]) {
+        return; /* drop */
+      }
+      return origAdd.call(this, type, listener, options);
+    };
+  } catch (err) {
+    /* logging doesn't matter — the worst case is a slightly slower close */
+    try { console.warn('[plexpdf] beforeunload suppression failed', err); } catch (_) {}
+  }
+})();
+"#;
 
 /// Opens a dedicated in-app WebviewWindow that loads the paywall HTML page.
 #[tauri::command]
@@ -80,7 +124,36 @@ pub async fn open_checkout_webview(
     let app_for_load = app.clone();
     let redirect_prefix_for_load = redirect_url.clone();
 
-    WebviewWindowBuilder::new(&app, label, external_url)
+    // We deliberately match the latest stable Edge UA exactly.  Lemon
+    // Squeezy / Cloudflare are aggressive about flagging anything that
+    // looks like an embedded browser; while WebView2's default UA is
+    // already very Edge-like, some Windows builds leak a `WebView2/`
+    // suffix or stale Chrome version numbers, both of which can be
+    // enough to push the Cloudflare risk score over the threshold and
+    // trigger a JS challenge that the embedded view can't satisfy
+    // (which presents to the user as a permanently blank page).
+    //
+    // The string here should be bumped along with new Edge stable
+    // releases, but stale-by-a-minor-version is still much closer to a
+    // real browser than the WebView2 default in some environments.
+    const CHECKOUT_USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0";
+
+    // Best-effort WebView2 tuning for hosted checkout pages:
+    //   - autoplay-policy: lemonsqueezy occasionally embeds promo
+    //     videos / audio that can stall the rest of the page if the
+    //     WebView2 default policy gates them.
+    //   - disable-features=msSmartScreenProtection: SmartScreen has
+    //     historically delayed first paint on third-party domains.
+    //   - disable-features=msImplicitSignin: prevents WebView2 from
+    //     trying to silently sign the user in with their Windows
+    //     account, which can race with the page's own auth.
+    #[cfg(windows)]
+    const CHECKOUT_BROWSER_ARGS: &str =
+        "--autoplay-policy=no-user-gesture-required \
+         --disable-features=msSmartScreenProtection,msImplicitSignin";
+
+    #[allow(unused_mut)]
+    let mut builder = WebviewWindowBuilder::new(&app, label, external_url)
         .title("Checkout")
         .inner_size(1120.0, 760.0)
         .min_inner_size(860.0, 620.0)
@@ -88,6 +161,15 @@ pub async fn open_checkout_webview(
         .closable(true)
         .decorations(true)
         .center()
+        .user_agent(CHECKOUT_USER_AGENT)
+        .initialization_script(CHECKOUT_BEFOREUNLOAD_SUPPRESS_SCRIPT);
+
+    #[cfg(windows)]
+    {
+        builder = builder.additional_browser_args(CHECKOUT_BROWSER_ARGS);
+    }
+
+    builder
         // Forward checkout-webview page load completions to the main
         // window so the frontend can fire the
         // `lemonsqueezy_load_finished` analytics event when the
@@ -148,37 +230,6 @@ pub async fn open_checkout_webview(
         })
         .build()
         .map_err(|e| format!("Failed to open checkout webview: {}", e))?;
-
-    // Some checkout providers (Lemon Squeezy in particular) register a
-    // `beforeunload` handler.  On Windows + WebView2, that hook can
-    // visibly hang the native title-bar X button: the OS fires
-    // `WM_CLOSE`, the runtime emits `CloseRequested`, and the webview
-    // sits there waiting for a confirm dialog the user never sees.
-    //
-    // We sidestep that by force-destroying the window the moment
-    // `CloseRequested` fires — `destroy()` is the documented "skip
-    // beforeunload" escape hatch.  We also still emit the
-    // `checkout-payment-success` event listener path independently
-    // (via `on_navigation` above), so this handler only fires for
-    // user-initiated closes.
-    if let Some(win) = app.get_webview_window(label) {
-        let app_for_close = app.clone();
-        win.on_window_event(move |event| {
-            if let WindowEvent::CloseRequested { api, .. } = event {
-                log::info!(
-                    "[paywall] checkout webview CloseRequested — force destroying"
-                );
-                // Prevent the default close-with-beforeunload path so
-                // the runtime doesn't sit waiting for a JS confirm
-                // dialog the user can't see/answer, then synchronously
-                // destroy the window to make the X button feel snappy.
-                api.prevent_close();
-                if let Some(w) = app_for_close.get_webview_window("checkout-webview") {
-                    let _ = w.destroy();
-                }
-            }
-        });
-    }
 
     Ok(())
 }
