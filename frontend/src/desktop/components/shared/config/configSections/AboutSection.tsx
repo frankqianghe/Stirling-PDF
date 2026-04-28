@@ -13,55 +13,29 @@ import { useTranslation } from 'react-i18next';
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { getVersion } from '@tauri-apps/api/app';
 import { openTodayLog } from '@app/services/dailyLogService';
-
-const RELEASES_LATEST_API =
-  'https://api.github.com/repos/frankqianghe/Stirling-PDF/releases/latest';
-const RELEASES_PAGE_URL =
-  'https://github.com/frankqianghe/Stirling-PDF/releases/latest';
+import { updateCheckService } from '@app/services/updateCheckService';
 
 type UpdateState =
   | { kind: 'idle' }
   | { kind: 'checking' }
-  | { kind: 'up-to-date'; latest: string }
-  | { kind: 'available'; latest: string }
+  | { kind: 'up-to-date' }
+  | {
+      kind: 'available';
+      latest: string;
+      downloadUrl: string;
+      notes: string;
+    }
   | { kind: 'error'; message: string };
-
-/**
- * Compares two semver-ish version strings (e.g. "2.5.7" vs "2.5.10").
- * Strips a leading "v" if present. Missing segments are treated as 0.
- *
- * Returns:
- *   > 0  if a > b
- *   < 0  if a < b
- *   = 0  if equal
- */
-function compareVersions(a: string, b: string): number {
-  const parse = (raw: string) =>
-    raw
-      .replace(/^v/i, '')
-      .split('.')
-      .map((segment) => {
-        const n = parseInt(segment, 10);
-        return Number.isFinite(n) ? n : 0;
-      });
-
-  const aParts = parse(a);
-  const bParts = parse(b);
-  const length = Math.max(aParts.length, bParts.length);
-  for (let i = 0; i < length; i += 1) {
-    const av = aParts[i] ?? 0;
-    const bv = bParts[i] ?? 0;
-    if (av !== bv) return av - bv;
-  }
-  return 0;
-}
 
 /**
  * Desktop "About" pane — the simple three-row variant requested by product:
  *
  *   1. Version            — pulled from Tauri's `getVersion()`
- *   2. Check for Updates  — hits the public GitHub releases API and compares
- *                           the tag against the locally bundled version
+ *   2. Check for Updates  — hits our backend `/client/update/check` endpoint
+ *                           with the current arch + version; if the server
+ *                           reports an update, surface a Download button
+ *                           that opens the supplied download_url in the
+ *                           user's default browser
  *   3. View Logs          — opens the OS file manager at the app log dir
  *                           (which contains the `task_logs/` subfolder used
  *                           by the per-task logging system)
@@ -76,6 +50,7 @@ const AboutSection: React.FC = () => {
   const [update, setUpdate] = useState<UpdateState>({ kind: 'idle' });
   const [openingLogs, setOpeningLogs] = useState(false);
   const [logError, setLogError] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
 
   // Fetch the desktop version once on mount.
   useEffect(() => {
@@ -97,23 +72,17 @@ const AboutSection: React.FC = () => {
     if (!version) return;
     setUpdate({ kind: 'checking' });
     try {
-      const resp = await fetch(RELEASES_LATEST_API, {
-        headers: { Accept: 'application/vnd.github+json' },
+      const result = await updateCheckService.check(version);
+      if (!result.hasUpdate) {
+        setUpdate({ kind: 'up-to-date' });
+        return;
+      }
+      setUpdate({
+        kind: 'available',
+        latest: result.info.version,
+        downloadUrl: result.info.downloadUrl,
+        notes: result.info.notes,
       });
-      if (!resp.ok) {
-        throw new Error(`GitHub API responded ${resp.status} ${resp.statusText}`);
-      }
-      const json = (await resp.json()) as { tag_name?: string; name?: string };
-      const latestTag = (json.tag_name || json.name || '').trim();
-      if (!latestTag) {
-        throw new Error('Empty tag_name in GitHub response');
-      }
-      const cmp = compareVersions(latestTag, version);
-      if (cmp > 0) {
-        setUpdate({ kind: 'available', latest: latestTag });
-      } else {
-        setUpdate({ kind: 'up-to-date', latest: latestTag });
-      }
     } catch (err) {
       console.error('[AboutSection] Update check failed:', err);
       const message =
@@ -122,22 +91,32 @@ const AboutSection: React.FC = () => {
     }
   }, [version]);
 
-  const openReleases = useCallback(async () => {
+  /**
+   * Opens the server-supplied download URL in the user's default
+   * browser. We do NOT download via the embedded webview / Tauri's
+   * native download API — product wants the standard browser download
+   * UX (progress, resume, "open file" prompt on success), and the
+   * browser also avoids any Cloudflare bot-checks WebView2 occasionally
+   * trips on (the same reason we open the Lemon Squeezy checkout
+   * externally).
+   */
+  const downloadLatest = useCallback(async () => {
+    if (downloading) return;
+    if (update.kind !== 'available' || !update.downloadUrl) return;
+    setDownloading(true);
     try {
-      // tauri-plugin-opener is registered with `opener:default`; using the
-      // shell plugin's open() would also work but opener is already in use
-      // elsewhere in the app, so stay consistent.
-      await invoke('plugin:opener|open_url', { url: RELEASES_PAGE_URL });
+      await invoke('plugin:opener|open_url', { url: update.downloadUrl });
     } catch (err) {
-      console.error('[AboutSection] Failed to open releases page:', err);
-      // Fallback to window.open if the IPC route fails.
+      console.error('[AboutSection] Failed to open download URL:', err);
       try {
-        window.open(RELEASES_PAGE_URL, '_blank', 'noopener');
+        window.open(update.downloadUrl, '_blank', 'noopener');
       } catch {
         /* swallow */
       }
+    } finally {
+      setDownloading(false);
     }
-  }, []);
+  }, [downloading, update]);
 
   const openLogs = useCallback(async () => {
     if (openingLogs) return;
@@ -261,7 +240,7 @@ const AboutSection: React.FC = () => {
               {t(
                 'settings.about.upToDate',
                 'You are on the latest version ({{latest}}).',
-                { latest: update.latest },
+                { latest: version ?? '' },
               )}
             </Alert>
           )}
@@ -273,18 +252,34 @@ const AboutSection: React.FC = () => {
               radius="md"
               withCloseButton={false}
             >
-              <Group justify="space-between" align="center" wrap="nowrap">
-                <Text size="sm">
-                  {t(
-                    'settings.about.updateAvailable',
-                    'A new version is available: {{latest}}',
-                    { latest: update.latest },
-                  )}
-                </Text>
-                <Button size="xs" radius="md" onClick={openReleases}>
-                  {t('settings.about.download', 'Download')}
-                </Button>
-              </Group>
+              <Stack gap="xs">
+                <Group justify="space-between" align="center" wrap="nowrap">
+                  <Text size="sm" fw={600}>
+                    {t(
+                      'settings.about.updateAvailable',
+                      'A new version is available: {{latest}}',
+                      { latest: update.latest },
+                    )}
+                  </Text>
+                  <Button
+                    size="xs"
+                    radius="md"
+                    loading={downloading}
+                    onClick={downloadLatest}
+                  >
+                    {t('settings.about.download', 'Download')}
+                  </Button>
+                </Group>
+                {update.notes && (
+                  <Text
+                    size="xs"
+                    c="dimmed"
+                    style={{ whiteSpace: 'pre-wrap' }}
+                  >
+                    {update.notes}
+                  </Text>
+                )}
+              </Stack>
             </Alert>
           )}
 

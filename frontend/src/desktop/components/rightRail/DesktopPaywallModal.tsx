@@ -22,11 +22,15 @@ import { useDesktopLicenseStatus } from '@app/hooks/useDesktopLicenseStatus';
 import { trackEvent } from '@app/services/eventReportService';
 
 /**
- * Fixed localhost URL used as the redirect target for the checkout flow.
- * The checkout webview intercepts navigation to this URL (see the Rust
- * `open_checkout_webview` command) — there is NO actual local HTTP server.
+ * Public redirect target sent to the order service when creating a checkout
+ * session. After Lemon Squeezy completes the payment, the user's browser is
+ * redirected to this hosted success page (which doubles as a download landing
+ * page for users who haven't installed PlexPDF yet). Inside the desktop app
+ * we no longer rely on this URL — payment success is detected via license
+ * polling against `/client/device/register`.
  */
-const CHECKOUT_REDIRECT_URL = 'http://localhost:37691/plexpdf/payment/success';
+const CHECKOUT_REDIRECT_URL =
+  'https://plexpdf-test.wenxstudio.ai/static/payments/success.html';
 
 const LIFETIME_FEATURES = [
   '1 Windows Device',
