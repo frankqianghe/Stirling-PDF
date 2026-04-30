@@ -508,7 +508,7 @@ export function DesktopPaywallModal({
                   checkGradient={YEARLY_GRADIENT}
                   buttonGradient={YEARLY_GRADIENT}
                   buttonShadow={YEARLY_SHADOW}
-                  footerNote="Need help? Contact: support@yourpdf.com"
+                  footerNote="Need help? Contact: support@wenxstudio.com"
                   onBuy={() => openCheckout('yearly')}
                 />
               </>

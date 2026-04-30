@@ -60,6 +60,84 @@ async function buildAuthHeaders(): Promise<Record<string, string>> {
   return headers;
 }
 
+/**
+ * Window event broadcast by the desktop `useDeviceRegister` hook the
+ * moment the first `/client/device/register` round-trip resolves
+ * (success OR final failure after retries). The exact name is mirrored
+ * here as a literal to keep `core/` free of `desktop/` imports.
+ */
+const DEVICE_REGISTERED_EVENT = 'plexpdf-device-registered';
+
+/**
+ * Awaits desktop device registration before resolving.
+ *
+ * Behaviour:
+ *  - If a device token is already cached in localStorage (the steady
+ *    state on every launch after the first), this returns *immediately*
+ *    — zero overhead, no event listener installed.
+ *  - Otherwise it parks until the `plexpdf-device-registered` window
+ *    event fires (broadcast from `useDeviceRegister`).
+ *  - As a safety net, it also resolves after `timeoutMs` so a
+ *    permanently broken registration eventually lets the submit attempt
+ *    proceed and surface a real 401 instead of hanging the UI's
+ *    "submit" spinner forever.
+ *
+ * The optional `logger` lets callers transcribe the wait into the
+ * per-task log file so support can tell, after the fact, whether the
+ * task was delayed waiting for registration.
+ */
+async function waitForDeviceRegistration(
+  logger?: TaskLogger,
+  timeoutMs = 60_000,
+): Promise<void> {
+  if (typeof window === 'undefined') return;
+
+  let cachedToken = '';
+  try {
+    cachedToken = localStorage.getItem(DEVICE_TOKEN_KEY) ?? '';
+  } catch {
+    // ignore — may be unavailable in private browsing modes
+  }
+  if (cachedToken) return;
+
+  logger?.info(
+    'Device registration not finished yet — submission is waiting for ' +
+      `${DEVICE_REGISTERED_EVENT}…`,
+  );
+  const startedAt = performance.now();
+
+  await new Promise<void>((resolve) => {
+    let settled = false;
+    const finish = (reason: string) => {
+      if (settled) return;
+      settled = true;
+      window.removeEventListener(
+        DEVICE_REGISTERED_EVENT,
+        onDone as EventListener,
+      );
+      window.clearTimeout(timer);
+      const waited = Math.round(performance.now() - startedAt);
+      logger?.info(`Resumed after waiting ${waited}ms (${reason}).`);
+      resolve();
+    };
+    const onDone: EventListener = () =>
+      finish('device registration broadcast received');
+    window.addEventListener(
+      DEVICE_REGISTERED_EVENT,
+      onDone as EventListener,
+      { once: true },
+    );
+    const timer = window.setTimeout(
+      () =>
+        finish(
+          `safety timeout after ${timeoutMs}ms — proceeding without ` +
+            'a confirmed registration; subsequent calls may 401',
+        ),
+      timeoutMs,
+    );
+  });
+}
+
 export type TaskStatus = 'in_progress' | 'completed' | 'failed';
 
 export interface ConvertTask {
@@ -214,6 +292,7 @@ export async function submitConvertTask(
   toFormat: string,
   logger?: TaskLogger,
 ): Promise<ConvertTask> {
+  await waitForDeviceRegistration(logger);
   const url = `${API_BASE}/convert/pdf/to/${toFormat}`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();
@@ -314,6 +393,7 @@ export async function submitOCRTask(
   file: File,
   logger?: TaskLogger,
 ): Promise<ConvertTask> {
+  await waitForDeviceRegistration(logger);
   const url = `${API_BASE}/convert/pdf/to/docx`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();
@@ -365,6 +445,11 @@ export async function submitDocxToPdf(
   fileName: string,
   logger?: TaskLogger,
 ): Promise<{ id: string; status: string; created_at: string }> {
+  // Phase 2 of OCR — registration is virtually always done by the time
+  // we hit this (phase 1 already submitted), but the cached-token early
+  // return makes the call effectively free, and it keeps the contract
+  // identical for any caller that invokes phase 2 in isolation.
+  await waitForDeviceRegistration(logger);
   const url = `${API_BASE}/convert/docx/to/pdf`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();

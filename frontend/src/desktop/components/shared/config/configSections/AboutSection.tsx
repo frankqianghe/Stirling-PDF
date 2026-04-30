@@ -15,6 +15,13 @@ import { getVersion } from '@tauri-apps/api/app';
 import { openTodayLog } from '@app/services/dailyLogService';
 import { updateCheckService } from '@app/services/updateCheckService';
 
+/**
+ * Single source of truth for the customer support address.
+ * Mirrored as plain copy in `settings.activation.support` (i18n) and in
+ * the paywall modal's footer note — keep them in sync if it ever changes.
+ */
+const SUPPORT_EMAIL = 'support@wenxstudio.com';
+
 type UpdateState =
   | { kind: 'idle' }
   | { kind: 'checking' }
@@ -117,6 +124,29 @@ const AboutSection: React.FC = () => {
       setDownloading(false);
     }
   }, [downloading, update]);
+
+  /**
+   * Opens the user's default mail client with a pre-filled "to" address
+   * pointing at customer support. We use the opener plugin (same one
+   * used for download / checkout URLs) instead of `window.location =
+   * "mailto:..."` because Tauri's webview rejects top-level navigation
+   * to non-http schemes — calling through the IPC route invokes
+   * ShellExecute / xdg-open / `open(1)` which is what the user
+   * actually wants here.
+   */
+  const sendSupportEmail = useCallback(async () => {
+    const url = `mailto:${SUPPORT_EMAIL}`;
+    try {
+      await invoke('plugin:opener|open_url', { url });
+    } catch (err) {
+      console.error('[AboutSection] Failed to open mailto link:', err);
+      try {
+        window.open(url, '_blank', 'noopener');
+      } catch {
+        /* swallow */
+      }
+    }
+  }, []);
 
   const openLogs = useCallback(async () => {
     if (openingLogs) return;
@@ -331,6 +361,38 @@ const AboutSection: React.FC = () => {
             </Alert>
           )}
         </Stack>
+      </Paper>
+
+      {/* Row 4: Contact Us */}
+      <Paper
+        p="md"
+        radius="md"
+        style={{ border: cardBorder, background: 'transparent' }}
+      >
+        <Group justify="space-between" align="center" wrap="nowrap">
+          <div>
+            <Text fw={600} size="sm">
+              {t('settings.about.contactUs', 'Contact Us')}
+            </Text>
+            <Text size="xs" c="dimmed" mt={4}>
+              {t(
+                'settings.about.contactUsHint',
+                'Questions or issues? Email us — we usually reply within one business day.',
+              )}
+            </Text>
+            <Text size="xs" mt={6} style={{ fontFamily: 'monospace' }}>
+              {SUPPORT_EMAIL}
+            </Text>
+          </div>
+          <Button
+            size="sm"
+            radius="md"
+            variant="default"
+            onClick={sendSupportEmail}
+          >
+            {t('settings.about.sendEmail', 'Send Email')}
+          </Button>
+        </Group>
       </Paper>
     </Stack>
   );

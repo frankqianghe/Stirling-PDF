@@ -5653,7 +5653,7 @@ navLabel = "Activation"
 pasteFromClipboard = "Paste from Clipboard"
 placeholder = "Enter your license key"
 successMessage = "License activated successfully. Your Pro features are now available on this device."
-support = "Need help? Contact: support@yourpdf.com"
+support = "Need help? Contact: support@wenxstudio.com"
 title = "Activate License"
 
 [settings.about]
@@ -5672,6 +5672,9 @@ download = "Download"
 viewLogs = "View Logs"
 viewLogsHint = "Open today's diagnostic log file in your default text editor."
 openLogFolder = "Open Today's Log"
+contactUs = "Contact Us"
+contactUsHint = "Questions or issues? Email us — we usually reply within one business day."
+sendEmail = "Send Email"
 
 [settings.licensingAnalytics]
 audit = "Audit"

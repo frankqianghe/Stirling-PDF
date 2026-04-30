@@ -9,7 +9,6 @@ import { useDeviceRegister } from '@app/hooks/useDeviceRegister';
 import { DESKTOP_DEFAULT_APP_CONFIG } from '@app/config/defaultAppConfig';
 import { connectionModeService } from '@app/services/connectionModeService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
-import { DeviceRegisterLoadingOverlay } from '@app/components/DeviceRegisterLoadingOverlay';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { isTauri } from '@tauri-apps/api/core';
 
@@ -35,12 +34,18 @@ export function AppProviders({ children }: { children: ReactNode }) {
   }, [setupComplete]);
 
   // Register device with backend on every launch (after backend is ready).
-  // We surface `registering` so we can mount a fullscreen blocking
-  // overlay until `/client/device/register` returns a token — every
-  // paid-plan / paywall code path depends on that token, and showing
-  // the workspace before it lands causes "free user" UI flicker plus
-  // 401s on the first user click.
-  const { registering } = useDeviceRegister();
+  //
+  // The hook drives a `/client/device/register` call in the background
+  // and broadcasts a `plexpdf-device-registered` event when it resolves
+  // (success or final failure).  We deliberately do NOT block the UI on
+  // the result anymore — product wants users in the workspace as fast
+  // as possible.  Anything that genuinely needs a device token (Convert
+  // / OCR submits — see `waitForDeviceRegistration` in
+  // `core/services/taskService.ts`) parks on that broadcast so the user
+  // can click "Start" immediately and the button just keeps spinning
+  // until the token lands, then proceeds.  Common case (token already
+  // cached from a prior launch) skips the wait entirely.
+  useDeviceRegister();
 
   // Initialize backend health monitoring for self-hosted mode
   useEffect(() => {
@@ -108,19 +113,21 @@ export function AppProviders({ children }: { children: ReactNode }) {
       <SaveShortcutListener />
       {children}
       {/*
-        Block the entire UI until the very first /client/device/register
-        round-trip resolves (success OR final failure after retries).
-        The hook stops returning `registering: true` in either case, so
-        the user is never stuck behind it forever.
+        Note: the desktop app intentionally does NOT block the workspace
+        on either /client/device/register or JRE backend startup.
 
-        Note: we intentionally do NOT block on JRE backend startup any
-        more — JRE-dependent tools are soft-disabled at the tile /
-        submit-button level (see `useToolManagement` + `OperationButton`)
-        and light up the moment the backend health monitor reports
-        healthy.  Convert and OCR (remote PlexPDF cloud) stay clickable
-        throughout backend startup.
+        - JRE-dependent tools are soft-disabled at the tile / submit
+          button level (see `useToolManagement` + `OperationButton`)
+          and light up when the backend health monitor reports healthy.
+          Convert and OCR (remote PlexPDF cloud) stay clickable
+          throughout backend startup.
+
+        - Convert / OCR submits started before /client/device/register
+          finishes will sit in their loading state and resume
+          automatically when `useDeviceRegister` broadcasts the
+          `plexpdf-device-registered` window event (see
+          `waitForDeviceRegistration` in `core/services/taskService.ts`).
       */}
-      {registering && <DeviceRegisterLoadingOverlay />}
     </ProprietaryAppProviders>
   );
 }

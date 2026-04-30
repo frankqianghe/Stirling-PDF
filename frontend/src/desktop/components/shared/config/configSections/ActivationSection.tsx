@@ -220,7 +220,7 @@ const ActivationSection: React.FC = () => {
       <Text size="xs" c="dimmed">
         {t(
           'settings.activation.support',
-          'Need help? Contact: support@yourpdf.com'
+          'Need help? Contact: support@wenxstudio.com'
         )}
       </Text>
     </Stack>

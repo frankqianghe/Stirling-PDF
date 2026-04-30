@@ -5658,7 +5658,7 @@ navLabel = "激活"
 pasteFromClipboard = "从剪贴板粘贴"
 placeholder = "请输入激活码"
 successMessage = "激活成功，您的 Pro 功能已在此设备上启用。"
-support = "需要帮助？请联系：support@yourpdf.com"
+support = "需要帮助？请联系：support@wenxstudio.com"
 title = "激活许可"
 
 [settings.about]
@@ -5677,6 +5677,9 @@ download = "下载"
 viewLogs = "查看日志"
 viewLogsHint = "用默认文本编辑器打开今天的运行日志文件。"
 openLogFolder = "打开今日日志"
+contactUs = "联系我们"
+contactUsHint = "有疑问或反馈？欢迎邮件联系，我们通常会在一个工作日内回复。"
+sendEmail = "发送邮件"
 
 [settings.hotkeys]
 capturing = "按下按键…（按 Esc 取消）"

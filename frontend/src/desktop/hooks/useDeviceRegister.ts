@@ -47,6 +47,30 @@ export function useDeviceRegister(): UseDeviceRegisterResult {
       setRegistration(reg);
       setRegistering(false);
 
+      // Broadcast a global "device registration done" event so anything
+      // that started before registration completed (e.g. a Convert/OCR
+      // submit clicked on the very first second of app startup) can
+      // un-block itself.  Listeners — see `waitForDeviceRegistration` in
+      // `core/services/taskService.ts` — only care that the round-trip
+      // *resolved*, not whether it succeeded; on failure we still want
+      // them to proceed and let the eventual API call surface a clean
+      // 401 instead of leaving the submit button spinning forever.
+      try {
+        window.dispatchEvent(
+          new CustomEvent('plexpdf-device-registered', {
+            detail: {
+              success: Boolean(reg),
+              paidPlan: reg?.paidPlan ?? 'free',
+            },
+          }),
+        );
+      } catch (err) {
+        console.warn(
+          '[useDeviceRegister] failed to dispatch plexpdf-device-registered event:',
+          err,
+        );
+      }
+
       // Post-register: ask the server whether to show the paywall ad.
       if (reg) {
         const ad = await adService.fetchAd();
