@@ -4,18 +4,20 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        # NOTE: macOS and Linux builds were intentionally dropped — the
-        # product is Windows-only for the foreseeable future and we want
-        # to save the (relatively expensive) macOS / Linux runner minutes
-        # plus avoid shipping unused artifacts.  The choice list is left
-        # in place so manual dispatches don't break, but every option
-        # resolves to the Windows-only matrix below.
-        description: "Platform to build (Windows-only — macOS / Linux are no longer built)"
+        # We currently ship Windows + macOS Apple Silicon only.  Linux
+        # remains intentionally dropped (no demand, expensive runner
+        # minutes).  macOS Intel is also NOT built — Apple Silicon
+        # macs can run x64 binaries via Rosetta if anyone ever needs
+        # the inverse, but we expect Intel mac users to be a rounding
+        # error at this point.
+        description: "Platform to build (windows, macos, or all). Linux is no longer built."
         required: true
-        default: "windows"
+        default: "all"
         type: choice
         options:
+          - all
           - windows
+          - macos
   pull_request:
     branches: [main, V2-tauri-windows]
     paths:
@@ -49,12 +51,32 @@ jobs:
 
       - name: Determine build matrix
         id: set-matrix
-        # Windows-only: we no longer ship macOS / Linux desktop builds.
-        # All triggers (workflow_dispatch / push / PR / tag) resolve to
-        # the same single-entry Windows matrix so we never accidentally
-        # burn runner time on platforms that wouldn't be released.
+        # Build matrix:
+        #   - windows-latest         → Windows x86_64 (.exe / .msi)
+        #   - macos-15               → macOS Apple Silicon aarch64 (.dmg)
+        # Linux remains intentionally unbuilt.
+        #
+        # workflow_dispatch lets the operator pick a single platform
+        # (windows or macos); every other trigger (push / PR / tag)
+        # builds both so a tagged release ships both artifacts.
         run: |
-          echo 'matrix={"include":[{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"}]}' >> $GITHUB_OUTPUT
+          MATRIX_WINDOWS='{"platform":"windows-latest","args":"--target x86_64-pc-windows-msvc","name":"windows-x86_64"}'
+          MATRIX_MACOS='{"platform":"macos-15","args":"--target aarch64-apple-darwin","name":"macos-aarch64"}'
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            case "${{ github.event.inputs.platform }}" in
+              "windows")
+                echo "matrix={\"include\":[$MATRIX_WINDOWS]}" >> $GITHUB_OUTPUT
+                ;;
+              "macos")
+                echo "matrix={\"include\":[$MATRIX_MACOS]}" >> $GITHUB_OUTPUT
+                ;;
+              *)
+                echo "matrix={\"include\":[$MATRIX_WINDOWS,$MATRIX_MACOS]}" >> $GITHUB_OUTPUT
+                ;;
+            esac
+          else
+            echo "matrix={\"include\":[$MATRIX_WINDOWS,$MATRIX_MACOS]}" >> $GITHUB_OUTPUT
+          fi
 
   build:
     needs: determine-matrix
