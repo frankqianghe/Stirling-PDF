@@ -25,8 +25,7 @@
  */
 
 import tauriHttpClient from './tauriHttpClient';
-
-const UPDATE_BASE_URL = 'https://plexpdf-test.wenxstudio.ai';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 /**
  * Architecture short codes accepted by the update server.
@@ -96,7 +95,7 @@ class UpdateCheckService {
    */
   async check(currentVersion: string, arch?: UpdateArch): Promise<UpdateCheckResult> {
     const resolvedArch = arch ?? detectUpdateArch();
-    const baseUrl = UPDATE_BASE_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
 
     const params = new URLSearchParams({
       arch: resolvedArch,

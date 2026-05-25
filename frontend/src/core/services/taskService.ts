@@ -7,9 +7,9 @@ import {
   maybeParseJson,
 } from '@app/services/httpLogFormat';
 import { SKIP_FETCH_LOG_KEY } from '@app/services/fetchLogger';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 const STORAGE_KEY = 'stirling-pdf-convert-tasks';
-const API_BASE = 'https://plexpdf-test.wenxstudio.ai';
 
 // Keys mirror those owned by the desktop auth services (kept as literals to
 // avoid `core -> desktop` import dependency).
@@ -293,7 +293,7 @@ export async function submitConvertTask(
   logger?: TaskLogger,
 ): Promise<ConvertTask> {
   await waitForDeviceRegistration(logger);
-  const url = `${API_BASE}/convert/pdf/to/${toFormat}`;
+  const url = `${getApiBaseUrl()}/convert/pdf/to/${toFormat}`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();
   formData.append('file', file);
@@ -348,7 +348,7 @@ export async function queryTaskStatus(
   taskId: string,
   logger?: TaskLogger,
 ): Promise<TaskQueryResult> {
-  const url = `${API_BASE}/convert/tasks/${taskId}`;
+  const url = `${getApiBaseUrl()}/convert/tasks/${taskId}`;
   const headers = await buildAuthHeaders();
 
   const { response, json, bodyText } = await loggedFetch(
@@ -394,7 +394,7 @@ export async function submitOCRTask(
   logger?: TaskLogger,
 ): Promise<ConvertTask> {
   await waitForDeviceRegistration(logger);
-  const url = `${API_BASE}/convert/pdf/to/docx`;
+  const url = `${getApiBaseUrl()}/convert/pdf/to/docx`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();
   formData.append('file', file);
@@ -450,7 +450,7 @@ export async function submitDocxToPdf(
   // return makes the call effectively free, and it keeps the contract
   // identical for any caller that invokes phase 2 in isolation.
   await waitForDeviceRegistration(logger);
-  const url = `${API_BASE}/convert/docx/to/pdf`;
+  const url = `${getApiBaseUrl()}/convert/docx/to/pdf`;
   const headers = await buildAuthHeaders();
   const formData = new FormData();
   formData.append('file', new File([docxBlob], fileName));

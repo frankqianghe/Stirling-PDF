@@ -27,8 +27,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import tauriHttpClient from './tauriHttpClient';
 import { deviceIdService } from './deviceIdService';
 import { DEVICE_TOKEN_KEY } from './deviceRegisterService';
-
-const EVENTS_BASE_URL = 'https://plexpdf-test.wenxstudio.ai';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 /** Stable string keys for product events. Keep in sync with the spec. */
 export type EventName =
@@ -160,7 +159,7 @@ export async function reportEvent(
     if (token) headers.Authorization = `Bearer ${token}`;
     if (deviceId) headers['X-Device-Id'] = deviceId;
 
-    const baseUrl = EVENTS_BASE_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
     const endpoint = `${baseUrl}/events`;
 
     await tauriHttpClient.post(endpoint, body, {

@@ -14,8 +14,7 @@
 import tauriHttpClient from './tauriHttpClient';
 import { DEVICE_TOKEN_KEY } from './deviceRegisterService';
 import { deviceIdService } from './deviceIdService';
-
-const AD_SERVER_URL = 'https://plexpdf-test.wenxstudio.ai';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 export interface AdInfo {
   adId: string;
@@ -47,7 +46,7 @@ class AdService {
     const deviceId =
       deviceIdService.getCached() ?? (await deviceIdService.get());
 
-    const baseUrl = AD_SERVER_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/ad`;
 
     console.log('[AdService] GET /client/ad:', {

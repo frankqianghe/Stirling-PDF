@@ -18,6 +18,7 @@
 
 import { deviceIdService } from './deviceIdService';
 import tauriHttpClient from './tauriHttpClient';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 // ── Storage keys ─────────────────────────────────────────────────────────────
 export const DEVICE_TOKEN_KEY = 'plexpdf_device_token';
@@ -32,9 +33,6 @@ export interface DeviceRegistration {
   paidPlan: PaidPlan;
   planExpiresAt: string | null;
 }
-
-// Fixed remote server for device registration (provided by product/dev team)
-const DEVICE_REGISTER_SERVER_URL = 'https://plexpdf-test.wenxstudio.ai';
 
 interface RegisterResponse {
   code: number;
@@ -176,7 +174,9 @@ class DeviceRegisterService {
 
     // Always use the fixed remote server for device registration.
     // This endpoint must not depend on local Java backend routing.
-    const baseUrl = DEVICE_REGISTER_SERVER_URL.replace(/\/+$/, '');
+    // The host (prod vs test) is controlled by the debug toggle in
+    // `@app/services/apiBaseUrl` (default PROD; flip via __plexpdfApi.useTest()).
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
 
     const payload = {
       device_id: deviceId,
@@ -188,7 +188,7 @@ class DeviceRegisterService {
     console.log('[DeviceRegisterService] Registering device payload:', {
       ...payload,
       endpoint: `${baseUrl}/client/device/register`,
-      fixed_server: DEVICE_REGISTER_SERVER_URL,
+      api_base: baseUrl,
     });
 
     let responseStatus = 0;

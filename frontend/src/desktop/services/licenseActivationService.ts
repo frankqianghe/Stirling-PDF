@@ -24,8 +24,7 @@
 import tauriHttpClient from './tauriHttpClient';
 import { deviceIdService } from './deviceIdService';
 import { deviceRegisterService, DEVICE_TOKEN_KEY } from './deviceRegisterService';
-
-const LICENSE_SERVER_URL = 'https://plexpdf-test.wenxstudio.ai';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 interface ActivateResponse {
   code: number;
@@ -68,7 +67,7 @@ class LicenseActivationService {
     const deviceId =
       deviceIdService.getCached() ?? (await deviceIdService.get());
 
-    const baseUrl = LICENSE_SERVER_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/device/activate`;
 
     console.log('[LicenseActivationService] POST /client/device/activate:', {

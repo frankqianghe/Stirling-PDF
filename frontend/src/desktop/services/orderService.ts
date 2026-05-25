@@ -1,8 +1,8 @@
 import tauriHttpClient from './tauriHttpClient';
 import { DEVICE_TOKEN_KEY } from './deviceRegisterService';
 import { deviceIdService } from './deviceIdService';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
-const ORDER_SERVER_URL = 'https://plexpdf-test.wenxstudio.ai';
 const ORDER_ID_KEY = 'plexpdf_last_order_id';
 
 type OrderPlan = 'year' | 'buyout';
@@ -48,7 +48,7 @@ class OrderService {
 
     const deviceId = deviceIdService.getCached() ?? (await deviceIdService.get());
 
-    const baseUrl = ORDER_SERVER_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/order/create`;
 
     const payload = { plan, redirect_url: redirectUrl };
@@ -96,7 +96,7 @@ class OrderService {
 
     const deviceId = deviceIdService.getCached() ?? (await deviceIdService.get());
 
-    const baseUrl = ORDER_SERVER_URL.replace(/\/+$/, '');
+    const baseUrl = getApiBaseUrl().replace(/\/+$/, '');
     const endpoint = `${baseUrl}/client/order/${encodeURIComponent(orderId)}`;
 
     const response = await tauriHttpClient.get<OrderStatusResponse>(endpoint, {

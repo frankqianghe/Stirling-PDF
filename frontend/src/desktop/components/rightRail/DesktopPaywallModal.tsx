@@ -20,6 +20,7 @@ import { deviceRegisterService } from '@app/services/deviceRegisterService';
 import { PaymentSuccessPanel } from './PaymentSuccessPanel';
 import { useDesktopLicenseStatus } from '@app/hooks/useDesktopLicenseStatus';
 import { trackEvent } from '@app/services/eventReportService';
+import { getApiBaseUrl } from '@app/services/apiBaseUrl';
 
 /**
  * Public redirect target sent to the order service when creating a checkout
@@ -29,8 +30,15 @@ import { trackEvent } from '@app/services/eventReportService';
  * we no longer rely on this URL — payment success is detected via license
  * polling against `/client/device/register`.
  */
-const CHECKOUT_REDIRECT_URL =
-  'https://plexpdf-test.wenxstudio.ai/static/payments/success.html';
+const CHECKOUT_REDIRECT_PATH = '/static/payments/success.html';
+
+/**
+ * Resolved lazily so the debug toggle in `@app/services/apiBaseUrl` (PROD vs
+ * TEST host) is picked up at click time, not at module-import time.
+ */
+function buildCheckoutRedirectUrl(): string {
+  return `${getApiBaseUrl().replace(/\/+$/, '')}${CHECKOUT_REDIRECT_PATH}`;
+}
 
 const LIFETIME_FEATURES = [
   '1 Windows Device',
@@ -259,7 +267,7 @@ export function DesktopPaywallModal({
       const createPlan = plan === 'yearly' ? 'year' : 'buyout';
 
       const attemptCreate = async () =>
-        orderService.createOrder(createPlan, CHECKOUT_REDIRECT_URL);
+        orderService.createOrder(createPlan, buildCheckoutRedirectUrl());
 
       try {
         let order;
