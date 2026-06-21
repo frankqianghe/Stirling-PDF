@@ -28,6 +28,7 @@
     "bundle": {
         "active": true,
         "publisher": "PlexPDF",
+        "licenseFile": "LICENSE.txt",
         "targets": [
             "deb",
             "rpm",
@@ -69,7 +70,6 @@
             "digestAlgorithm": "sha256",
             "timestampUrl": "http://timestamp.digicert.com",
             "wix": {
-                "license": "LICENSE.txt",
                 "fragmentPaths": [
                     "windows/wix/provisioning.wxs",
                     "windows/wix/file-associations.wxs"
