@@ -287,6 +287,43 @@
       .workspace-grid{grid-template-columns:1fr}
       .meta{gap:10px}
     }
+    /* ===== FOOTER ===== */
+    .site-footer{
+      background:linear-gradient(180deg,#0f172a 0%,#020617 100%);
+      color:#e2e8f0;border-top:1px solid #1e293b;
+      padding:64px 0 28px;
+    }
+    .footer-grid{
+      display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+      padding-bottom:36px;border-bottom:1px solid rgba(148,163,184,.18)
+    }
+    .footer-brand .logo-text{
+      display:flex;align-items:center;font-size:18px;font-weight:800;color:#fff;margin-bottom:14px
+    }
+    .footer-brand p{font-size:14px;color:#94a3b8;line-height:1.7;margin:0 0 8px}
+    .footer-brand a{color:var(--sky)}
+    .footer-col h4{
+      font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+      color:#94a3b8;margin:0 0 16px
+    }
+    .footer-col ul{list-style:none;margin:0;padding:0}
+    .footer-col ul li{margin-bottom:10px}
+    .footer-col ul li a{font-size:14px;color:#cbd5e1;transition:color .2s}
+    .footer-col ul li a:hover{color:#fff}
+    .footer-bottom{
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:24px
+    }
+    .footer-bottom p{font-size:13px;color:#94a3b8;margin:0}
+    .footer-legal-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-legal-links a{font-size:13px;color:#94a3b8;transition:color .2s}
+    .footer-legal-links a:hover{color:var(--sky)}
+    @media (max-width: 1100px){
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 720px){
+      .footer-grid{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column;align-items:flex-start}
+    }
   </style>
 </head>
 <body>
@@ -295,6 +332,7 @@
     <div class="blob b"></div>
     <div class="container logo-wrap">
       <div class="logo-badge">
+        <img src="pages/logo.png" alt="Plex PDF" style="height:46px;width:auto;display:block">
         <div class="logo-plex">Plex</div>
         <div class="logo-pdf">PDF</div>
       </div>
@@ -306,7 +344,7 @@
         <h1>Edit, Convert, and OCR PDFs in One Simple Tool</h1>
         <p class="lead">Plex PDF is a powerful PDF editor built for Windows. Edit PDF text, convert files to Word or Excel, run OCR on scanned documents, and annotate files easily — all in one fast desktop app.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#download">Free Download</a>
+          <a class="btn btn-primary" href="pages/download.html">Free Download</a>
           <a class="btn btn-secondary" href="#pricing">View Pricing</a>
         </div>
         <div class="meta">
@@ -550,7 +588,7 @@
       <h2 style="font-size:42px;line-height:1.1;letter-spacing:-1px;margin:0">Download Plex PDF and start editing today</h2>
       <p>Plex PDF gives Windows users a fast and reliable way to edit, convert, and OCR PDFs in one simple desktop app.</p>
       <div class="cta-row" style="justify-content:center;margin-top:28px">
-        <a class="btn btn-primary" href="#">Free Download</a>
+        <a class="btn btn-primary" href="pages/download.html">Free Download</a>
       </div>
       <div class="footnote">Plex PDF · Windows Supported · Easy Installation</div>
     </div>
@@ -558,8 +596,8 @@
 
   <script>
     (function () {
-      var ORDER_API = 'https://plexpdf-test.wenxstudio.ai/client/order/create';
-      var REDIRECT_URL = 'https://plexpdf-test.wenxstudio.ai/docs/index.html';
+      var ORDER_API = window.location.origin + '/client/order/create';
+      var REDIRECT_URL = window.location.origin + '/success.html';
 
       function setButtonLoading(btn, loading) {
         if (!btn) return;
@@ -642,5 +680,70 @@
       });
     })();
   </script>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="logo-text">
+            <img src="pages/logo.png" alt="Plex PDF" style="height:24px;width:auto;margin-right:.4rem">
+            Plex PDF
+          </div>
+          <p>Professional PDF editor for Windows.<br>Edit, convert, annotate and sign PDFs — fast.</p>
+          <p style="margin-top:.8rem;font-size:13px">
+            Wenx Studio LTD.<br>
+            5970 Clinton Street<br>
+            Burnaby, BC V5J 2M5, Canada
+          </p>
+          <p style="margin-top:.5rem;font-size:13px">
+            <a href="mailto:support@wenxstudio.com">support@wenxstudio.com</a>
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="pages/download.html">Download</a></li>
+            <li><a href="pages/support.html">System Requirements</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="pages/support.html">Installation Guide</a></li>
+            <li><a href="pages/support.html#uninstall">Uninstall Guide</a></li>
+            <li><a href="pages/support.html#faq">FAQ</a></li>
+            <li><a href="pages/contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="pages/privacy.html">Privacy Policy</a></li>
+            <li><a href="pages/terms.html">Terms of Service</a></li>
+            <li><a href="pages/eula.html">EULA</a></li>
+            <li><a href="pages/cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+        <div class="footer-legal-links">
+          <a href="pages/privacy.html">Privacy Policy</a>
+          <a href="pages/terms.html">Terms of Service</a>
+          <a href="pages/eula.html">EULA</a>
+          <a href="pages/cookies.html">Cookie Policy</a>
+          <a href="pages/contact.html">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

@@ -1,0 +1,237 @@
+PLEXPDF - END-USER LICENSE AGREEMENT, TERMS OF SERVICE & PRIVACY POLICY
+Wenx Studio LTD.   |   Last Updated: June 16, 2026
+
+PLEASE READ THIS AGREEMENT CAREFULLY. By installing, copying, or using PlexPDF you agree to be bound by the End-User License Agreement and the Terms of Service, and you acknowledge the Privacy Policy set out below. If you do not agree, click Cancel and do not install the software.
+
+================================================================
+END-USER LICENSE AGREEMENT (EULA)
+================================================================
+
+IMPORTANT - READ CAREFULLY: This End-User License Agreement ("EULA") is a legal agreement between you (an individual or entity) and Wenx Studio LTD. ("Licensor") for the Plex PDF software application and any associated documentation ("Software"). BY INSTALLING, COPYING, OR USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS OF THIS EULA. IF YOU DO NOT AGREE, DO NOT INSTALL OR USE THE SOFTWARE.
+
+1. GRANT OF LICENSE
+Licensor grants you a non-exclusive, non-transferable, limited license to install and use the Software on one (1) Windows-compatible personal computer, subject to the terms of the license you purchased (Free, Lifetime, or Yearly).
+
+2. LICENSE RESTRICTIONS
+You may NOT:
+- Install or use the Software on more than the permitted number of devices.
+- Copy, modify, adapt, translate, or create derivative works of the Software.
+- Reverse engineer, decompile, disassemble, or attempt to derive source code from the Software.
+- Rent, lease, lend, sell, sublicense, or distribute the Software to third parties.
+- Remove or alter any copyright, trademark, or proprietary notices.
+- Use the Software to process any content that is illegal, infringing, or malicious.
+
+3. OWNERSHIP
+The Software is licensed, not sold. Licensor retains all right, title, and interest in and to the Software, including all intellectual property rights. This EULA does not grant you any ownership rights.
+
+4. UPDATES AND UPGRADES
+- Free Plan: May receive bug fixes at Licensor's discretion.
+- Yearly Plan: Entitled to all updates and minor upgrades during the active subscription period.
+- Lifetime Plan: Entitled to bug fixes and minor updates for the current major version. Major version upgrades may require a separate purchase.
+
+5. DATA COLLECTION AND PRIVACY
+The Software collects limited technical data as described in our Privacy Policy (below). This includes license validation information, anonymized usage statistics, and crash/error diagnostic data. Document Content: The Software processes your PDF files entirely on your local device. Licensor does NOT access, collect, upload, or store the content of your documents.
+
+6. THIRD-PARTY SOFTWARE - NO BUNDLED SOFTWARE
+The Software installer does NOT bundle, include, or install any third-party applications, toolbars, browser extensions, advertising software, or unrelated utilities. The installer contains only the Plex PDF application and standard Microsoft runtime components required for operation (such as the .NET Framework or Visual C++ Redistributable).
+
+7. CONSENT TO INSTALLATION
+By clicking "Install" in the Software installer, you explicitly confirm that you:
+- Have read and understand this EULA.
+- Accept all terms and conditions herein.
+- Consent to the installation of the Software on your device.
+- Understand your right to uninstall the Software at any time.
+The installation will not proceed without this explicit consent.
+
+8. UNINSTALL RIGHTS
+You may uninstall the Software at any time through standard Windows procedures:
+1. Open Settings > Apps > Installed Apps.
+2. Locate Plex PDF.
+3. Click Uninstall and follow the prompts.
+Uninstallation removes the Software and its associated components. For detailed instructions, visit our Support page.
+
+9. EV CODE SIGNING
+The Software installation package is digitally signed with an Extended Validation (EV) Code Signing Certificate issued to Wenx Studio LTD. This confirms the publisher's identity and that the Software has not been tampered with. To verify: right-click the installer, then Properties > Digital Signatures, and confirm the signer is "Wenx Studio LTD.".
+
+10. LIMITED WARRANTY
+The Software is provided "AS IS" without warranty of any kind. Licensor does not warrant that the Software will meet your requirements, operate uninterrupted, or be error-free.
+
+11. LIMITATION OF LIABILITY
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, LICENSOR SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM THE USE OR INABILITY TO USE THE SOFTWARE. In no event shall Licensor's total liability exceed the license fee you paid for the Software.
+
+12. TERMINATION
+This EULA is effective until terminated. It terminates automatically if you fail to comply with any term. Upon termination, you must cease all use and destroy all copies of the Software.
+
+13. GOVERNING LAW
+This EULA is governed by the laws of the Province of British Columbia, Canada.
+
+14. ENTIRE AGREEMENT
+This EULA, together with the Terms of Service and Privacy Policy, constitutes the entire agreement between you and Licensor regarding the Software.
+
+15. CONTACT
+Wenx Studio LTD.
+5970 Clinton Street, Burnaby, BC V5J 2M5, Canada
+support@wenxstudio.com
+
+================================================================
+TERMS OF SERVICE
+================================================================
+
+These Terms of Service ("Terms") govern your use of the Plex PDF website (https://plexpdf.wenxstudio.ai) and the Plex PDF desktop application (collectively, the "Service"), operated by Wenx Studio LTD. ("Plex PDF", "we", "us", or "our").
+
+1. ELIGIBILITY
+You must be at least 13 years old to use the Service. By using the Service, you represent that you meet this age requirement.
+
+2. LICENSE TYPES AND USAGE RIGHTS
+- Free ($0): Personal use. Basic reading and annotation only. Export contains a watermark. No editing, conversion, or OCR features.
+- Lifetime ($59, one-time): Perpetual use by one individual on one Windows device. Full feature access. Includes free minor updates.
+- Yearly ($39/year): Annual subscription for one individual on one Windows device. Full feature access. Includes all updates. Auto-renews unless canceled.
+
+2.1 License Restrictions
+- Each license is for one individual user on one Windows device.
+- You may not redistribute, resell, sublicense, or lease the software.
+- You may not reverse engineer, decompile, or disassemble the software.
+- You may not use the software for any unlawful purpose.
+
+2.2 Lifetime License
+- "Lifetime" refers to the lifetime of the current major version of Plex PDF.
+- Includes bug fixes and minor updates at no additional cost.
+- Major version upgrades (for example v2.x to v3.x) may require a separate purchase, at our discretion.
+
+2.3 Yearly Subscription
+- Automatically renews each year unless canceled at least 24 hours before the renewal date.
+- You will receive a renewal reminder email 7 days before your card is charged.
+- To cancel, contact us at support@wenxstudio.com or manage it through your account page.
+
+3. PAYMENT TERMS
+- All prices are in United States Dollars (USD).
+- Payment is processed securely through Lemon Squeezy.
+- We do not store your full payment card details on our servers.
+
+4. REFUND POLICY
+- Lifetime License: 30-day money-back guarantee from the date of purchase.
+- Yearly Subscription: Cancel within 14 days of the initial purchase or renewal for a full refund. After 14 days, cancellation takes effect at the end of the current billing period.
+- Free Plan: No charges apply.
+To request a refund, email support@wenxstudio.com with your order number and reason. Refunds are processed within 5-10 business days.
+
+5. INTELLECTUAL PROPERTY
+- Plex PDF, its name, logo, design, and source code are the exclusive intellectual property of Wenx Studio LTD.
+- These Terms grant you a limited, non-exclusive, non-transferable license to use the software; they do not transfer ownership.
+- User-generated content created using Plex PDF (edited PDFs, converted files) remains your property.
+
+6. ACCEPTABLE USE
+You agree not to:
+- Use Plex PDF to process illegal, infringing, or malicious content.
+- Attempt to bypass license restrictions, copy protection, or security features.
+- Use the software to create, distribute, or facilitate malware, viruses, or harmful code.
+- Interfere with or disrupt the Service or its servers.
+We reserve the right to terminate access to the Service for violations of these Terms.
+
+7. THIRD-PARTY SOFTWARE
+Plex PDF does NOT bundle, install, or distribute any third-party software. The installer contains only Plex PDF and its required runtime components (such as the .NET Framework or Visual C++ Redistributable, which are standard Microsoft components).
+
+8. DISCLAIMER OF WARRANTIES
+THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. We do not warrant that the Service will be uninterrupted, secure, or error-free, or that any errors will be corrected.
+
+9. LIMITATION OF LIABILITY
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, Wenx Studio LTD. SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICE. Our total liability for any claim shall not exceed the amount you paid us for the Service in the 12 months preceding the claim, or $50 USD if you use the Free plan.
+
+10. INDEMNIFICATION
+You agree to indemnify and hold Wenx Studio LTD. and its affiliates harmless from any claims, damages, losses, or expenses arising from your use of the Service or your violation of these Terms.
+
+11. TERMINATION
+We may suspend or terminate your access to the Service at any time for violation of these Terms, without prior notice. Upon termination, you must cease all use of the software and delete all copies.
+
+12. GOVERNING LAW
+These Terms are governed by the laws of the Province of British Columbia, Canada. Any disputes shall be resolved in the courts of Vancouver, British Columbia.
+
+13. CHANGES TO TERMS
+We may modify these Terms at any time. Material changes will be communicated via a notice on the website and within the Plex PDF application. Continued use after changes become effective constitutes acceptance.
+
+14. CONTACT
+Email: support@wenxstudio.com
+Address: Wenx Studio LTD., 5970 Clinton Street, Burnaby, BC V5J 2M5, Canada
+
+================================================================
+PRIVACY POLICY
+================================================================
+
+Summary: Plex PDF processes your PDF files entirely on your local device. We never upload or access your document content. We collect limited technical data (license info, anonymized usage statistics, crash reports) solely to operate and improve the product.
+
+Wenx Studio LTD. ("Plex PDF", "we", "us", or "our") operates the Plex PDF desktop application and the website at https://plexpdf.wenxstudio.ai (collectively, the "Service"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information. By using Plex PDF, you agree to the collection and use of information in accordance with this policy.
+
+1. INFORMATION WE COLLECT
+
+1.1 Information You Provide to Us
+- Purchase Information: When you buy a license, our payment processor collects your name, email address, billing address, and payment details. We do not store full credit card numbers on our servers.
+- Contact Form Submissions: When you contact us, we collect your name, email address, and the content of your message.
+- Support Requests: Information you voluntarily provide when requesting technical support.
+
+1.2 Information Collected Automatically
+- Device Information: Operating system version, device model, and hardware specifications necessary for license validation and compatibility checks.
+- Application Usage Data: Feature usage statistics (for example, which tools are used and how often), anonymized and aggregated to improve our product. This does NOT include the content of your PDF documents.
+- Crash and Error Reports: Diagnostic information when the application encounters an error, including stack traces and system state. No document content is included.
+- License Validation: We periodically validate license keys to verify legitimate use. This involves sending an encrypted license token to our servers.
+- Website Analytics: Our website uses standard analytics tools (page views, referrer URLs, browser type) to understand visitor behavior and improve the site.
+
+1.3 What We Do NOT Collect
+- Document Content: Plex PDF processes your PDF files entirely on your local device. We do not upload, access, read, or store the content of your PDF documents.
+- Keystrokes or Input Monitoring: We do not log keystrokes or record screen activity.
+- Personal Files: We do not scan or access any files on your computer beyond the PDFs you explicitly open within the application.
+
+2. HOW WE USE YOUR INFORMATION
+- License activation and validation: license key, device ID.
+- Processing payments: name, email, payment info (via payment processor).
+- Product improvement: anonymized usage statistics, crash reports.
+- Customer support: contact information, support request details.
+- Legal compliance: as required by applicable law.
+- Communication: email for transactional notices (purchase receipts, license expiry, critical updates).
+
+3. DATA SHARING AND DISCLOSURE
+We do NOT sell, trade, or rent your personal information to third parties. We may share information only in these limited circumstances:
+- Service Providers: We use third-party services for payment processing, analytics, and hosting. These providers are contractually bound to use your data only for the services we request.
+- Legal Requirements: We may disclose information if required by law, court order, or governmental regulation.
+- Business Transfers: In the event of a merger, acquisition, or asset sale, your information may be transferred as part of that transaction.
+
+4. COOKIES AND TRACKING TECHNOLOGIES
+Our website uses cookies to remember your preferences, analyze website traffic, and maintain session state. You can disable cookies in your browser settings, though some website features may not function properly without them.
+
+5. DATA RETENTION
+- License and purchase records: Duration of the license plus 7 years (tax/legal requirement).
+- Support tickets: 2 years after resolution.
+- Anonymized usage data: Indefinitely (cannot be tied to an individual).
+- Crash reports: 1 year.
+- Website analytics: 26 months.
+
+6. DATA SECURITY
+- Encryption: Data transmitted between the application and our servers is encrypted using TLS 1.2+.
+- Local Processing: PDF documents are processed entirely on your device. No document content is ever transmitted to our servers.
+- Access Controls: Internal access to personal data is restricted to authorized personnel on a need-to-know basis.
+
+7. YOUR RIGHTS
+Depending on your jurisdiction, you may have the following rights:
+- Access: Request a copy of your personal data.
+- Correction: Request correction of inaccurate data.
+- Deletion: Request deletion of your personal data.
+- Portability: Request transfer of your data to another service.
+- Objection: Object to certain processing activities.
+California Residents (CCPA): You have the right to know what personal information is collected, to request deletion, and to opt out of the sale of personal information. We do not sell personal information.
+EU/EEA Residents (GDPR): Our legal basis for processing is your consent and our legitimate interest in providing and improving the Service.
+To exercise any of these rights, contact us at support@wenxstudio.com. We will respond within 30 days.
+
+8. CHILDREN'S PRIVACY
+Plex PDF is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we become aware that a child under 13 has provided us with personal information, we will delete it promptly.
+
+9. INTERNATIONAL DATA TRANSFERS
+Your information may be transferred to and processed in Canada, the United States, or other countries where our servers or service providers are located. By using Plex PDF, you consent to such transfers. We ensure appropriate safeguards are in place for cross-border data transfers.
+
+10. CHANGES TO THIS PRIVACY POLICY
+We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy with a new "Last Updated" date and by displaying a notice within the Plex PDF application. Continued use of the Service after changes constitutes acceptance of the updated policy.
+
+11. CONTACT INFORMATION
+Email: support@wenxstudio.com
+Mailing Address: Wenx Studio LTD., 5970 Clinton Street, Burnaby, BC V5J 2M5, Canada
+Response Time: We aim to respond within 2 business days.
+
+================================================================
+(c) 2026 Wenx Studio LTD. All rights reserved.

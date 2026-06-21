@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Plex PDF — Free PDF Editor for Windows</title>
+  <meta name="description" content="Download Plex PDF for Windows. Review and accept the license terms to get started.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 2rem 0 2.5rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-3);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .step-item.active .step-circle {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .step-item.done .step-circle {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .step-label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .step-item.active .step-label { color: var(--text); }
+    .step-connector {
+      width: 60px;
+      height: 2px;
+      background: var(--border);
+      margin: 0 .5rem;
+    }
+
+    /* License box */
+    .license-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .license-box h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .license-box ul {
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+      font-size: .9rem;
+      color: var(--text);
+    }
+    .license-box li { margin-bottom: .5rem; line-height: 1.6; }
+    .license-box .doc-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: .85rem;
+    }
+    .license-box .doc-links a {
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .license-box .doc-links a:hover { text-decoration: underline; }
+
+    /* Checkboxes */
+    .consent-area {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .consent-area h3 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 1rem;
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      margin-bottom: .9rem;
+      cursor: pointer;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+      margin-top: .15rem;
+      cursor: pointer;
+    }
+    .checkbox-row .checkbox-label {
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.5;
+      user-select: none;
+    }
+    .checkbox-row .checkbox-label a { color: var(--accent); text-decoration: none; }
+    .checkbox-row .checkbox-label a:hover { text-decoration: underline; }
+
+    /* Progress bar */
+    .consent-progress {
+      height: 4px;
+      background: var(--bg-3);
+      border-radius: 2px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+    .consent-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width .3s ease;
+      width: 0%;
+    }
+    .consent-counter {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: .4rem;
+      text-align: right;
+    }
+
+    /* Download button */
+    .download-btn-wrap {
+      text-align: center;
+      margin: 1.5rem 0 1rem;
+    }
+    #downloadBtn {
+      font-size: 1.05rem;
+      padding: .9rem 2.5rem;
+      border-radius: var(--radius);
+      letter-spacing: .01em;
+    }
+    #downloadBtn:disabled {
+      background: var(--bg-3);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: .55;
+    }
+    #downloadBtn.ready {
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      opacity: 1;
+      box-shadow: 0 4px 16px rgba(46,166,248,.35);
+    }
+    #downloadBtn.ready:hover { background: var(--accent-hover); }
+
+    .file-meta {
+      text-align: center;
+      font-size: .82rem;
+      color: var(--text-muted);
+      margin-top: .5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .file-meta .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .file-meta .meta-tag.ev {
+      color: var(--green);
+    }
+
+    /* No bundle notice */
+    .no-bundle-notice {
+      background: rgba(63,185,80,.07);
+      border: 1px solid rgba(63,185,80,.25);
+      border-radius: var(--radius-sm);
+      padding: .75rem 1rem;
+      font-size: .875rem;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="../preview.html" class="logo">
+    <img src="logo.png" alt="Plex PDF" style="height:26px;width:auto;display:block">
+    Plex PDF
+  </a>
+  <ul class="nav-links">
+    <li><a href="../preview.html#features">Features</a></li>
+    <li><a href="../preview.html#pricing">Pricing</a></li>
+    <li><a href="download.html">Download</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <span class="badge">Download</span>
+  <h1>Download Plex PDF</h1>
+  <p class="subtitle">Available for Windows 10 and Windows 11 · Version v1.5.0</p>
+</div>
+
+<main style="max-width:720px">
+
+  <!-- Step indicator -->
+  <div class="steps">
+    <div class="step-item active" id="step1">
+      <div class="step-circle">1</div>
+      <span class="step-label">Accept Terms</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="step2">
+      <div class="step-circle">2</div>
+      <span class="step-label">Download</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="step3">
+      <div class="step-circle">3</div>
+      <span class="step-label">Install</span>
+    </div>
+  </div>
+
+  <!-- Clean install notice -->
+  <div class="no-bundle-notice">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <strong>Clean install:</strong>&nbsp;Plex PDF does not bundle, offer, or install any third-party software, toolbars, or browser extensions.
+  </div>
+
+  <!-- License summary box -->
+  <div class="license-box">
+    <h2>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      End-User License Agreement — Key Points
+    </h2>
+    <ul>
+      <li>You receive a <strong>non-exclusive, non-transferable license</strong> for one user on one Windows device per license purchased.</li>
+      <li>You may <strong>not</strong> redistribute, resell, reverse-engineer, or modify the software.</li>
+      <li><strong>No bundled software:</strong> The installer contains only Plex PDF and required Windows runtime components (e.g., .NET Framework). Nothing else is installed.</li>
+      <li>Plex PDF collects <strong>anonymized usage statistics and crash reports</strong> to improve the product. <strong>Your document content is never uploaded — all PDF processing happens on your device.</strong></li>
+      <li>You may <strong>uninstall Plex PDF at any time</strong> via Windows Settings → Apps → Installed Apps.</li>
+      <li>The software is provided <strong>"as is"</strong>. Our liability is limited to your paid license fee.</li>
+    </ul>
+    <div class="doc-links">
+      <a href="eula.html" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Full EULA
+      </a>
+      <a href="terms.html" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Terms of Service
+      </a>
+      <a href="privacy.html" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Privacy Policy
+      </a>
+    </div>
+  </div>
+
+  <!-- Consent checkboxes -->
+  <div class="consent-area">
+    <h3>Please confirm the following to proceed</h3>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="chk1" onchange="updateConsent()">
+      <span class="checkbox-label">
+        I have read and agree to the <a href="eula.html" target="_blank">End-User License Agreement (EULA)</a>.
+      </span>
+    </label>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="chk2" onchange="updateConsent()">
+      <span class="checkbox-label">
+        I have read and agree to the <a href="terms.html" target="_blank">Terms of Service</a>.
+      </span>
+    </label>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="chk3" onchange="updateConsent()">
+      <span class="checkbox-label">
+        I acknowledge the <a href="privacy.html" target="_blank">Privacy Policy</a> — I understand that anonymized usage data and crash reports may be collected to improve the product. My document content is never uploaded.
+      </span>
+    </label>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="chk4" onchange="updateConsent()">
+      <span class="checkbox-label">
+        I understand that I can uninstall Plex PDF at any time through <strong>Windows Settings → Apps → Installed Apps</strong>.
+      </span>
+    </label>
+
+    <!-- Progress bar -->
+    <div class="consent-progress">
+      <div class="consent-progress-fill" id="progressFill"></div>
+    </div>
+    <div class="consent-counter" id="consentCounter">0 of 4 confirmed</div>
+  </div>
+
+  <!-- Download button -->
+  <div class="download-btn-wrap">
+    <button class="btn" id="downloadBtn" disabled onclick="startDownload()">
+      ↓ &nbsp;Download Plex PDF for Windows
+    </button>
+    <div class="file-meta">
+      <span class="meta-tag">📦 PlexPDF-setup-v1.5.0.msi</span>
+      <span class="meta-tag">85 MB</span>
+      <span class="meta-tag">Windows 10 / 11</span>
+      <span class="meta-tag ev">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        EV Code Signed
+      </span>
+    </div>
+  </div>
+
+  <!-- Install help link -->
+  <p style="text-align:center;font-size:.88rem;color:var(--text-muted)">
+    Need help? Read the <a href="support.html" style="color:var(--accent)">step-by-step installation guide →</a>
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text"><img src="logo.png" alt="Plex PDF" style="height:22px;width:auto;vertical-align:middle;margin-right:.4rem">Plex PDF</div>
+      <p>Professional PDF editor for Windows.</p>
+      <p style="margin-top:.8rem;font-size:.82rem">Wenx Studio LTD.<br>5970 Clinton Street, Burnaby, BC V5J 2M5, Canada</p>
+      <p style="font-size:.82rem"><a href="mailto:support@wenxstudio.com" style="color:var(--accent);text-decoration:none">support@wenxstudio.com</a></p>
+    </div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="../preview.html#features">Features</a></li><li><a href="../preview.html#pricing">Pricing</a></li><li><a href="download.html">Download</a></li><li><a href="support.html">System Requirements</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="support.html">Installation Guide</a></li><li><a href="support.html#uninstall">Uninstall Guide</a></li><li><a href="support.html#faq">FAQ</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="eula.html">EULA</a></li><li><a href="cookies.html">Cookie Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+    <div class="footer-legal-links">
+      <a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="eula.html">EULA</a><a href="cookies.html">Cookie Policy</a><a href="contact.html">Contact Us</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// Download page — consent gate logic
+// ============================================================
+const CHECKBOXES = ['chk1','chk2','chk3','chk4'];
+const TOTAL = CHECKBOXES.length;
+
+const CDN_URL = 'https://cdn-test-withu.yunqiboyuan.com/plexpdf/downloads/PlexPDF-release-latest.msi';
+
+function updateConsent() {
+  const checked = CHECKBOXES.filter(id => document.getElementById(id).checked).length;
+  const pct = (checked / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('consentCounter').textContent = checked + ' of ' + TOTAL + ' confirmed';
+
+  const btn = document.getElementById('downloadBtn');
+  if (checked === TOTAL) {
+    btn.disabled = false;
+    btn.classList.add('ready');
+    // Update step indicator
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step1').classList.add('done');
+    document.getElementById('step1').querySelector('.step-circle').textContent = '✓';
+    document.getElementById('step2').classList.add('active');
+  } else {
+    btn.disabled = true;
+    btn.classList.remove('ready');
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('step1').classList.remove('done');
+    document.getElementById('step1').querySelector('.step-circle').textContent = '1';
+    document.getElementById('step2').classList.remove('active');
+  }
+}
+
+function startDownload() {
+  const allChecked = CHECKBOXES.every(id => document.getElementById(id).checked);
+  if (!allChecked) return;
+
+  // Log consent (timestamp + EULA version) — 研发接入实际日志 API
+  const consentRecord = {
+    timestamp: new Date().toISOString(),
+    eulaVersion: 'v1.5.0-20260616',
+    userAgent: navigator.userAgent
+  };
+  console.log('Consent recorded:', consentRecord);
+  // TODO: POST consentRecord to /api/consent-log
+
+  // Trigger download
+  const a = document.createElement('a');
+  a.href = CDN_URL;
+  a.download = 'PlexPDF-setup-v1.5.0.msi';
+  a.click();
+
+  // Update step to show downloading state
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step2').classList.add('done');
+  document.getElementById('step2').querySelector('.step-circle').textContent = '✓';
+  document.getElementById('step3').classList.add('active');
+}
+</script>
+
+</body>
+</html>

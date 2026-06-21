@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plex PDF — Compliance Pages Index</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .page-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+      display: block;
+    }
+    .page-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(46,166,248,.12);
+    }
+    .page-card .card-top {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: .75rem;
+    }
+    .page-card .card-icon {
+      width: 40px; height: 40px;
+      background: var(--accent-dim);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .page-card .card-route {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-family: monospace;
+      letter-spacing: .04em;
+    }
+    .page-card h3 { font-size: 1rem; font-weight: 700; }
+    .page-card p { font-size: .85rem; color: var(--text-muted); margin-top: .4rem; line-height: 1.5; }
+    .priority-tag {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .15rem .5rem;
+      border-radius: 20px;
+      margin-top: .6rem;
+    }
+    .p0 { background: rgba(248,81,73,.15); color: var(--red); }
+    .p1 { background: rgba(210,153,34,.15); color: var(--yellow); }
+    .p2 { background: rgba(46,166,248,.1); color: var(--accent); }
+    .component-note {
+      background: var(--bg-3);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-top: 2rem;
+    }
+    .component-note h3 { font-size: .95rem; font-weight: 700; margin-bottom: .5rem; }
+    .component-note p { font-size: .88rem; color: var(--text-muted); margin: 0; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="../preview.html" class="logo">
+    <img src="logo.png" alt="Plex PDF" style="height:26px;width:auto;display:block">
+    Plex PDF
+  </a>
+</nav>
+
+<div class="page-hero">
+  <span class="badge">Dev Reference</span>
+  <h1>Compliance Pages — All HTML Files</h1>
+  <p class="subtitle">Click any card to preview the page · Each file is a standalone HTML ready for integration</p>
+</div>
+
+<main style="max-width:960px">
+
+  <div style="background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.25);border-radius:var(--radius-sm);padding:.8rem 1rem;font-size:.88rem;color:var(--yellow)">
+    ⚠️ <strong>研发注意：</strong>所有页面使用同一个 <code>style.css</code>。集成到官网时，将 CSS 变量合并到全局样式表，移除 <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>，替换为官网的 CSS 引入方式。
+    <br>下载页 (<code>download.html</code>) 中的 <code>CDN_URL</code> 常量需替换为实际 <code>.msi</code> 文件的 CDN 地址。
+    <br>联系我们页面 (<code>contact.html</code>) 的表单 <code>submit</code> 事件需接入实际后端 API。
+  </div>
+
+  <div class="page-grid">
+
+    <a class="page-card" href="footer.html">
+      <div class="card-top">
+        <div class="card-icon">🦶</div>
+        <div>
+          <div class="card-route">footer.html</div>
+          <h3>Footer Component</h3>
+        </div>
+      </div>
+      <p>全站共用页脚。包含品牌列、Product 列、Support 列、Legal 列，底部版权栏 + 政策链接行。</p>
+      <span class="priority-tag p0">P0 — 所有页面必须加</span>
+    </a>
+
+    <a class="page-card" href="download.html">
+      <div class="card-top">
+        <div class="card-icon">⬇️</div>
+        <div>
+          <div class="card-route">/download</div>
+          <h3>Download Page</h3>
+        </div>
+      </div>
+      <p>强制同意页面。含 3 步指示器、EULA 摘要、4 个勾选框（全勾才激活下载按钮）、JS 同意逻辑、进度条。</p>
+      <span class="priority-tag p0">P0 — 核心合规要求</span>
+    </a>
+
+    <a class="page-card" href="privacy.html">
+      <div class="card-top">
+        <div class="card-icon">🔏</div>
+        <div>
+          <div class="card-route">/privacy</div>
+          <h3>Privacy Policy</h3>
+        </div>
+      </div>
+      <p>完整隐私政策，11 节。含侧边栏目录、数据收集表格、CCPA/GDPR 权利说明。</p>
+      <span class="priority-tag p0">P0</span>
+    </a>
+
+    <a class="page-card" href="terms.html">
+      <div class="card-top">
+        <div class="card-icon">📋</div>
+        <div>
+          <div class="card-route">/terms</div>
+          <h3>Terms of Service</h3>
+        </div>
+      </div>
+      <p>服务条款，14 节。含三档许可类型对比表、退款政策、管辖法律等。</p>
+      <span class="priority-tag p0">P0</span>
+    </a>
+
+    <a class="page-card" href="eula.html">
+      <div class="card-top">
+        <div class="card-icon">🗒️</div>
+        <div>
+          <div class="card-route">/eula</div>
+          <h3>EULA</h3>
+        </div>
+      </div>
+      <p>最终用户许可协议，15 节。供下载页和安装程序引用。明确无捆绑软件、本地处理、卸载权利。</p>
+      <span class="priority-tag p0">P0</span>
+    </a>
+
+    <a class="page-card" href="contact.html">
+      <div class="card-top">
+        <div class="card-icon">✉️</div>
+        <div>
+          <div class="card-route">/contact</div>
+          <h3>Contact Us</h3>
+        </div>
+      </div>
+      <p>左：公司信息（邮箱 + Burnaby 地址 + 营业时间）。右：6 字段联系表单。地址与 Google 申请逐字符一致。</p>
+      <span class="priority-tag p1">P1</span>
+    </a>
+
+    <a class="page-card" href="support.html">
+      <div class="card-top">
+        <div class="card-icon">🛠️</div>
+        <div>
+          <div class="card-route">/support</div>
+          <h3>Support / Install Guide</h3>
+        </div>
+      </div>
+      <p>系统要求、6 步安装指南（含签名验证步骤）、3 种卸载方式、卸载后清理说明、可折叠 FAQ。</p>
+      <span class="priority-tag p1">P1</span>
+    </a>
+
+    <a class="page-card" href="cookies.html">
+      <div class="card-top">
+        <div class="card-icon">🍪</div>
+        <div>
+          <div class="card-route">/cookies</div>
+          <h3>Cookie Policy</h3>
+        </div>
+      </div>
+      <p>Cookie 分类表（Essential/Analytics/Preferences）、第三方 Cookie 列表、各浏览器管理链接。</p>
+      <span class="priority-tag p1">P1</span>
+    </a>
+
+  </div>
+
+  <!-- Implementation note -->
+  <div class="component-note">
+    <h3>📦 文件清单</h3>
+    <p>
+      <code>style.css</code> — 共享样式（CSS 变量、布局、页脚、表格、按钮）<br>
+      <code>footer.html</code> — 页脚组件预览（含复制说明）<br>
+      <code>download.html</code> — 下载页（含 JS 勾选交互逻辑，需替换 CDN_URL）<br>
+      <code>privacy.html</code> — 隐私政策<br>
+      <code>terms.html</code> — 服务条款<br>
+      <code>eula.html</code> — EULA<br>
+      <code>cookies.html</code> — Cookie 政策<br>
+      <code>contact.html</code> — 联系我们（含表单，需接入 API）<br>
+      <code>support.html</code> — 安装/卸载说明（含可折叠 FAQ）
+    </p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text"><img src="logo.png" alt="Plex PDF" style="height:22px;width:auto;vertical-align:middle;margin-right:.4rem">Plex PDF</div>
+      <p>Professional PDF editor for Windows.</p>
+      <p style="margin-top:.8rem;font-size:.82rem">Wenx Studio LTD.<br>5970 Clinton Street, Burnaby, BC V5J 2M5, Canada</p>
+    </div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="../preview.html#features">Features</a></li><li><a href="../preview.html#pricing">Pricing</a></li><li><a href="download.html">Download</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="support.html">Installation Guide</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="eula.html">EULA</a></li><li><a href="cookies.html">Cookie Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

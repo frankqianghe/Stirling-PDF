@@ -2,7 +2,7 @@
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "PlexPDF",
     "mainBinaryName": "plex-pdf",
-    "version": "2.5.13",
+    "version": "2.5.14",
     "identifier": "plex.pdf.dev",
     "build": {
         "frontendDist": "../dist",
@@ -69,6 +69,7 @@
             "digestAlgorithm": "sha256",
             "timestampUrl": "http://timestamp.digicert.com",
             "wix": {
+                "license": "LICENSE.txt",
                 "fragmentPaths": [
                     "windows/wix/provisioning.wxs",
                     "windows/wix/file-associations.wxs"

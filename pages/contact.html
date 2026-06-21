@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Plex PDF</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .contact-info .info-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .contact-info .info-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-dim);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+    .contact-info .info-label {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: .2rem;
+    }
+    .contact-info .info-value {
+      font-size: .95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .contact-info .info-value a { color: var(--accent); text-decoration: none; }
+    .contact-info .info-value a:hover { text-decoration: underline; }
+
+    /* Form */
+    .contact-form .form-group { margin-bottom: 1.2rem; }
+    .contact-form label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: .4rem;
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: .65rem .9rem;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: .95rem;
+      transition: border-color .2s;
+      outline: none;
+    }
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(46,166,248,.15);
+    }
+    .contact-form textarea { min-height: 140px; resize: vertical; }
+    .contact-form select option { background: var(--bg-3); }
+    .contact-form .form-note {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-top: .8rem;
+    }
+    .contact-form .form-note a { color: var(--accent); text-decoration: none; }
+
+    /* Response badge */
+    .response-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(63,185,80,.1);
+      border: 1px solid rgba(63,185,80,.3);
+      border-radius: 20px;
+      padding: .3rem .85rem;
+      font-size: .82rem;
+      color: var(--green);
+      margin-top: .5rem;
+    }
+
+    @media (max-width: 640px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="../preview.html" class="logo">
+    <img src="logo.png" alt="Plex PDF" style="height:26px;width:auto;display:block">
+    Plex PDF
+  </a>
+  <ul class="nav-links">
+    <li><a href="../preview.html#features">Features</a></li>
+    <li><a href="../preview.html#pricing">Pricing</a></li>
+    <li><a href="download.html">Download</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <span class="badge">Support</span>
+  <h1>Contact Us</h1>
+  <p class="subtitle">Have questions about Plex PDF? We're here to help.</p>
+  <div class="response-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+    We typically respond within 1–2 business days
+  </div>
+</div>
+
+<main style="max-width:1000px">
+  <div class="contact-layout">
+
+    <!-- Left: Contact Info -->
+    <div class="contact-info">
+      <h2 style="font-size:1rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.5rem">Contact Information</h2>
+
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Email</div>
+          <div class="info-value"><a href="mailto:support@wenxstudio.com">support@wenxstudio.com</a></div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Company Address</div>
+          <div class="info-value">
+            Wenx Studio LTD.<br>
+            5970 Clinton Street<br>
+            Burnaby, BC V5J 2M5<br>
+            Canada
+          </div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Business Hours</div>
+          <div class="info-value">
+            Monday – Friday<br>
+            9:00 AM – 5:00 PM (Pacific Time)<br>
+            <span style="color:var(--text-muted);font-size:.88rem">Saturday – Sunday: Closed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="card" style="margin-top:.5rem">
+        <h4 style="font-size:.85rem;font-weight:700;margin-bottom:.8rem">Quick Help</h4>
+        <ul style="list-style:none;font-size:.88rem">
+          <li style="margin-bottom:.4rem">📄 <a href="support.html" style="color:var(--accent);text-decoration:none">Installation &amp; Uninstall Guide</a></li>
+          <li style="margin-bottom:.4rem">📦 <a href="download.html" style="color:var(--accent);text-decoration:none">Download Plex PDF</a></li>
+          <li style="margin-bottom:.4rem">🔏 <a href="eula.html" style="color:var(--accent);text-decoration:none">EULA &amp; License Terms</a></li>
+          <li>💳 <a href="../preview.html#pricing" style="color:var(--accent);text-decoration:none">Pricing &amp; Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right: Contact Form -->
+    <div class="card contact-form" id="contact-form-card">
+      <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem">Send Us a Message</h2>
+
+      <!-- Success message (hidden by default, show via JS after submit) -->
+      <div id="form-success" style="display:none;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;text-align:center;color:var(--green)">
+        ✅ <strong>Message sent!</strong> We'll get back to you within 1–2 business days.
+      </div>
+
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name <span style="color:var(--red)">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Your full name" autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span style="color:var(--red)">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Topic <span style="color:var(--red)">*</span></label>
+          <select id="subject" name="subject" required>
+            <option value="">Select a topic</option>
+            <option value="technical">Technical Support</option>
+            <option value="billing">Billing / Refund</option>
+            <option value="license">License Question</option>
+            <option value="sales">Sales Inquiry</option>
+            <option value="privacy">Privacy / Legal</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message <span style="color:var(--red)">*</span></label>
+          <textarea id="message" name="message" required placeholder="Describe how we can help..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">
+          Send Message
+        </button>
+
+        <p class="form-note">
+          By submitting this form, you agree to our <a href="privacy.html">Privacy Policy</a>.
+          For licensing questions, please include your order number.
+        </p>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text"><img src="logo.png" alt="Plex PDF" style="height:22px;width:auto;vertical-align:middle;margin-right:.4rem">Plex PDF</div>
+      <p>Professional PDF editor for Windows.</p>
+      <p style="margin-top:.8rem;font-size:.82rem">Wenx Studio LTD.<br>5970 Clinton Street, Burnaby, BC V5J 2M5, Canada</p>
+      <p style="font-size:.82rem"><a href="mailto:support@wenxstudio.com" style="color:var(--accent);text-decoration:none">support@wenxstudio.com</a></p>
+    </div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="../preview.html#features">Features</a></li><li><a href="../preview.html#pricing">Pricing</a></li><li><a href="download.html">Download</a></li><li><a href="support.html">System Requirements</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="support.html">Installation Guide</a></li><li><a href="support.html#uninstall">Uninstall Guide</a></li><li><a href="support.html#faq">FAQ</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="eula.html">EULA</a></li><li><a href="cookies.html">Cookie Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+    <div class="footer-legal-links">
+      <a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="eula.html">EULA</a><a href="cookies.html">Cookie Policy</a><a href="contact.html">Contact Us</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  // TODO: 接入实际表单提交 API（如 Formspree、自建后端等）
+  // 目前展示成功提示作为 UI 演示
+  document.getElementById('form-success').style.display = 'block';
+  this.style.display = 'none';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support — Install &amp; Uninstall Guide — Plex PDF</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .step-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .step-card .step-num {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .95rem;
+      flex-shrink: 0;
+    }
+    .step-card .step-content h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .3rem;
+    }
+    .step-card .step-content p {
+      font-size: .88rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .step-card .step-content code {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .1em .4em;
+      font-size: .85em;
+      font-family: monospace;
+      color: var(--accent);
+    }
+
+    .uninstall-method {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .uninstall-method h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .uninstall-method ol {
+      padding-left: 1.3rem;
+      font-size: .9rem;
+      color: var(--text);
+    }
+    .uninstall-method li { margin-bottom: .4rem; line-height: 1.6; }
+    .uninstall-method code {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .1em .4em;
+      font-size: .85em;
+      font-family: monospace;
+      color: var(--accent);
+    }
+
+    .removal-list {
+      list-style: none;
+      padding: 0;
+    }
+    .removal-list li {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .4rem 0;
+      font-size: .9rem;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    .removal-list li:last-child { border-bottom: none; }
+    .removal-list .tick { color: var(--green); font-weight: 700; }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: .8rem;
+      overflow: hidden;
+    }
+    .faq-question {
+      background: var(--bg-2);
+      padding: 1rem 1.2rem;
+      font-weight: 600;
+      font-size: .93rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .faq-question:hover { background: var(--bg-3); }
+    .faq-answer {
+      padding: 1rem 1.2rem;
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.7;
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .faq-answer a { color: var(--accent); text-decoration: none; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform .2s; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="../preview.html" class="logo">
+    <img src="logo.png" alt="Plex PDF" style="height:26px;width:auto;display:block">
+    Plex PDF
+  </a>
+  <ul class="nav-links">
+    <li><a href="../preview.html#features">Features</a></li>
+    <li><a href="../preview.html#pricing">Pricing</a></li>
+    <li><a href="download.html">Download</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <span class="badge">Support</span>
+  <h1>Installation &amp; Support</h1>
+  <p class="subtitle">Step-by-step guide for installing and uninstalling Plex PDF on Windows</p>
+</div>
+
+<main>
+  <div class="toc-layout">
+    <aside class="toc">
+      <h4>On This Page</h4>
+      <ul>
+        <li><a href="#requirements">System Requirements</a></li>
+        <li><a href="#install">How to Install</a></li>
+        <li><a href="#uninstall">How to Uninstall</a></li>
+        <li><a href="#removal">What Gets Removed</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact-support">Need More Help?</a></li>
+      </ul>
+    </aside>
+
+    <div>
+
+      <!-- System requirements -->
+      <section id="requirements" class="prose" style="margin-bottom:2rem">
+        <h2>System Requirements</h2>
+        <table>
+          <thead><tr><th>Component</th><th>Requirement</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Operating System</strong></td><td>Windows 10 (version 1809 or later) or Windows 11</td></tr>
+            <tr><td><strong>Processor</strong></td><td>1 GHz or faster (x64)</td></tr>
+            <tr><td><strong>Memory (RAM)</strong></td><td>4 GB minimum (8 GB recommended for large documents)</td></tr>
+            <tr><td><strong>Disk Space</strong></td><td>500 MB free space for installation</td></tr>
+            <tr><td><strong>Display</strong></td><td>1280 × 720 resolution or higher</td></tr>
+            <tr><td><strong>Additional</strong></td><td>.NET Framework 4.8+ (automatically installed if missing)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Installation steps -->
+      <section id="install" class="prose" style="margin-bottom:2rem">
+        <h2>How to Install Plex PDF</h2>
+
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Download the installer</h4>
+            <p>Go to <a href="download.html">the download page</a>, review and accept the EULA and Terms of Service, then click <strong>Download Plex PDF for Windows</strong>. The installer file (<code>PlexPDF-setup-v1.5.0.msi</code>, 85 MB) will be saved to your Downloads folder.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Verify the digital signature (recommended)</h4>
+            <p>Right-click the downloaded <code>.msi</code> file → <strong>Properties → Digital Signatures</strong>. Confirm the signer is <strong>"Wenx Studio LTD."</strong>. If the signature is missing or different, do NOT install the file — contact us at <a href="mailto:support@wenxstudio.com">support@wenxstudio.com</a> immediately.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Run the installer</h4>
+            <p>Double-click <code>PlexPDF-setup-v1.5.0.msi</code>. If Windows Defender SmartScreen shows a warning, click <strong>More info → Run anyway</strong> (this is expected for software downloaded from the web).</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Accept the License Agreement</h4>
+            <p>In the installer wizard, read the End-User License Agreement. Select <strong>"I accept the terms in the License Agreement"</strong> to enable the Next button, then click <strong>Next</strong>. The installation will not proceed without this acceptance.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Choose installation location</h4>
+            <p>The default installation path is <code>C:\Program Files\Plex PDF\</code>. Click <strong>Next</strong> to accept, or <strong>Change</strong> to select a different folder.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Complete the installation</h4>
+            <p>Click <strong>Install</strong> and wait for the installation to finish (typically under 1 minute). Click <strong>Finish</strong>. Plex PDF will launch automatically. You can also find it in the <strong>Start Menu</strong> or via the desktop shortcut.</p>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(46,166,248,.05);border-color:rgba(46,166,248,.2)">
+          <p style="margin:0;font-size:.88rem">💡 <strong>Tip:</strong> Plex PDF does not install any third-party software, toolbars, browser extensions, or advertising components. The installer only contains Plex PDF and the Windows runtime libraries it requires.</p>
+        </div>
+      </section>
+
+      <!-- Uninstall section -->
+      <section id="uninstall" class="prose" style="margin-bottom:2rem">
+        <h2>How to Uninstall Plex PDF</h2>
+        <p>You can uninstall Plex PDF at any time. Choose the method that works best for you:</p>
+
+        <div class="uninstall-method">
+          <h3>
+            <span style="background:var(--accent-dim);color:var(--accent);width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0">A</span>
+            Via Windows Settings (Recommended)
+          </h3>
+          <ol>
+            <li>Press <code>Win + I</code> to open <strong>Settings</strong></li>
+            <li>Go to <strong>Apps → Installed Apps</strong></li>
+            <li>Search for <strong>"Plex PDF"</strong> in the search box</li>
+            <li>Click the <strong>⋮</strong> (three dots) next to Plex PDF → select <strong>Uninstall</strong></li>
+            <li>Follow the on-screen prompts to complete removal</li>
+          </ol>
+        </div>
+
+        <div class="uninstall-method">
+          <h3>
+            <span style="background:var(--accent-dim);color:var(--accent);width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0">B</span>
+            Via Control Panel
+          </h3>
+          <ol>
+            <li>Open <strong>Control Panel</strong> (search for it in the Start Menu)</li>
+            <li>Go to <strong>Programs → Programs and Features</strong></li>
+            <li>Find <strong>Plex PDF</strong> in the list</li>
+            <li>Right-click → <strong>Uninstall</strong></li>
+            <li>Follow the on-screen prompts</li>
+          </ol>
+        </div>
+
+        <div class="uninstall-method">
+          <h3>
+            <span style="background:var(--accent-dim);color:var(--accent);width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0">C</span>
+            Via Start Menu
+          </h3>
+          <ol>
+            <li>Open the <strong>Start Menu</strong> and search for <strong>Plex PDF</strong></li>
+            <li>Right-click the app icon → <strong>Uninstall</strong></li>
+            <li>Follow the on-screen prompts</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- What gets removed -->
+      <section id="removal" class="prose" style="margin-bottom:2rem">
+        <h2>What Gets Removed</h2>
+        <p>The uninstaller completely removes Plex PDF from your system:</p>
+        <div class="card">
+          <ul class="removal-list">
+            <li><span class="tick">✓</span> All Plex PDF application files</li>
+            <li><span class="tick">✓</span> Start Menu shortcuts and desktop icon</li>
+            <li><span class="tick">✓</span> Application registry entries</li>
+            <li><span class="tick">✓</span> Temporary files created by the application</li>
+            <li><span class="tick">✓</span> Background services (if any) started by Plex PDF</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:var(--green);background:rgba(63,185,80,.05)">
+          <p style="margin:0;font-size:.88rem">✅ <strong>Your personal PDF files are never modified or deleted during uninstallation.</strong> The uninstaller only removes Plex PDF's own files. Your documents remain exactly where you saved them.</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="prose" style="margin-bottom:2rem">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            Does Plex PDF install any other software alongside itself?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            <strong>No.</strong> Plex PDF is a clean install. Our installer contains only the Plex PDF application and standard Microsoft runtime components (e.g., .NET Framework) that Windows requires. We do not bundle any third-party applications, browser extensions, toolbars, advertising components, or any other software.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            Is Plex PDF safe to install? Why does Windows SmartScreen show a warning?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            <strong>Yes, Plex PDF is safe.</strong> Our installer is digitally signed with an Extended Validation (EV) Code Signing Certificate issued to Wenx Studio LTD., which verifies our company identity and proves the file has not been tampered with. You can verify this by right-clicking the installer → Properties → Digital Signatures.<br><br>
+            If SmartScreen shows a warning, it is because any newly published software may initially display this message. Click <strong>More info → Run anyway</strong> to proceed. EV code signing provides immediate SmartScreen reputation.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            Does Plex PDF read my documents or upload them anywhere?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            <strong>No. Never.</strong> Plex PDF processes all your PDF files entirely on your local device. We do not upload, access, read, or store the content of your documents. All editing, conversion, and OCR operations happen locally on your machine. Your privacy is by design.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            How do I update Plex PDF to the latest version?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            Plex PDF checks for updates automatically when you launch the application and will notify you when a new version is available. You can also check manually via <strong>Help → Check for Updates</strong> within the application.<br><br>
+            For Lifetime license holders, minor updates are included at no cost. Major version upgrades (e.g., v1.x → v2.x) may require a separate purchase at our discretion. Yearly plan subscribers receive all updates during their active subscription period.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            What data does Plex PDF collect?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            We collect: (1) license validation information to confirm legitimate use, (2) anonymized usage statistics to understand which features are used, and (3) crash/error reports to fix bugs. We never collect your document content. For full details, see our <a href="privacy.html">Privacy Policy</a>.
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Contact support -->
+      <section id="contact-support">
+        <div class="card" style="text-align:center;padding:2rem">
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">Still need help?</h3>
+          <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:1.2rem">Our support team is available Monday–Friday, 9 AM–5 PM Pacific Time.</p>
+          <a href="contact.html" class="btn btn-primary">Contact Support</a>
+          <p style="margin-top:.8rem;font-size:.82rem;color:var(--text-muted)">Or email us directly at <a href="mailto:support@wenxstudio.com" style="color:var(--accent)">support@wenxstudio.com</a></p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text"><img src="logo.png" alt="Plex PDF" style="height:22px;width:auto;vertical-align:middle;margin-right:.4rem">Plex PDF</div>
+      <p>Professional PDF editor for Windows.</p>
+      <p style="margin-top:.8rem;font-size:.82rem">Wenx Studio LTD.<br>5970 Clinton Street, Burnaby, BC V5J 2M5, Canada</p>
+      <p style="font-size:.82rem"><a href="mailto:support@wenxstudio.com" style="color:var(--accent);text-decoration:none">support@wenxstudio.com</a></p>
+    </div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="../preview.html#features">Features</a></li><li><a href="../preview.html#pricing">Pricing</a></li><li><a href="download.html">Download</a></li><li><a href="support.html">System Requirements</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="support.html">Installation Guide</a></li><li><a href="support.html#uninstall">Uninstall Guide</a></li><li><a href="support.html#faq">FAQ</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="eula.html">EULA</a></li><li><a href="cookies.html">Cookie Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+    <div class="footer-legal-links">
+      <a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="eula.html">EULA</a><a href="cookies.html">Cookie Policy</a><a href="contact.html">Contact Us</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

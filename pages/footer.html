@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer Component — Plex PDF</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Demo page wrapper */
+    .demo-label {
+      background: #ff9f0a22;
+      border: 1px dashed #ff9f0a;
+      color: #ff9f0a;
+      text-align: center;
+      padding: .5rem;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+    .demo-content {
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: .95rem;
+    }
+    .demo-content h2 { color: var(--text); font-size: 1.4rem; margin-bottom: .5rem; }
+  </style>
+</head>
+<body>
+
+<!-- ============================
+     📌 研发使用说明
+     此文件展示页脚组件的完整 HTML + CSS
+     将 <footer class="site-footer">…</footer> 复制到每个页面的最底部即可
+     CSS 变量已定义在 style.css 中，统一引入即可
+     ============================ -->
+
+<div class="demo-label">📦 Footer Component Preview — Copy the &lt;footer&gt; block below to all pages</div>
+
+<!-- 模拟页面内容占位 -->
+<div class="demo-content">
+  <h2>Page Content Goes Here</h2>
+  <p>Scroll down or resize to see the footer below.</p>
+</div>
+
+<!-- ============================
+     ✅ FOOTER — 复制此块到所有页面
+     ============================ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+
+    <!-- 第1列：品牌 + 公司地址 -->
+    <div class="footer-brand">
+      <div class="logo-text">
+        <img src="logo.png" alt="Plex PDF" style="height:22px;width:auto;vertical-align:middle;margin-right:.4rem">
+        Plex PDF
+      </div>
+      <p>Professional PDF editor for Windows.<br>Edit, convert, annotate and sign PDFs — fast.</p>
+      <p style="margin-top:.8rem;font-size:.82rem">
+        Wenx Studio LTD.<br>
+        5970 Clinton Street<br>
+        Burnaby, BC V5J 2M5, Canada
+      </p>
+      <p style="margin-top:.5rem;font-size:.82rem">
+        <a href="mailto:support@wenxstudio.com" style="color:var(--accent);text-decoration:none">support@wenxstudio.com</a>
+      </p>
+    </div>
+
+    <!-- 第2列：Product -->
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="../preview.html#features">Features</a></li>
+        <li><a href="../preview.html#pricing">Pricing</a></li>
+        <li><a href="download.html">Download</a></li>
+        <li><a href="support.html">System Requirements</a></li>
+      </ul>
+    </div>
+
+    <!-- 第3列：Support -->
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="support.html">Installation Guide</a></li>
+        <li><a href="support.html#uninstall">Uninstall Guide</a></li>
+        <li><a href="support.html#faq">FAQ</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- 第4列：Legal -->
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+        <li><a href="eula.html">EULA</a></li>
+        <li><a href="cookies.html">Cookie Policy</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /footer-grid -->
+
+  <!-- 底部版权栏 -->
+  <div class="footer-bottom">
+    <p>© 2026 Wenx Studio LTD. All rights reserved.</p>
+    <div class="footer-legal-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="eula.html">EULA</a>
+      <a href="cookies.html">Cookie Policy</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+  </div>
+</footer>
+<!-- ============================
+     ✅ END FOOTER
+     ============================ -->
+
+</body>
+</html>
