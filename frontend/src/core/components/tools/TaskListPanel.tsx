@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { isTauri } from '@tauri-apps/api/core';
 import {
   Stack,
   Text,
@@ -16,7 +17,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import LocalIcon from '@app/components/shared/LocalIcon';
 import { useTaskContext } from '@app/contexts/TaskContext';
-import { type TaskStatus, type ConvertTask } from '@app/services/taskService';
+import {
+  downloadTaskOutput,
+  type TaskStatus,
+  type ConvertTask,
+} from '@app/services/taskService';
 import {
   getLastErrorReason,
   openTaskLog,
@@ -99,17 +104,12 @@ export default function TaskListPanel() {
     await invoke('plugin:opener|reveal_item_in_dir', { paths: [filePath] });
   }
 
-  function isTauriEnv(): boolean {
-    return typeof window !== 'undefined' &&
-      '__TAURI_INTERNALS__' in window;
-  }
-
   async function handleTaskClick(task: ConvertTask) {
-    if (task.status !== 'completed' || !task.outputUrl) return;
+    if (task.status !== 'completed') return;
     if (downloadingRef.current.has(task.id)) return;
 
-    if (!isTauriEnv()) {
-      window.open(task.outputUrl, '_blank');
+    if (!isTauri()) {
+      if (task.outputUrl) window.open(task.outputUrl, '_blank');
       return;
     }
 
@@ -133,7 +133,7 @@ export default function TaskListPanel() {
       setDownloadProgress(prev => ({ ...prev, [task.id]: 0 }));
 
       try {
-        const response = await fetch(task.outputUrl);
+        const response = await downloadTaskOutput(task.id, task.outputUrl);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const contentLength = Number(response.headers.get('Content-Length') || 0);
@@ -189,7 +189,7 @@ export default function TaskListPanel() {
         const { [task.id]: _, ...rest } = prev;
         return rest;
       });
-      window.open(task.outputUrl, '_blank');
+      if (task.outputUrl) window.open(task.outputUrl, '_blank');
     }
   }
 
@@ -246,7 +246,7 @@ export default function TaskListPanel() {
             const progress = downloadProgress[task.id];
             const isDownloading = progress !== undefined;
             const isFailed = displayStatus === 'failed';
-            const canRevealOutput = task.status === 'completed' && Boolean(task.outputUrl) && isTauriEnv();
+            const canRevealOutput = task.status === 'completed' && isTauri();
             const revealOutputLabel = t('taskList.revealOutput', 'Show converted file in folder');
 
             const badge = (
@@ -278,7 +278,7 @@ export default function TaskListPanel() {
                 style={{
                   borderRadius: 'var(--mantine-radius-sm)',
                   transition: 'background-color 0.15s ease',
-                  cursor: task.status === 'completed' && task.outputUrl ? 'pointer' : 'default',
+                  cursor: task.status === 'completed' && (isTauri() || task.outputUrl) ? 'pointer' : 'default',
                 }}
                 className="hover:bg-[var(--bg-hover)]"
                 onClick={() => handleTaskClick(task)}

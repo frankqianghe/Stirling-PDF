@@ -344,6 +344,33 @@ export interface TaskQueryResult {
   message?: string;
 }
 
+/**
+ * Download a completed conversion result.
+ *
+ * Task status responses intentionally omit `output_url`, so completed tasks
+ * must use the authenticated download endpoint. Older servers may still
+ * return a direct URL; keep supporting it without forwarding auth headers to
+ * an arbitrary host.
+ */
+export async function downloadTaskOutput(
+  taskId: string,
+  directOutputUrl?: string,
+): Promise<Response> {
+  const directUrl = directOutputUrl?.trim();
+  if (directUrl) {
+    return fetch(directUrl, {
+      [SKIP_FETCH_LOG_KEY]: true,
+    } as RequestInit);
+  }
+
+  const url = `${getApiBaseUrl()}/convert/tasks/${encodeURIComponent(taskId)}/download`;
+  const headers = await buildAuthHeaders();
+  return fetch(url, {
+    headers,
+    [SKIP_FETCH_LOG_KEY]: true,
+  } as RequestInit);
+}
+
 export async function queryTaskStatus(
   taskId: string,
   logger?: TaskLogger,

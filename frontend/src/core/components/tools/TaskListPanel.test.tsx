@@ -4,11 +4,15 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import TaskListPanel from '@app/components/tools/TaskListPanel';
 import type { ConvertTask } from '@app/services/taskService';
 
-const mockInvoke = vi.fn();
-const mockUseTaskContext = vi.fn();
+const { mockInvoke, mockIsTauri, mockUseTaskContext } = vi.hoisted(() => ({
+  mockInvoke: vi.fn(),
+  mockIsTauri: vi.fn(() => true),
+  mockUseTaskContext: vi.fn(),
+}));
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: mockInvoke,
+  isTauri: mockIsTauri,
 }));
 
 vi.mock('@app/contexts/TaskContext', () => ({
@@ -25,7 +29,6 @@ const completedTask: ConvertTask = {
   fileName: 'source.docx',
   toFormat: 'pdf',
   status: 'completed',
-  outputUrl: 'https://example.test/source.pdf',
   localPath: '/tmp/source.pdf',
   createdAt: '2026-08-25T00:00:00.000Z',
 };
@@ -47,10 +50,7 @@ function renderPanel(tasks: ConvertTask[]) {
 describe('TaskListPanel', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    Object.defineProperty(window, '__TAURI_INTERNALS__', {
-      value: {},
-      configurable: true,
-    });
+    mockIsTauri.mockReturnValue(true);
   });
 
   test('reveals completed output from its row action', async () => {
@@ -69,5 +69,11 @@ describe('TaskListPanel', () => {
     renderPanel([{ ...completedTask, status: 'in_progress', outputUrl: undefined, localPath: undefined }]);
 
     expect(screen.queryByRole('button', { name: 'taskList.revealOutput' })).not.toBeInTheDocument();
+  });
+
+  test('shows reveal action when completed status has no output URL', () => {
+    renderPanel([{ ...completedTask, localPath: undefined, outputUrl: undefined }]);
+
+    expect(screen.getByRole('button', { name: 'taskList.revealOutput' })).toBeInTheDocument();
   });
 });
