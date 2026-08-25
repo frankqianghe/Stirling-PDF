@@ -101,7 +101,7 @@ export default function TaskListPanel() {
 
   function isTauriEnv(): boolean {
     return typeof window !== 'undefined' &&
-      (typeof (window as Record<string, unknown>).__TAURI_INTERNALS__ !== 'undefined');
+      '__TAURI_INTERNALS__' in window;
   }
 
   async function handleTaskClick(task: ConvertTask) {
@@ -141,7 +141,6 @@ export default function TaskListPanel() {
         const chunks: Uint8Array[] = [];
         let received = 0;
 
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -247,6 +246,8 @@ export default function TaskListPanel() {
             const progress = downloadProgress[task.id];
             const isDownloading = progress !== undefined;
             const isFailed = displayStatus === 'failed';
+            const canRevealOutput = task.status === 'completed' && Boolean(task.outputUrl) && isTauriEnv();
+            const revealOutputLabel = t('taskList.revealOutput', 'Show converted file in folder');
 
             const badge = (
               <Badge
@@ -326,6 +327,24 @@ export default function TaskListPanel() {
                       </Tooltip>
                     ) : (
                       badge
+                    )}
+
+                    {canRevealOutput && (
+                      <Tooltip label={revealOutputLabel} withArrow>
+                        <ActionIcon
+                          size="sm"
+                          variant="subtle"
+                          color="gray"
+                          loading={isDownloading}
+                          aria-label={revealOutputLabel}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            void handleTaskClick(task);
+                          }}
+                        >
+                          <LocalIcon icon="folder-open-rounded" width="0.875rem" height="0.875rem" />
+                        </ActionIcon>
+                      </Tooltip>
                     )}
 
                     <ActionIcon
